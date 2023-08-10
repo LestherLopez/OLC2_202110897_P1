@@ -44,7 +44,7 @@ function Home(){
             }else {
                 console.log(editor)
                 const response = await axios.post('http://localhost:5000/interpreter', {code:editor});
-                console.log(response.data);
+                
                 const {consola,errores} = response.data;   
                 console.log(consola);
                 setConsola(response.data);
