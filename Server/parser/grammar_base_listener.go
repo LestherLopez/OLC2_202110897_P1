@@ -44,6 +44,18 @@ func (s *BaseGrammarListener) EnterPrintstmt(ctx *PrintstmtContext) {}
 // ExitPrintstmt is called when production printstmt is exited.
 func (s *BaseGrammarListener) ExitPrintstmt(ctx *PrintstmtContext) {}
 
+// EnterDeclarestmt is called when production declarestmt is entered.
+func (s *BaseGrammarListener) EnterDeclarestmt(ctx *DeclarestmtContext) {}
+
+// ExitDeclarestmt is called when production declarestmt is exited.
+func (s *BaseGrammarListener) ExitDeclarestmt(ctx *DeclarestmtContext) {}
+
+// EnterConstantstmt is called when production constantstmt is entered.
+func (s *BaseGrammarListener) EnterConstantstmt(ctx *ConstantstmtContext) {}
+
+// ExitConstantstmt is called when production constantstmt is exited.
+func (s *BaseGrammarListener) ExitConstantstmt(ctx *ConstantstmtContext) {}
+
 // EnterIfstmt is called when production ifstmt is entered.
 func (s *BaseGrammarListener) EnterIfstmt(ctx *IfstmtContext) {}
 
@@ -55,3 +67,9 @@ func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
 
 // ExitExpr is called when production expr is exited.
 func (s *BaseGrammarListener) ExitExpr(ctx *ExprContext) {}
+
+// EnterType is called when production type is entered.
+func (s *BaseGrammarListener) EnterType(ctx *TypeContext) {}
+
+// ExitType is called when production type is exited.
+func (s *BaseGrammarListener) ExitType(ctx *TypeContext) {}

@@ -18,7 +18,7 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 LET:   'let';
-
+//STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
 STRING: '"'~["]*'"';
 ID: ([a-zA-Z])[a-zA-Z0-9_]*;
@@ -39,6 +39,7 @@ MUL:            '*';
 DIV:            '/';
 ADD:            '+';
 SUB:            '-';
+PERCENT:        '%';
 PARIZQ:         '(';
 PARDER:         ')';
 LLAVEIZQ:       '{';

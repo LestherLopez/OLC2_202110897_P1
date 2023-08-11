@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Editor from "../components/Editor";
@@ -16,7 +15,23 @@ function Home(){
      const handleClose = () => setShow(false);
      const handleShow = () => setShow(true);
      //estados de modal para tabla de simbolos
-     
+     const estiloOscuro = {
+        backgroundColor: 'black', // Fondo oscuro
+        color: 'white', // Texto en blanco
+        border: '1px solid white', // Borde blanco
+        borderRadius: '0.25rem',
+        padding: '0.375rem 0.75rem',
+      };
+      const estiloBoton = {
+        backgroundColor: '#28a745', // Azul vibrante
+        color: 'white', // Texto en blanco
+        border: 'none', // Sin borde
+        borderRadius: '0.25rem',
+        padding: '0.375rem 0.75rem',
+        cursor: 'pointer',
+        transition: 'background-color 0.2s, color 0.2s, box-shadow 0.2s',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', // Sombra al pasar el cursor
+      };
      const [shows, setShows] = useState(false);
      const handleCloses = () => setShows(false);
      const handleShows = () => setShows(true);
@@ -24,6 +39,13 @@ function Home(){
      const [showe, setShowe] = useState(false);
      const handleClosee = () => setShowe(false);
      const handleShowe = () => setShowe(true);
+     const fileInputRef = useRef(null);
+
+        const handleButtonClick = () => {
+            fileInputRef.current.click();
+        };
+
+
      const handleFileChange = (event) => {
      const files = event.target.files;
      const reader = new FileReader();
@@ -56,15 +78,15 @@ function Home(){
     };
 
 
-
+   
     return (
         <Container>
             <Row>
                 <Col>
-                    <h1>Editor</h1>
+                    <h1 className="text-white">Editor</h1>
                 </Col>
                 <Col>
-                    <h1>Consola</h1>
+                    <h1 className="text-white">Consola</h1>
                 </Col>
 
             </Row>
@@ -79,27 +101,26 @@ function Home(){
               
             </Row>
             {/*seccion de botones */}
-            <Row>
-                <Col>
-                    <Button variant="outline-secondary" >Run</Button>{' '}
-                </Col>
-            </Row>
+            
             {/*seccion de botones */}
             <Row>
                     <Col>
-                        <Button variant="outline-secondary" onClick={() =>interpretar()} >Run</Button>{' '}
+                        <Button style={estiloBoton} variant="outline-secondary" onClick={() =>interpretar()} >Run</Button>{' '}
                         <Button variant="primary" onClick={handleShow}>
                                                                         Reporte AST
                                                                     </Button>{' '}
                         <Button variant="primary" onClick={handleShows}>Reporte Tabla de Simbolos</Button>{' '}               
                         <Button variant="primary" onClick={handleShowe}>Reporte Tabla de Errores</Button>{' '}     
-                        <Form.Group controlId="formFileMultiple" className="mb-3">
-            <Form.Label>Carga de Archivo TW</Form.Label>
-            <Form.Control type="file" multiple onChange={handleFileChange}/>
-        </Form.Group>                         
+                        <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                         />
+                        <Button onClick={handleButtonClick}>Cargar Archivo</Button>          
                     </Col>
                 </Row>
-
+            
         </Container>
     );
 }
