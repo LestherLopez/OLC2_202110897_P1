@@ -37,7 +37,7 @@ block returns [[]interface{} blk]
 
 instruction returns [interfaces.Instruction inst]
 : printstmt { $inst = $printstmt.prnt}
-| ifstmt { }
+| ifstmt { $inst = $ifstmt.ift }
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -55,8 +55,9 @@ constantstmt
 | LET ID IG expr //declaracion con valor
 ;
 
-ifstmt  
-: IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER
+//(lin, col, exp_conditional, sentence, sentence else)
+ifstmt  returns [interfaces.Instruction ift]
+: IF PARIZQ left=expr PARDER LLAVEIZQ block LLAVEDER { $ift = instructions.NewIf($IF.line, $left.start.GetColumn(), $expr.e, $block.blk, nil) }
 | IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER
 | IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE ifstmt
 ;

@@ -125,6 +125,7 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				ast.SetError("ERROR: No es posible obtener el modulo")
 			}
 		}
+		//relational operations with int, float/ string y character
 	case "<":
 		{
 			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
