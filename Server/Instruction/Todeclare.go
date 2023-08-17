@@ -2,6 +2,7 @@ package instructions
 
 import (
 	environment "Server/Environment"
+	primitive "Server/Expression"
 	interfaces "Server/Interfaces"
 	"fmt"
 )
@@ -28,20 +29,28 @@ func (p Todeclare) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		env.(environment.Environment).KeepVariable(p.id_var, valor_asignar)
 		}
 	}*/
-	valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
-	consoleOut := fmt.Sprintf("%v", valueTodeclare.Valor)
-	ast.SetPrint(consoleOut + "\n")
-	if(valueTodeclare.Tipo==p.type_var){
-			env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
-			fmt.Println("Los tipos coinciden")
-			
-		
-		
-		
-	} else{
-		fmt.Println("Los tipos no coinciden")
-	}
 	
+	//variable con tipo y valor
+	if(p.type_var != environment.NULL && p.valor != nil){
+			valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
+			if(valueTodeclare.Tipo==p.type_var){
+					env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
+					fmt.Println("Los tipos coinciden")
+			} else{
+				fmt.Println("Los tipos no coinciden")
+			}
+	//variable con valor pero sin tipo
+	}else if(p.type_var==environment.NULL && p.valor != nil){
+			valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
+			env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
+			fmt.Println("var sin tipo pero con valor")
+	//variable con tipo pero sin valor
+	}else if(p.type_var!=environment.NULL && p.valor == nil){
+		fmt.Println("var con tipo pero sin valor")
+		val := primitive.NewPrimitive(p.Lin, p.Col, nil, environment.NULL) 
+		valueTodeclare := val.Ejecutar(ast, env)
+		env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
+	}
 	
 	return nil
 	

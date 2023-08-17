@@ -10,6 +10,9 @@ type GrammarListener interface {
 	// EnterS is called when entering the s production.
 	EnterS(c *SContext)
 
+	// EnterBlock is called when entering the block production.
+	EnterBlock(c *BlockContext)
+
 	// EnterInstruction is called when entering the instruction production.
 	EnterInstruction(c *InstructionContext)
 
@@ -40,11 +43,11 @@ type GrammarListener interface {
 	// EnterType is called when entering the type production.
 	EnterType(c *TypeContext)
 
-	// EnterBlock is called when entering the block production.
-	EnterBlock(c *BlockContext)
-
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
+
+	// ExitBlock is called when exiting the block production.
+	ExitBlock(c *BlockContext)
 
 	// ExitInstruction is called when exiting the instruction production.
 	ExitInstruction(c *InstructionContext)
@@ -75,7 +78,4 @@ type GrammarListener interface {
 
 	// ExitType is called when exiting the type production.
 	ExitType(c *TypeContext)
-
-	// ExitBlock is called when exiting the block production.
-	ExitBlock(c *BlockContext)
 }

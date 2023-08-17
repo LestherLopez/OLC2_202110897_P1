@@ -45,8 +45,8 @@ printstmt returns [interfaces.Instruction prnt]
 //lin int, col int, id_var string, type_var environment.TipoExpresion, valor interfaces.Expression, constant bool
 declarestmt returns [interfaces.Instruction dec]
 : VAR ID DOUBLEPTS type IG expr {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, $expr.e, false)}//declaracion con tipo y valor
-| VAR ID IG expr //{$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $environment.WILDCARD, $expr.e, false)}//declaracion con valor
-| VAR ID DOUBLEPTS type QUESTION// {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, $environment.WILDCARD, false)}//declaracion con tipo y sin valor
+| VAR ID IG expr {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, environment.NULL, $expr.e, false)}//declaracion con valor
+| VAR ID DOUBLEPTS type QUESTION {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, nil, false)}//declaracion con tipo y sin valor
 ;
 //declaracion de constantes
 constantstmt
@@ -102,6 +102,7 @@ expr returns [interfaces.Expression e]
     }                        
 | TRUE { $e = expressions.NewPrimitive($TRUE.line, $TRUE.pos, true, environment.BOOLEAN) }
 | FALSE { $e = expressions.NewPrimitive($FALSE.line, $FALSE.pos, false, environment.BOOLEAN) }
+| NIL { $e = expressions.NewPrimitive($NIL.line, $NIL.pos, nil, environment.NULL) }
 | accessstmt {$e = $accessstmt.access}
 ;
 

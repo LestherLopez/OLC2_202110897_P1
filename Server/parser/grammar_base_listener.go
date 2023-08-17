@@ -26,6 +26,12 @@ func (s *BaseGrammarListener) EnterS(ctx *SContext) {}
 // ExitS is called when production s is exited.
 func (s *BaseGrammarListener) ExitS(ctx *SContext) {}
 
+// EnterBlock is called when production block is entered.
+func (s *BaseGrammarListener) EnterBlock(ctx *BlockContext) {}
+
+// ExitBlock is called when production block is exited.
+func (s *BaseGrammarListener) ExitBlock(ctx *BlockContext) {}
+
 // EnterInstruction is called when production instruction is entered.
 func (s *BaseGrammarListener) EnterInstruction(ctx *InstructionContext) {}
 
@@ -85,9 +91,3 @@ func (s *BaseGrammarListener) EnterType(ctx *TypeContext) {}
 
 // ExitType is called when production type is exited.
 func (s *BaseGrammarListener) ExitType(ctx *TypeContext) {}
-
-// EnterBlock is called when production block is entered.
-func (s *BaseGrammarListener) EnterBlock(ctx *BlockContext) {}
-
-// ExitBlock is called when production block is exited.
-func (s *BaseGrammarListener) ExitBlock(ctx *BlockContext) {}
