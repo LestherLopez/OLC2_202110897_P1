@@ -3,6 +3,7 @@ package instructions
 import (
 	environment "Server/Environment"
 	interfaces "Server/Interfaces"
+	"fmt"
 )
 
 type If struct {
@@ -17,22 +18,29 @@ func NewIf(lin int, col int, expc interfaces.Expression, senten interfaces.Instr
 	return If{Lin: lin, Col: col, exp_conditional: expc, sentence: senten, sentence_else: senten_else}
 }
 
-func (i If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	conditional := i.exp_conditional.Ejecutar(ast, env)
-	if(conditional.Tipo != environment.BOOLEAN){
+func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+	
+	conditional := p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
+/*	if(conditional.Tipo != environment.BOOLEAN){
 		return nil
 	}
 	if(conditional.Valor.(bool) ){
-		element := i.sentence.Ejecutar(ast, env)
+		//hacer nuevo environment
+		var ifEnv environment.Environment
+		ifEnv = environment.NewEnvironment(env.(environment.Environment), "IF")
+		element := p.sentence.Ejecutar(ast, ifEnv)
 		if(element!=nil){
+
 			//condicional por si viene return
 		}
 	}else{
-		i.sentence_else.Ejecutar(ast, env)
-	}
+		var elseEnv environment.Environment
+		elseEnv = environment.NewEnvironment(env.(environment.Environment), "Else")
+		p.sentence_else.Ejecutar(ast, elseEnv)
+	}*/
 	
 	//valueToPrint := i.Value.(interfaces.Expression).Ejecutar(ast, env)
-	//consoleOut := fmt.Sprintf("%v", valueToPrint.Valor)
-	//ast.SetPrint(consoleOut + "\n")
+	consoleOut := fmt.Sprintf("%v", conditional.Valor)
+	ast.SetPrint(consoleOut + "\n")
 	return nil
 }

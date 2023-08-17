@@ -45,9 +45,10 @@ func main() {
 		Code := listener.Code
 		//create ast
 		var Ast environment.AST
+		env := environment.NewEnvironment(nil, "Entorno Global")
 		//ejecución
 		for _, inst := range Code {
-			err := inst.(interfaces.Instruction).Ejecutar(&Ast, nil)
+			err := inst.(interfaces.Instruction).Ejecutar(&Ast, env)
 			if err != nil {
 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 					"error": "Error executing code",

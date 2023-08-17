@@ -15,15 +15,12 @@ options {
 
 
 s returns [[]interface{} code]
-: block EOF
-    {   
-        $code = $block.blk
-    }
+: block EOF {$code = $block.blk}
 ;
 
 block returns [[]interface{} blk]
 @init{
-    $blk = []interface{}{}
+$blk = []interface{}{}
     var listInt []IInstructionContext
   }
 : ins+=instruction+
@@ -37,17 +34,19 @@ block returns [[]interface{} blk]
 
 instruction returns [interfaces.Instruction inst]
 : printstmt { $inst = $printstmt.prnt}
+| declarestmt {$inst = $declarestmt.dec}
 | ifstmt { $inst = $ifstmt.ift }
 ;
 
 printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line,$PRINT.pos,$expr.e)}
+: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line, $PRINT.pos, $expr.e)}
 ;
 //declaracion de variables
-declarestmt 
-: VAR ID DOUBLEPTS type IG expr //declaracion con tipo y valor
-| VAR ID IG expr //declaracion con valor
-| VAR ID DOUBLEPTS type QUESTION //declaracion con tipo y sin valor
+//lin int, col int, id_var string, type_var environment.TipoExpresion, valor interfaces.Expression, constant bool
+declarestmt returns [interfaces.Instruction dec]
+: VAR ID DOUBLEPTS type IG expr {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, $expr.e, false)}//declaracion con tipo y valor
+| VAR ID IG expr //{$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $environment.WILDCARD, $expr.e, false)}//declaracion con valor
+| VAR ID DOUBLEPTS type QUESTION// {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, $environment.WILDCARD, false)}//declaracion con tipo y sin valor
 ;
 //declaracion de constantes
 constantstmt
@@ -57,11 +56,19 @@ constantstmt
 
 //(lin, col, exp_conditional, sentence, sentence else)
 ifstmt  returns [interfaces.Instruction ift]
-: IF PARIZQ left=expr PARDER LLAVEIZQ block LLAVEDER { $ift = instructions.NewIf($IF.line, $left.start.GetColumn(), $expr.e, $block.blk, nil) }
-| IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER
+: IF PARIZQ left=expr PARDER LLAVEIZQ block LLAVEDER //{ $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
+| IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER 
 | IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE ifstmt
 ;
 
+whilestmt returns [interfaces.Instruction while]
+: WHILE expr LLAVEIZQ block LLAVEDER
+;
+
+forstmt returns [interfaces.Instruction for]
+: FOR ID IN  expr LLAVEIZQ block LLAVEDER
+;
+//----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]
 : left=expr op=(MUL|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=(ADD|SUB|PERCENT) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
@@ -95,39 +102,18 @@ expr returns [interfaces.Expression e]
     }                        
 | TRUE { $e = expressions.NewPrimitive($TRUE.line, $TRUE.pos, true, environment.BOOLEAN) }
 | FALSE { $e = expressions.NewPrimitive($FALSE.line, $FALSE.pos, false, environment.BOOLEAN) }
+| accessstmt {$e = $accessstmt.access}
 ;
 
-type
-  : STRINGS      
-  | INTS        
-  | FLOATS          
-  | BOOLS       
-  | CHARACTERS             
-; 
+accessstmt returns [interfaces.Expression access]
+: op=ID {$access = expressions.NewAccess($op.line, $op.pos, $op.text)}
+;
 
+type returns [environment.TipoExpresion t]
+  : STRINGS {$t = environment.STRING}      
+  | INTS {$t = environment.INTEGER}         
+  | FLOATS {$t = environment.FLOAT}  
+  | BOOLS       {$t = environment.BOOLEAN }  
+  | CHARACTERS    {$t = environment.CHARACTER}  
+;
 
-/* primitive [interfaces.Expression p]  
-: NUMBER                             
-    {
-        if (strings.Contains($NUMBER.text,".")){
-            num,err := strconv.ParseFloat($NUMBER.text, 64);
-            if err!= nil{
-                fmt.Println(err)
-            }
-            $p = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.FLOAT)
-        }else{
-            num,err := strconv.Atoi($NUMBER.text)
-            if err!= nil{
-                fmt.Println(err)
-            }
-            $p = expressions.NewPrimitive($NUMBER.line,$NUMBER.pos,num,environment.INTEGER)
-        }
-    }
-| STRING
-    {
-        str := $STRING.text
-        $p = expressions.NewPrimitive($STRING.line, $STRING.pos,str[1:len(str)-1],environment.STR)
-    }                        
-| TRU { $p = expressions.NewPrimitive($TRU.line, $TRU.pos,true,environment.BOOLEAN) }
-| FAL { $p = expressions.NewPrimitive($FAL.line, $FAL.pos,false,environment.BOOLEAN) }
-; */

@@ -18,6 +18,8 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 LET:   'let';
+FOR: 'for';
+IN: 'in';
 //STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
 STRING: '"'~["]*'"';

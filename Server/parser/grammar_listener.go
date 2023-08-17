@@ -10,9 +10,6 @@ type GrammarListener interface {
 	// EnterS is called when entering the s production.
 	EnterS(c *SContext)
 
-	// EnterBlock is called when entering the block production.
-	EnterBlock(c *BlockContext)
-
 	// EnterInstruction is called when entering the instruction production.
 	EnterInstruction(c *InstructionContext)
 
@@ -28,17 +25,26 @@ type GrammarListener interface {
 	// EnterIfstmt is called when entering the ifstmt production.
 	EnterIfstmt(c *IfstmtContext)
 
+	// EnterWhilestmt is called when entering the whilestmt production.
+	EnterWhilestmt(c *WhilestmtContext)
+
+	// EnterForstmt is called when entering the forstmt production.
+	EnterForstmt(c *ForstmtContext)
+
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
+
+	// EnterAccessstmt is called when entering the accessstmt production.
+	EnterAccessstmt(c *AccessstmtContext)
 
 	// EnterType is called when entering the type production.
 	EnterType(c *TypeContext)
 
+	// EnterBlock is called when entering the block production.
+	EnterBlock(c *BlockContext)
+
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
-
-	// ExitBlock is called when exiting the block production.
-	ExitBlock(c *BlockContext)
 
 	// ExitInstruction is called when exiting the instruction production.
 	ExitInstruction(c *InstructionContext)
@@ -55,9 +61,21 @@ type GrammarListener interface {
 	// ExitIfstmt is called when exiting the ifstmt production.
 	ExitIfstmt(c *IfstmtContext)
 
+	// ExitWhilestmt is called when exiting the whilestmt production.
+	ExitWhilestmt(c *WhilestmtContext)
+
+	// ExitForstmt is called when exiting the forstmt production.
+	ExitForstmt(c *ForstmtContext)
+
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
 
+	// ExitAccessstmt is called when exiting the accessstmt production.
+	ExitAccessstmt(c *AccessstmtContext)
+
 	// ExitType is called when exiting the type production.
 	ExitType(c *TypeContext)
+
+	// ExitBlock is called when exiting the block production.
+	ExitBlock(c *BlockContext)
 }

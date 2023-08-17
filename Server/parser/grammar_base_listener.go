@@ -26,12 +26,6 @@ func (s *BaseGrammarListener) EnterS(ctx *SContext) {}
 // ExitS is called when production s is exited.
 func (s *BaseGrammarListener) ExitS(ctx *SContext) {}
 
-// EnterBlock is called when production block is entered.
-func (s *BaseGrammarListener) EnterBlock(ctx *BlockContext) {}
-
-// ExitBlock is called when production block is exited.
-func (s *BaseGrammarListener) ExitBlock(ctx *BlockContext) {}
-
 // EnterInstruction is called when production instruction is entered.
 func (s *BaseGrammarListener) EnterInstruction(ctx *InstructionContext) {}
 
@@ -62,14 +56,38 @@ func (s *BaseGrammarListener) EnterIfstmt(ctx *IfstmtContext) {}
 // ExitIfstmt is called when production ifstmt is exited.
 func (s *BaseGrammarListener) ExitIfstmt(ctx *IfstmtContext) {}
 
+// EnterWhilestmt is called when production whilestmt is entered.
+func (s *BaseGrammarListener) EnterWhilestmt(ctx *WhilestmtContext) {}
+
+// ExitWhilestmt is called when production whilestmt is exited.
+func (s *BaseGrammarListener) ExitWhilestmt(ctx *WhilestmtContext) {}
+
+// EnterForstmt is called when production forstmt is entered.
+func (s *BaseGrammarListener) EnterForstmt(ctx *ForstmtContext) {}
+
+// ExitForstmt is called when production forstmt is exited.
+func (s *BaseGrammarListener) ExitForstmt(ctx *ForstmtContext) {}
+
 // EnterExpr is called when production expr is entered.
 func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
 
 // ExitExpr is called when production expr is exited.
 func (s *BaseGrammarListener) ExitExpr(ctx *ExprContext) {}
 
+// EnterAccessstmt is called when production accessstmt is entered.
+func (s *BaseGrammarListener) EnterAccessstmt(ctx *AccessstmtContext) {}
+
+// ExitAccessstmt is called when production accessstmt is exited.
+func (s *BaseGrammarListener) ExitAccessstmt(ctx *AccessstmtContext) {}
+
 // EnterType is called when production type is entered.
 func (s *BaseGrammarListener) EnterType(ctx *TypeContext) {}
 
 // ExitType is called when production type is exited.
 func (s *BaseGrammarListener) ExitType(ctx *TypeContext) {}
+
+// EnterBlock is called when production block is entered.
+func (s *BaseGrammarListener) EnterBlock(ctx *BlockContext) {}
+
+// ExitBlock is called when production block is exited.
+func (s *BaseGrammarListener) ExitBlock(ctx *BlockContext) {}
