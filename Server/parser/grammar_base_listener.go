@@ -62,6 +62,12 @@ func (s *BaseGrammarListener) EnterIfstmt(ctx *IfstmtContext) {}
 // ExitIfstmt is called when production ifstmt is exited.
 func (s *BaseGrammarListener) ExitIfstmt(ctx *IfstmtContext) {}
 
+// EnterAssignationstmt is called when production assignationstmt is entered.
+func (s *BaseGrammarListener) EnterAssignationstmt(ctx *AssignationstmtContext) {}
+
+// ExitAssignationstmt is called when production assignationstmt is exited.
+func (s *BaseGrammarListener) ExitAssignationstmt(ctx *AssignationstmtContext) {}
+
 // EnterWhilestmt is called when production whilestmt is entered.
 func (s *BaseGrammarListener) EnterWhilestmt(ctx *WhilestmtContext) {}
 

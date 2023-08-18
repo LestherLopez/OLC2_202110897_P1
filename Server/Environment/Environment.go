@@ -3,7 +3,7 @@ package environment
 import "fmt"
 
 type Environment struct {
-	//Anterior *Environment
+	
 	Anterior  interface{}
 	Variables map[string]Symbol
 	NameEnv   string
@@ -42,7 +42,7 @@ func (env Environment) GetVariable(id string) Symbol {
 			tmpEnv = tmpEnv.Anterior.(Environment)
 		}
 	}
-	fmt.Println("La variable ", id, " no existe HEREEEE")
+	fmt.Println("La variable ", id, " no existe en este environment")
 	return Symbol{Lin: 0, Col: 0, Id: "", Tipo: NULL, Valor: 0, Mutable: false}
 }
 
@@ -54,10 +54,7 @@ func (env Environment) SetVariable(id string, value Symbol) Symbol {
 		if variable, ok := tmpEnv.Variables[id]; ok {
 			if tmpEnv.Variables[id].Mutable {
 				if tmpEnv.Variables[id].Tipo == value.Tipo {
-					//fmt.Println("ASIG EN TABLA ", tmpEnv.Tabla[id].TipoArr)
-					//fmt.Println("asig val entra", value.TipoArr)
-				//	value.TipoArr = tmpEnv.Tabla[id].TipoArr
-				//	value.ExtraTipo = tmpEnv.Tabla[id].ExtraTipo
+				
 					tmpEnv.Variables[id] = value
 					return variable
 				} else {

@@ -28,6 +28,9 @@ type GrammarListener interface {
 	// EnterIfstmt is called when entering the ifstmt production.
 	EnterIfstmt(c *IfstmtContext)
 
+	// EnterAssignationstmt is called when entering the assignationstmt production.
+	EnterAssignationstmt(c *AssignationstmtContext)
+
 	// EnterWhilestmt is called when entering the whilestmt production.
 	EnterWhilestmt(c *WhilestmtContext)
 
@@ -63,6 +66,9 @@ type GrammarListener interface {
 
 	// ExitIfstmt is called when exiting the ifstmt production.
 	ExitIfstmt(c *IfstmtContext)
+
+	// ExitAssignationstmt is called when exiting the assignationstmt production.
+	ExitAssignationstmt(c *AssignationstmtContext)
 
 	// ExitWhilestmt is called when exiting the whilestmt production.
 	ExitWhilestmt(c *WhilestmtContext)

@@ -3,7 +3,6 @@ package instructions
 import (
 	environment "Server/Environment"
 	interfaces "Server/Interfaces"
-	"fmt"
 )
 
 type If struct {
@@ -21,26 +20,24 @@ func NewIf(lin int, col int, expc interfaces.Expression, senten interfaces.Instr
 func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	
 	conditional := p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
-/*	if(conditional.Tipo != environment.BOOLEAN){
+	if(conditional.Tipo != environment.BOOLEAN){
 		return nil
 	}
 	if(conditional.Valor.(bool) ){
 		//hacer nuevo environment
-		var ifEnv environment.Environment
-		ifEnv = environment.NewEnvironment(env.(environment.Environment), "IF")
-		element := p.sentence.Ejecutar(ast, ifEnv)
-		if(element!=nil){
-
+	
+		ifEnv := environment.NewEnvironment(env, "If environment")
+	
+		p.sentence.Ejecutar(ast, ifEnv)
+		
+			
 			//condicional por si viene return
-		}
+		
 	}else{
 		var elseEnv environment.Environment
 		elseEnv = environment.NewEnvironment(env.(environment.Environment), "Else")
 		p.sentence_else.Ejecutar(ast, elseEnv)
-	}*/
+	}
 	
-	//valueToPrint := i.Value.(interfaces.Expression).Ejecutar(ast, env)
-	consoleOut := fmt.Sprintf("%v", conditional.Valor)
-	ast.SetPrint(consoleOut + "\n")
 	return nil
 }

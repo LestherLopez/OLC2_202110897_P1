@@ -35,7 +35,9 @@ $blk = []interface{}{}
 instruction returns [interfaces.Instruction inst]
 : printstmt { $inst = $printstmt.prnt}
 | declarestmt {$inst = $declarestmt.dec}
+| constantstmt {$inst = $constantstmt.const}
 | ifstmt { $inst = $ifstmt.ift }
+| assignationstmt {$inst = $assignationstmt.assign}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -49,16 +51,20 @@ declarestmt returns [interfaces.Instruction dec]
 | VAR ID DOUBLEPTS type QUESTION {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, nil, false)}//declaracion con tipo y sin valor
 ;
 //declaracion de constantes
-constantstmt
-: LET ID DOUBLEPTS type IG expr //declaracion con tipo y valor
-| LET ID IG expr //declaracion con valor
+constantstmt returns [interfaces.Instruction const]
+: LET ID DOUBLEPTS type IG expr {$const = instructions.NewTodeclare($LET.line, $LET.pos, $ID.text, $type.t, $expr.e, true)} //declaracion con tipo y valor
+| LET ID IG expr {$const = instructions.NewTodeclare($LET.line, $LET.pos, $ID.text, environment.NULL, $expr.e, true)}//declaracion con valor
 ;
 
 //(lin, col, exp_conditional, sentence, sentence else)
 ifstmt  returns [interfaces.Instruction ift]
-: IF PARIZQ left=expr PARDER LLAVEIZQ block LLAVEDER //{ $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
+: IF PARIZQ expr PARDER LLAVEIZQ instruction LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $instruction.inst, nil) }
 | IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER 
 | IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE ifstmt
+;
+
+assignationstmt returns [interfaces.Instruction assign]
+: ID IG expr {$assign = instructions.NewAssignation($IG.line, $IG.pos,  $ID.text, $expr.e)}
 ;
 
 whilestmt returns [interfaces.Instruction while]

@@ -31,12 +31,14 @@ public class GrammarParser extends Parser {
 		WHITESPACE=41, COMMENT=42, LINE_COMMENT=43;
 	public static final int
 		RULE_s = 0, RULE_block = 1, RULE_instruction = 2, RULE_printstmt = 3, 
-		RULE_declarestmt = 4, RULE_constantstmt = 5, RULE_ifstmt = 6, RULE_whilestmt = 7, 
-		RULE_forstmt = 8, RULE_expr = 9, RULE_accessstmt = 10, RULE_type = 11;
+		RULE_declarestmt = 4, RULE_constantstmt = 5, RULE_ifstmt = 6, RULE_assignationstmt = 7, 
+		RULE_whilestmt = 8, RULE_forstmt = 9, RULE_expr = 10, RULE_accessstmt = 11, 
+		RULE_type = 12;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"s", "block", "instruction", "printstmt", "declarestmt", "constantstmt", 
-			"ifstmt", "whilestmt", "forstmt", "expr", "accessstmt", "type"
+			"ifstmt", "assignationstmt", "whilestmt", "forstmt", "expr", "accessstmt", 
+			"type"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -131,9 +133,9 @@ public class GrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(24);
+			setState(26);
 			((SContext)_localctx).block = block();
-			setState(25);
+			setState(27);
 			match(EOF);
 			_localctx.code = ((SContext)_localctx).block.blk
 			}
@@ -176,21 +178,21 @@ public class GrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(29); 
+			setState(31); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(28);
+				setState(30);
 				((BlockContext)_localctx).instruction = instruction();
 				((BlockContext)_localctx).ins.add(((BlockContext)_localctx).instruction);
 				}
 				}
-				setState(31); 
+				setState(33); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << PRINT) | (1L << IF))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << VAR) | (1L << PRINT) | (1L << IF) | (1L << LET) | (1L << ID))) != 0) );
 
 			        listInt = localctx.(*BlockContext).GetIns()
 			        for _, e := range listInt {
@@ -214,15 +216,23 @@ public class GrammarParser extends Parser {
 		public interfaces.Instruction inst;
 		public PrintstmtContext printstmt;
 		public DeclarestmtContext declarestmt;
+		public ConstantstmtContext constantstmt;
 		public IfstmtContext ifstmt;
+		public AssignationstmtContext assignationstmt;
 		public PrintstmtContext printstmt() {
 			return getRuleContext(PrintstmtContext.class,0);
 		}
 		public DeclarestmtContext declarestmt() {
 			return getRuleContext(DeclarestmtContext.class,0);
 		}
+		public ConstantstmtContext constantstmt() {
+			return getRuleContext(ConstantstmtContext.class,0);
+		}
 		public IfstmtContext ifstmt() {
 			return getRuleContext(IfstmtContext.class,0);
+		}
+		public AssignationstmtContext assignationstmt() {
+			return getRuleContext(AssignationstmtContext.class,0);
 		}
 		public InstructionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -234,13 +244,13 @@ public class GrammarParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_instruction);
 		try {
-			setState(44);
+			setState(52);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PRINT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(35);
+				setState(37);
 				((InstructionContext)_localctx).printstmt = printstmt();
 				 _localctx.inst = ((InstructionContext)_localctx).printstmt.prnt
 				}
@@ -248,17 +258,33 @@ public class GrammarParser extends Parser {
 			case VAR:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(38);
+				setState(40);
 				((InstructionContext)_localctx).declarestmt = declarestmt();
 				_localctx.inst = ((InstructionContext)_localctx).declarestmt.dec
 				}
 				break;
-			case IF:
+			case LET:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(41);
+				setState(43);
+				((InstructionContext)_localctx).constantstmt = constantstmt();
+				_localctx.inst = ((InstructionContext)_localctx).constantstmt.const
+				}
+				break;
+			case IF:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(46);
 				((InstructionContext)_localctx).ifstmt = ifstmt();
 				 _localctx.inst = ((InstructionContext)_localctx).ifstmt.ift 
+				}
+				break;
+			case ID:
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(49);
+				((InstructionContext)_localctx).assignationstmt = assignationstmt();
+				_localctx.inst = ((InstructionContext)_localctx).assignationstmt.assign
 				}
 				break;
 			default:
@@ -298,13 +324,13 @@ public class GrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
+			setState(54);
 			((PrintstmtContext)_localctx).PRINT = match(PRINT);
-			setState(47);
+			setState(55);
 			match(PARIZQ);
-			setState(48);
+			setState(56);
 			((PrintstmtContext)_localctx).expr = expr(0);
-			setState(49);
+			setState(57);
 			match(PARDER);
 			 _localctx.prnt = instructions.NewPrint((((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getLine():0), (((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getCharPositionInLine():0), ((PrintstmtContext)_localctx).expr.e)
 			}
@@ -347,23 +373,23 @@ public class GrammarParser extends Parser {
 		DeclarestmtContext _localctx = new DeclarestmtContext(_ctx, getState());
 		enterRule(_localctx, 8, RULE_declarestmt);
 		try {
-			setState(73);
+			setState(81);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(52);
+				setState(60);
 				((DeclarestmtContext)_localctx).VAR = match(VAR);
-				setState(53);
+				setState(61);
 				((DeclarestmtContext)_localctx).ID = match(ID);
-				setState(54);
+				setState(62);
 				match(DOUBLEPTS);
-				setState(55);
+				setState(63);
 				((DeclarestmtContext)_localctx).type = type();
-				setState(56);
+				setState(64);
 				match(IG);
-				setState(57);
+				setState(65);
 				((DeclarestmtContext)_localctx).expr = expr(0);
 				_localctx.dec = instructions.NewTodeclare((((DeclarestmtContext)_localctx).VAR!=null?((DeclarestmtContext)_localctx).VAR.getLine():0), (((DeclarestmtContext)_localctx).VAR!=null?((DeclarestmtContext)_localctx).VAR.getCharPositionInLine():0), (((DeclarestmtContext)_localctx).ID!=null?((DeclarestmtContext)_localctx).ID.getText():null), ((DeclarestmtContext)_localctx).type.t, ((DeclarestmtContext)_localctx).expr.e, false)
 				}
@@ -371,13 +397,13 @@ public class GrammarParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(60);
+				setState(68);
 				((DeclarestmtContext)_localctx).VAR = match(VAR);
-				setState(61);
+				setState(69);
 				((DeclarestmtContext)_localctx).ID = match(ID);
-				setState(62);
+				setState(70);
 				match(IG);
-				setState(63);
+				setState(71);
 				((DeclarestmtContext)_localctx).expr = expr(0);
 				_localctx.dec = instructions.NewTodeclare((((DeclarestmtContext)_localctx).VAR!=null?((DeclarestmtContext)_localctx).VAR.getLine():0), (((DeclarestmtContext)_localctx).VAR!=null?((DeclarestmtContext)_localctx).VAR.getCharPositionInLine():0), (((DeclarestmtContext)_localctx).ID!=null?((DeclarestmtContext)_localctx).ID.getText():null), environment.NULL, ((DeclarestmtContext)_localctx).expr.e, false)
 				}
@@ -385,15 +411,15 @@ public class GrammarParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(66);
+				setState(74);
 				((DeclarestmtContext)_localctx).VAR = match(VAR);
-				setState(67);
+				setState(75);
 				((DeclarestmtContext)_localctx).ID = match(ID);
-				setState(68);
+				setState(76);
 				match(DOUBLEPTS);
-				setState(69);
+				setState(77);
 				((DeclarestmtContext)_localctx).type = type();
-				setState(70);
+				setState(78);
 				match(QUESTION);
 				_localctx.dec = instructions.NewTodeclare((((DeclarestmtContext)_localctx).VAR!=null?((DeclarestmtContext)_localctx).VAR.getLine():0), (((DeclarestmtContext)_localctx).VAR!=null?((DeclarestmtContext)_localctx).VAR.getCharPositionInLine():0), (((DeclarestmtContext)_localctx).ID!=null?((DeclarestmtContext)_localctx).ID.getText():null), ((DeclarestmtContext)_localctx).type.t, nil, false)
 				}
@@ -412,6 +438,11 @@ public class GrammarParser extends Parser {
 	}
 
 	public static class ConstantstmtContext extends ParserRuleContext {
+		public interfaces.Instruction const;
+		public Token LET;
+		public Token ID;
+		public TypeContext type;
+		public ExprContext expr;
 		public TerminalNode LET() { return getToken(GrammarParser.LET, 0); }
 		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
 		public TerminalNode DOUBLEPTS() { return getToken(GrammarParser.DOUBLEPTS, 0); }
@@ -432,37 +463,39 @@ public class GrammarParser extends Parser {
 		ConstantstmtContext _localctx = new ConstantstmtContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_constantstmt);
 		try {
-			setState(86);
+			setState(97);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(75);
-				match(LET);
-				setState(76);
-				match(ID);
-				setState(77);
+				setState(83);
+				((ConstantstmtContext)_localctx).LET = match(LET);
+				setState(84);
+				((ConstantstmtContext)_localctx).ID = match(ID);
+				setState(85);
 				match(DOUBLEPTS);
-				setState(78);
-				type();
-				setState(79);
+				setState(86);
+				((ConstantstmtContext)_localctx).type = type();
+				setState(87);
 				match(IG);
-				setState(80);
-				expr(0);
+				setState(88);
+				((ConstantstmtContext)_localctx).expr = expr(0);
+				_localctx.const = instructions.NewTodeclare((((ConstantstmtContext)_localctx).LET!=null?((ConstantstmtContext)_localctx).LET.getLine():0), (((ConstantstmtContext)_localctx).LET!=null?((ConstantstmtContext)_localctx).LET.getCharPositionInLine():0), (((ConstantstmtContext)_localctx).ID!=null?((ConstantstmtContext)_localctx).ID.getText():null), ((ConstantstmtContext)_localctx).type.t, ((ConstantstmtContext)_localctx).expr.e, true)
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(82);
-				match(LET);
-				setState(83);
-				match(ID);
-				setState(84);
+				setState(91);
+				((ConstantstmtContext)_localctx).LET = match(LET);
+				setState(92);
+				((ConstantstmtContext)_localctx).ID = match(ID);
+				setState(93);
 				match(IG);
-				setState(85);
-				expr(0);
+				setState(94);
+				((ConstantstmtContext)_localctx).expr = expr(0);
+				_localctx.const = instructions.NewTodeclare((((ConstantstmtContext)_localctx).LET!=null?((ConstantstmtContext)_localctx).LET.getLine():0), (((ConstantstmtContext)_localctx).LET!=null?((ConstantstmtContext)_localctx).LET.getCharPositionInLine():0), (((ConstantstmtContext)_localctx).ID!=null?((ConstantstmtContext)_localctx).ID.getText():null), environment.NULL, ((ConstantstmtContext)_localctx).expr.e, true)
 				}
 				break;
 			}
@@ -480,26 +513,31 @@ public class GrammarParser extends Parser {
 
 	public static class IfstmtContext extends ParserRuleContext {
 		public interfaces.Instruction ift;
-		public ExprContext left;
+		public Token IF;
+		public ExprContext expr;
+		public InstructionContext instruction;
 		public TerminalNode IF() { return getToken(GrammarParser.IF, 0); }
 		public TerminalNode PARIZQ() { return getToken(GrammarParser.PARIZQ, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public TerminalNode PARDER() { return getToken(GrammarParser.PARDER, 0); }
 		public List<TerminalNode> LLAVEIZQ() { return getTokens(GrammarParser.LLAVEIZQ); }
 		public TerminalNode LLAVEIZQ(int i) {
 			return getToken(GrammarParser.LLAVEIZQ, i);
+		}
+		public InstructionContext instruction() {
+			return getRuleContext(InstructionContext.class,0);
+		}
+		public List<TerminalNode> LLAVEDER() { return getTokens(GrammarParser.LLAVEDER); }
+		public TerminalNode LLAVEDER(int i) {
+			return getToken(GrammarParser.LLAVEDER, i);
 		}
 		public List<BlockContext> block() {
 			return getRuleContexts(BlockContext.class);
 		}
 		public BlockContext block(int i) {
 			return getRuleContext(BlockContext.class,i);
-		}
-		public List<TerminalNode> LLAVEDER() { return getTokens(GrammarParser.LLAVEDER); }
-		public TerminalNode LLAVEDER(int i) {
-			return getToken(GrammarParser.LLAVEDER, i);
-		}
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode ELSE() { return getToken(GrammarParser.ELSE, 0); }
 		public IfstmtContext ifstmt() {
@@ -515,57 +553,31 @@ public class GrammarParser extends Parser {
 		IfstmtContext _localctx = new IfstmtContext(_ctx, getState());
 		enterRule(_localctx, 12, RULE_ifstmt);
 		try {
-			setState(118);
+			setState(130);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(88);
-				match(IF);
-				setState(89);
+				setState(99);
+				((IfstmtContext)_localctx).IF = match(IF);
+				setState(100);
 				match(PARIZQ);
-				setState(90);
-				((IfstmtContext)_localctx).left = expr(0);
-				setState(91);
+				setState(101);
+				((IfstmtContext)_localctx).expr = expr(0);
+				setState(102);
 				match(PARDER);
-				setState(92);
+				setState(103);
 				match(LLAVEIZQ);
-				setState(93);
-				block();
-				setState(94);
+				setState(104);
+				((IfstmtContext)_localctx).instruction = instruction();
+				setState(105);
 				match(LLAVEDER);
+				 _localctx.ift = instructions.NewIf((((IfstmtContext)_localctx).IF!=null?((IfstmtContext)_localctx).IF.getLine():0), (((IfstmtContext)_localctx).IF!=null?((IfstmtContext)_localctx).IF.getCharPositionInLine():0), ((IfstmtContext)_localctx).expr.e, ((IfstmtContext)_localctx).instruction.inst, nil) 
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
-				{
-				setState(96);
-				match(IF);
-				setState(97);
-				match(PARIZQ);
-				setState(98);
-				expr(0);
-				setState(99);
-				match(PARDER);
-				setState(100);
-				match(LLAVEIZQ);
-				setState(101);
-				block();
-				setState(102);
-				match(LLAVEDER);
-				setState(103);
-				match(ELSE);
-				setState(104);
-				match(LLAVEIZQ);
-				setState(105);
-				block();
-				setState(106);
-				match(LLAVEDER);
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
 				{
 				setState(108);
 				match(IF);
@@ -584,9 +596,78 @@ public class GrammarParser extends Parser {
 				setState(115);
 				match(ELSE);
 				setState(116);
+				match(LLAVEIZQ);
+				setState(117);
+				block();
+				setState(118);
+				match(LLAVEDER);
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(120);
+				match(IF);
+				setState(121);
+				match(PARIZQ);
+				setState(122);
+				expr(0);
+				setState(123);
+				match(PARDER);
+				setState(124);
+				match(LLAVEIZQ);
+				setState(125);
+				block();
+				setState(126);
+				match(LLAVEDER);
+				setState(127);
+				match(ELSE);
+				setState(128);
 				ifstmt();
 				}
 				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AssignationstmtContext extends ParserRuleContext {
+		public interfaces.Instruction assign;
+		public Token ID;
+		public Token IG;
+		public ExprContext expr;
+		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
+		public TerminalNode IG() { return getToken(GrammarParser.IG, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public AssignationstmtContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_assignationstmt; }
+	}
+
+	public final AssignationstmtContext assignationstmt() throws RecognitionException {
+		AssignationstmtContext _localctx = new AssignationstmtContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_assignationstmt);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(132);
+			((AssignationstmtContext)_localctx).ID = match(ID);
+			setState(133);
+			((AssignationstmtContext)_localctx).IG = match(IG);
+			setState(134);
+			((AssignationstmtContext)_localctx).expr = expr(0);
+			_localctx.assign = instructions.NewAssignation((((AssignationstmtContext)_localctx).IG!=null?((AssignationstmtContext)_localctx).IG.getLine():0), (((AssignationstmtContext)_localctx).IG!=null?((AssignationstmtContext)_localctx).IG.getCharPositionInLine():0),  (((AssignationstmtContext)_localctx).ID!=null?((AssignationstmtContext)_localctx).ID.getText():null), ((AssignationstmtContext)_localctx).expr.e)
 			}
 		}
 		catch (RecognitionException re) {
@@ -619,19 +700,19 @@ public class GrammarParser extends Parser {
 
 	public final WhilestmtContext whilestmt() throws RecognitionException {
 		WhilestmtContext _localctx = new WhilestmtContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_whilestmt);
+		enterRule(_localctx, 16, RULE_whilestmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(120);
+			setState(137);
 			match(WHILE);
-			setState(121);
+			setState(138);
 			expr(0);
-			setState(122);
+			setState(139);
 			match(LLAVEIZQ);
-			setState(123);
+			setState(140);
 			block();
-			setState(124);
+			setState(141);
 			match(LLAVEDER);
 			}
 		}
@@ -667,23 +748,23 @@ public class GrammarParser extends Parser {
 
 	public final ForstmtContext forstmt() throws RecognitionException {
 		ForstmtContext _localctx = new ForstmtContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_forstmt);
+		enterRule(_localctx, 18, RULE_forstmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(126);
+			setState(143);
 			match(FOR);
-			setState(127);
+			setState(144);
 			match(ID);
-			setState(128);
+			setState(145);
 			match(IN);
-			setState(129);
+			setState(146);
 			expr(0);
-			setState(130);
+			setState(147);
 			match(LLAVEIZQ);
-			setState(131);
+			setState(148);
 			block();
-			setState(132);
+			setState(149);
 			match(LLAVEDER);
 			}
 		}
@@ -755,39 +836,39 @@ public class GrammarParser extends Parser {
 		int _parentState = getState();
 		ExprContext _localctx = new ExprContext(_ctx, _parentState);
 		ExprContext _prevctx = _localctx;
-		int _startState = 18;
-		enterRecursionRule(_localctx, 18, RULE_expr, _p);
+		int _startState = 20;
+		enterRecursionRule(_localctx, 20, RULE_expr, _p);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(157);
+			setState(174);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NOT:
 				{
-				setState(135);
+				setState(152);
 				((ExprContext)_localctx).op = match(NOT);
-				setState(136);
+				setState(153);
 				((ExprContext)_localctx).left = ((ExprContext)_localctx).expr = expr(8);
 				 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).left.e) 
 				}
 				break;
 			case PARIZQ:
 				{
-				setState(139);
+				setState(156);
 				match(PARIZQ);
-				setState(140);
+				setState(157);
 				((ExprContext)_localctx).expr = expr(0);
-				setState(141);
+				setState(158);
 				match(PARDER);
 				 _localctx.e = ((ExprContext)_localctx).expr.e 
 				}
 				break;
 			case NUMBER:
 				{
-				setState(144);
+				setState(161);
 				((ExprContext)_localctx).NUMBER = match(NUMBER);
 
 				        if (strings.Contains((((ExprContext)_localctx).NUMBER!=null?((ExprContext)_localctx).NUMBER.getText():null),".")){
@@ -808,7 +889,7 @@ public class GrammarParser extends Parser {
 				break;
 			case STRING:
 				{
-				setState(146);
+				setState(163);
 				((ExprContext)_localctx).STRING = match(STRING);
 
 				        str := (((ExprContext)_localctx).STRING!=null?((ExprContext)_localctx).STRING.getText():null)
@@ -818,28 +899,28 @@ public class GrammarParser extends Parser {
 				break;
 			case TRUE:
 				{
-				setState(148);
+				setState(165);
 				((ExprContext)_localctx).TRUE = match(TRUE);
 				 _localctx.e = expressions.NewPrimitive((((ExprContext)_localctx).TRUE!=null?((ExprContext)_localctx).TRUE.getLine():0), (((ExprContext)_localctx).TRUE!=null?((ExprContext)_localctx).TRUE.getCharPositionInLine():0), true, environment.BOOLEAN) 
 				}
 				break;
 			case FALSE:
 				{
-				setState(150);
+				setState(167);
 				((ExprContext)_localctx).FALSE = match(FALSE);
 				 _localctx.e = expressions.NewPrimitive((((ExprContext)_localctx).FALSE!=null?((ExprContext)_localctx).FALSE.getLine():0), (((ExprContext)_localctx).FALSE!=null?((ExprContext)_localctx).FALSE.getCharPositionInLine():0), false, environment.BOOLEAN) 
 				}
 				break;
 			case NIL:
 				{
-				setState(152);
+				setState(169);
 				((ExprContext)_localctx).NIL = match(NIL);
 				 _localctx.e = expressions.NewPrimitive((((ExprContext)_localctx).NIL!=null?((ExprContext)_localctx).NIL.getLine():0), (((ExprContext)_localctx).NIL!=null?((ExprContext)_localctx).NIL.getCharPositionInLine():0), nil, environment.NULL) 
 				}
 				break;
 			case ID:
 				{
-				setState(154);
+				setState(171);
 				((ExprContext)_localctx).accessstmt = accessstmt();
 				_localctx.e = ((ExprContext)_localctx).accessstmt.access
 				}
@@ -848,7 +929,7 @@ public class GrammarParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(196);
+			setState(213);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
@@ -856,7 +937,7 @@ public class GrammarParser extends Parser {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(194);
+					setState(211);
 					_errHandler.sync(this);
 					switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 					case 1:
@@ -865,9 +946,9 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(159);
+						setState(176);
 						if (!(precpred(_ctx, 15))) throw new FailedPredicateException(this, "precpred(_ctx, 15)");
-						setState(160);
+						setState(177);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==MUL || _la==DIV) ) {
@@ -878,7 +959,7 @@ public class GrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(161);
+						setState(178);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(16);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -889,9 +970,9 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(164);
+						setState(181);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
-						setState(165);
+						setState(182);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ADD) | (1L << SUB) | (1L << PERCENT))) != 0)) ) {
@@ -902,7 +983,7 @@ public class GrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(166);
+						setState(183);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(15);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -913,9 +994,9 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(169);
+						setState(186);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
-						setState(170);
+						setState(187);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==MAY_IG || _la==MAYOR) ) {
@@ -926,7 +1007,7 @@ public class GrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(171);
+						setState(188);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(14);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -937,9 +1018,9 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(174);
+						setState(191);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
-						setState(175);
+						setState(192);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==MEN_IG || _la==MENOR) ) {
@@ -950,7 +1031,7 @@ public class GrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(176);
+						setState(193);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(13);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -961,9 +1042,9 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(179);
+						setState(196);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
-						setState(180);
+						setState(197);
 						((ExprContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==DIF || _la==IG_IG) ) {
@@ -974,7 +1055,7 @@ public class GrammarParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(181);
+						setState(198);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(12);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -985,11 +1066,11 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(184);
+						setState(201);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
-						setState(185);
+						setState(202);
 						((ExprContext)_localctx).op = match(AND);
-						setState(186);
+						setState(203);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(11);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1000,11 +1081,11 @@ public class GrammarParser extends Parser {
 						_localctx.left = _prevctx;
 						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
-						setState(189);
+						setState(206);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(190);
+						setState(207);
 						((ExprContext)_localctx).op = match(OR);
-						setState(191);
+						setState(208);
 						((ExprContext)_localctx).right = ((ExprContext)_localctx).expr = expr(10);
 						 _localctx.e = expressions.NewOperation((((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetLine(), (((ExprContext)_localctx).left!=null?(((ExprContext)_localctx).left.start):null).GetColumn(), ((ExprContext)_localctx).left.e, (((ExprContext)_localctx).op!=null?((ExprContext)_localctx).op.getText():null), ((ExprContext)_localctx).right.e) 
 						}
@@ -1012,7 +1093,7 @@ public class GrammarParser extends Parser {
 					}
 					} 
 				}
-				setState(198);
+				setState(215);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 			}
@@ -1041,11 +1122,11 @@ public class GrammarParser extends Parser {
 
 	public final AccessstmtContext accessstmt() throws RecognitionException {
 		AccessstmtContext _localctx = new AccessstmtContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_accessstmt);
+		enterRule(_localctx, 22, RULE_accessstmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(199);
+			setState(216);
 			((AccessstmtContext)_localctx).op = match(ID);
 			_localctx.access = expressions.NewAccess((((AccessstmtContext)_localctx).op!=null?((AccessstmtContext)_localctx).op.getLine():0), (((AccessstmtContext)_localctx).op!=null?((AccessstmtContext)_localctx).op.getCharPositionInLine():0), (((AccessstmtContext)_localctx).op!=null?((AccessstmtContext)_localctx).op.getText():null))
 			}
@@ -1076,15 +1157,15 @@ public class GrammarParser extends Parser {
 
 	public final TypeContext type() throws RecognitionException {
 		TypeContext _localctx = new TypeContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_type);
+		enterRule(_localctx, 24, RULE_type);
 		try {
-			setState(212);
+			setState(229);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STRINGS:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(202);
+				setState(219);
 				match(STRINGS);
 				_localctx.t = environment.STRING
 				}
@@ -1092,7 +1173,7 @@ public class GrammarParser extends Parser {
 			case INTS:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(204);
+				setState(221);
 				match(INTS);
 				_localctx.t = environment.INTEGER
 				}
@@ -1100,7 +1181,7 @@ public class GrammarParser extends Parser {
 			case FLOATS:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(206);
+				setState(223);
 				match(FLOATS);
 				_localctx.t = environment.FLOAT
 				}
@@ -1108,7 +1189,7 @@ public class GrammarParser extends Parser {
 			case BOOLS:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(208);
+				setState(225);
 				match(BOOLS);
 				_localctx.t = environment.BOOLEAN 
 				}
@@ -1116,7 +1197,7 @@ public class GrammarParser extends Parser {
 			case CHARACTERS:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(210);
+				setState(227);
 				match(CHARACTERS);
 				_localctx.t = environment.CHARACTER
 				}
@@ -1138,7 +1219,7 @@ public class GrammarParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 9:
+		case 10:
 			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
@@ -1164,73 +1245,79 @@ public class GrammarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3-\u00d9\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3-\u00ea\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
-		"\13\4\f\t\f\4\r\t\r\3\2\3\2\3\2\3\2\3\3\6\3 \n\3\r\3\16\3!\3\3\3\3\3\4"+
-		"\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4/\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\6"+
-		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
-		"\6\3\6\3\6\5\6L\n\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7Y\n"+
-		"\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\by\n\b\3\t\3\t"+
-		"\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3"+
-		"\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3"+
-		"\13\3\13\3\13\3\13\3\13\5\13\u00a0\n\13\3\13\3\13\3\13\3\13\3\13\3\13"+
-		"\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
-		"\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
-		"\3\13\7\13\u00c5\n\13\f\13\16\13\u00c8\13\13\3\f\3\f\3\f\3\r\3\r\3\r\3"+
-		"\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00d7\n\r\3\r\2\3\24\16\2\4\6\b\n\f\16"+
-		"\20\22\24\26\30\2\7\3\2 !\3\2\"$\4\2\34\34\36\36\4\2\35\35\37\37\3\2\26"+
-		"\27\2\u00e6\2\32\3\2\2\2\4\37\3\2\2\2\6.\3\2\2\2\b\60\3\2\2\2\nK\3\2\2"+
-		"\2\fX\3\2\2\2\16x\3\2\2\2\20z\3\2\2\2\22\u0080\3\2\2\2\24\u009f\3\2\2"+
-		"\2\26\u00c9\3\2\2\2\30\u00d6\3\2\2\2\32\33\5\4\3\2\33\34\7\2\2\3\34\35"+
-		"\b\2\1\2\35\3\3\2\2\2\36 \5\6\4\2\37\36\3\2\2\2 !\3\2\2\2!\37\3\2\2\2"+
-		"!\"\3\2\2\2\"#\3\2\2\2#$\b\3\1\2$\5\3\2\2\2%&\5\b\5\2&\'\b\4\1\2\'/\3"+
-		"\2\2\2()\5\n\6\2)*\b\4\1\2*/\3\2\2\2+,\5\16\b\2,-\b\4\1\2-/\3\2\2\2.%"+
-		"\3\2\2\2.(\3\2\2\2.+\3\2\2\2/\7\3\2\2\2\60\61\7\f\2\2\61\62\7%\2\2\62"+
-		"\63\5\24\13\2\63\64\7&\2\2\64\65\b\5\1\2\65\t\3\2\2\2\66\67\7\b\2\2\67"+
-		"8\7\25\2\289\7)\2\29:\5\30\r\2:;\7\33\2\2;<\5\24\13\2<=\b\6\1\2=L\3\2"+
-		"\2\2>?\7\b\2\2?@\7\25\2\2@A\7\33\2\2AB\5\24\13\2BC\b\6\1\2CL\3\2\2\2D"+
-		"E\7\b\2\2EF\7\25\2\2FG\7)\2\2GH\5\30\r\2HI\7*\2\2IJ\b\6\1\2JL\3\2\2\2"+
-		"K\66\3\2\2\2K>\3\2\2\2KD\3\2\2\2L\13\3\2\2\2MN\7\20\2\2NO\7\25\2\2OP\7"+
-		")\2\2PQ\5\30\r\2QR\7\33\2\2RS\5\24\13\2SY\3\2\2\2TU\7\20\2\2UV\7\25\2"+
-		"\2VW\7\33\2\2WY\5\24\13\2XM\3\2\2\2XT\3\2\2\2Y\r\3\2\2\2Z[\7\r\2\2[\\"+
-		"\7%\2\2\\]\5\24\13\2]^\7&\2\2^_\7\'\2\2_`\5\4\3\2`a\7(\2\2ay\3\2\2\2b"+
-		"c\7\r\2\2cd\7%\2\2de\5\24\13\2ef\7&\2\2fg\7\'\2\2gh\5\4\3\2hi\7(\2\2i"+
-		"j\7\16\2\2jk\7\'\2\2kl\5\4\3\2lm\7(\2\2my\3\2\2\2no\7\r\2\2op\7%\2\2p"+
-		"q\5\24\13\2qr\7&\2\2rs\7\'\2\2st\5\4\3\2tu\7(\2\2uv\7\16\2\2vw\5\16\b"+
-		"\2wy\3\2\2\2xZ\3\2\2\2xb\3\2\2\2xn\3\2\2\2y\17\3\2\2\2z{\7\17\2\2{|\5"+
-		"\24\13\2|}\7\'\2\2}~\5\4\3\2~\177\7(\2\2\177\21\3\2\2\2\u0080\u0081\7"+
-		"\21\2\2\u0081\u0082\7\25\2\2\u0082\u0083\7\22\2\2\u0083\u0084\5\24\13"+
-		"\2\u0084\u0085\7\'\2\2\u0085\u0086\5\4\3\2\u0086\u0087\7(\2\2\u0087\23"+
-		"\3\2\2\2\u0088\u0089\b\13\1\2\u0089\u008a\7\30\2\2\u008a\u008b\5\24\13"+
-		"\n\u008b\u008c\b\13\1\2\u008c\u00a0\3\2\2\2\u008d\u008e\7%\2\2\u008e\u008f"+
-		"\5\24\13\2\u008f\u0090\7&\2\2\u0090\u0091\b\13\1\2\u0091\u00a0\3\2\2\2"+
-		"\u0092\u0093\7\23\2\2\u0093\u00a0\b\13\1\2\u0094\u0095\7\24\2\2\u0095"+
-		"\u00a0\b\13\1\2\u0096\u0097\7\n\2\2\u0097\u00a0\b\13\1\2\u0098\u0099\7"+
-		"\13\2\2\u0099\u00a0\b\13\1\2\u009a\u009b\7\t\2\2\u009b\u00a0\b\13\1\2"+
-		"\u009c\u009d\5\26\f\2\u009d\u009e\b\13\1\2\u009e\u00a0\3\2\2\2\u009f\u0088"+
-		"\3\2\2\2\u009f\u008d\3\2\2\2\u009f\u0092\3\2\2\2\u009f\u0094\3\2\2\2\u009f"+
-		"\u0096\3\2\2\2\u009f\u0098\3\2\2\2\u009f\u009a\3\2\2\2\u009f\u009c\3\2"+
-		"\2\2\u00a0\u00c6\3\2\2\2\u00a1\u00a2\f\21\2\2\u00a2\u00a3\t\2\2\2\u00a3"+
-		"\u00a4\5\24\13\22\u00a4\u00a5\b\13\1\2\u00a5\u00c5\3\2\2\2\u00a6\u00a7"+
-		"\f\20\2\2\u00a7\u00a8\t\3\2\2\u00a8\u00a9\5\24\13\21\u00a9\u00aa\b\13"+
-		"\1\2\u00aa\u00c5\3\2\2\2\u00ab\u00ac\f\17\2\2\u00ac\u00ad\t\4\2\2\u00ad"+
-		"\u00ae\5\24\13\20\u00ae\u00af\b\13\1\2\u00af\u00c5\3\2\2\2\u00b0\u00b1"+
-		"\f\16\2\2\u00b1\u00b2\t\5\2\2\u00b2\u00b3\5\24\13\17\u00b3\u00b4\b\13"+
-		"\1\2\u00b4\u00c5\3\2\2\2\u00b5\u00b6\f\r\2\2\u00b6\u00b7\t\6\2\2\u00b7"+
-		"\u00b8\5\24\13\16\u00b8\u00b9\b\13\1\2\u00b9\u00c5\3\2\2\2\u00ba\u00bb"+
-		"\f\f\2\2\u00bb\u00bc\7\32\2\2\u00bc\u00bd\5\24\13\r\u00bd\u00be\b\13\1"+
-		"\2\u00be\u00c5\3\2\2\2\u00bf\u00c0\f\13\2\2\u00c0\u00c1\7\31\2\2\u00c1"+
-		"\u00c2\5\24\13\f\u00c2\u00c3\b\13\1\2\u00c3\u00c5\3\2\2\2\u00c4\u00a1"+
-		"\3\2\2\2\u00c4\u00a6\3\2\2\2\u00c4\u00ab\3\2\2\2\u00c4\u00b0\3\2\2\2\u00c4"+
-		"\u00b5\3\2\2\2\u00c4\u00ba\3\2\2\2\u00c4\u00bf\3\2\2\2\u00c5\u00c8\3\2"+
-		"\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c7\3\2\2\2\u00c7\25\3\2\2\2\u00c8\u00c6"+
-		"\3\2\2\2\u00c9\u00ca\7\25\2\2\u00ca\u00cb\b\f\1\2\u00cb\27\3\2\2\2\u00cc"+
-		"\u00cd\7\3\2\2\u00cd\u00d7\b\r\1\2\u00ce\u00cf\7\4\2\2\u00cf\u00d7\b\r"+
-		"\1\2\u00d0\u00d1\7\5\2\2\u00d1\u00d7\b\r\1\2\u00d2\u00d3\7\6\2\2\u00d3"+
-		"\u00d7\b\r\1\2\u00d4\u00d5\7\7\2\2\u00d5\u00d7\b\r\1\2\u00d6\u00cc\3\2"+
-		"\2\2\u00d6\u00ce\3\2\2\2\u00d6\u00d0\3\2\2\2\u00d6\u00d2\3\2\2\2\u00d6"+
-		"\u00d4\3\2\2\2\u00d7\31\3\2\2\2\13!.KXx\u009f\u00c4\u00c6\u00d6";
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\2\3\2\3\3\6\3\"\n\3\r\3\16\3#"+
+		"\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5"+
+		"\4\67\n\4\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5\6T\n\6\3\7\3\7\3\7"+
+		"\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\5\7d\n\7\3\b\3\b\3\b\3\b"+
+		"\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3"+
+		"\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5\b\u0085\n\b\3\t\3\t\3\t\3\t\3"+
+		"\t\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\f"+
+		"\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3"+
+		"\f\3\f\3\f\3\f\3\f\5\f\u00b1\n\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3"+
+		"\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f"+
+		"\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\7\f\u00d6\n\f\f\f\16\f\u00d9\13\f\3\r"+
+		"\3\r\3\r\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u00e8"+
+		"\n\16\3\16\2\3\26\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\7\3\2 !\3\2\""+
+		"$\4\2\34\34\36\36\4\2\35\35\37\37\3\2\26\27\2\u00f8\2\34\3\2\2\2\4!\3"+
+		"\2\2\2\6\66\3\2\2\2\b8\3\2\2\2\nS\3\2\2\2\fc\3\2\2\2\16\u0084\3\2\2\2"+
+		"\20\u0086\3\2\2\2\22\u008b\3\2\2\2\24\u0091\3\2\2\2\26\u00b0\3\2\2\2\30"+
+		"\u00da\3\2\2\2\32\u00e7\3\2\2\2\34\35\5\4\3\2\35\36\7\2\2\3\36\37\b\2"+
+		"\1\2\37\3\3\2\2\2 \"\5\6\4\2! \3\2\2\2\"#\3\2\2\2#!\3\2\2\2#$\3\2\2\2"+
+		"$%\3\2\2\2%&\b\3\1\2&\5\3\2\2\2\'(\5\b\5\2()\b\4\1\2)\67\3\2\2\2*+\5\n"+
+		"\6\2+,\b\4\1\2,\67\3\2\2\2-.\5\f\7\2./\b\4\1\2/\67\3\2\2\2\60\61\5\16"+
+		"\b\2\61\62\b\4\1\2\62\67\3\2\2\2\63\64\5\20\t\2\64\65\b\4\1\2\65\67\3"+
+		"\2\2\2\66\'\3\2\2\2\66*\3\2\2\2\66-\3\2\2\2\66\60\3\2\2\2\66\63\3\2\2"+
+		"\2\67\7\3\2\2\289\7\f\2\29:\7%\2\2:;\5\26\f\2;<\7&\2\2<=\b\5\1\2=\t\3"+
+		"\2\2\2>?\7\b\2\2?@\7\25\2\2@A\7)\2\2AB\5\32\16\2BC\7\33\2\2CD\5\26\f\2"+
+		"DE\b\6\1\2ET\3\2\2\2FG\7\b\2\2GH\7\25\2\2HI\7\33\2\2IJ\5\26\f\2JK\b\6"+
+		"\1\2KT\3\2\2\2LM\7\b\2\2MN\7\25\2\2NO\7)\2\2OP\5\32\16\2PQ\7*\2\2QR\b"+
+		"\6\1\2RT\3\2\2\2S>\3\2\2\2SF\3\2\2\2SL\3\2\2\2T\13\3\2\2\2UV\7\20\2\2"+
+		"VW\7\25\2\2WX\7)\2\2XY\5\32\16\2YZ\7\33\2\2Z[\5\26\f\2[\\\b\7\1\2\\d\3"+
+		"\2\2\2]^\7\20\2\2^_\7\25\2\2_`\7\33\2\2`a\5\26\f\2ab\b\7\1\2bd\3\2\2\2"+
+		"cU\3\2\2\2c]\3\2\2\2d\r\3\2\2\2ef\7\r\2\2fg\7%\2\2gh\5\26\f\2hi\7&\2\2"+
+		"ij\7\'\2\2jk\5\6\4\2kl\7(\2\2lm\b\b\1\2m\u0085\3\2\2\2no\7\r\2\2op\7%"+
+		"\2\2pq\5\26\f\2qr\7&\2\2rs\7\'\2\2st\5\4\3\2tu\7(\2\2uv\7\16\2\2vw\7\'"+
+		"\2\2wx\5\4\3\2xy\7(\2\2y\u0085\3\2\2\2z{\7\r\2\2{|\7%\2\2|}\5\26\f\2}"+
+		"~\7&\2\2~\177\7\'\2\2\177\u0080\5\4\3\2\u0080\u0081\7(\2\2\u0081\u0082"+
+		"\7\16\2\2\u0082\u0083\5\16\b\2\u0083\u0085\3\2\2\2\u0084e\3\2\2\2\u0084"+
+		"n\3\2\2\2\u0084z\3\2\2\2\u0085\17\3\2\2\2\u0086\u0087\7\25\2\2\u0087\u0088"+
+		"\7\33\2\2\u0088\u0089\5\26\f\2\u0089\u008a\b\t\1\2\u008a\21\3\2\2\2\u008b"+
+		"\u008c\7\17\2\2\u008c\u008d\5\26\f\2\u008d\u008e\7\'\2\2\u008e\u008f\5"+
+		"\4\3\2\u008f\u0090\7(\2\2\u0090\23\3\2\2\2\u0091\u0092\7\21\2\2\u0092"+
+		"\u0093\7\25\2\2\u0093\u0094\7\22\2\2\u0094\u0095\5\26\f\2\u0095\u0096"+
+		"\7\'\2\2\u0096\u0097\5\4\3\2\u0097\u0098\7(\2\2\u0098\25\3\2\2\2\u0099"+
+		"\u009a\b\f\1\2\u009a\u009b\7\30\2\2\u009b\u009c\5\26\f\n\u009c\u009d\b"+
+		"\f\1\2\u009d\u00b1\3\2\2\2\u009e\u009f\7%\2\2\u009f\u00a0\5\26\f\2\u00a0"+
+		"\u00a1\7&\2\2\u00a1\u00a2\b\f\1\2\u00a2\u00b1\3\2\2\2\u00a3\u00a4\7\23"+
+		"\2\2\u00a4\u00b1\b\f\1\2\u00a5\u00a6\7\24\2\2\u00a6\u00b1\b\f\1\2\u00a7"+
+		"\u00a8\7\n\2\2\u00a8\u00b1\b\f\1\2\u00a9\u00aa\7\13\2\2\u00aa\u00b1\b"+
+		"\f\1\2\u00ab\u00ac\7\t\2\2\u00ac\u00b1\b\f\1\2\u00ad\u00ae\5\30\r\2\u00ae"+
+		"\u00af\b\f\1\2\u00af\u00b1\3\2\2\2\u00b0\u0099\3\2\2\2\u00b0\u009e\3\2"+
+		"\2\2\u00b0\u00a3\3\2\2\2\u00b0\u00a5\3\2\2\2\u00b0\u00a7\3\2\2\2\u00b0"+
+		"\u00a9\3\2\2\2\u00b0\u00ab\3\2\2\2\u00b0\u00ad\3\2\2\2\u00b1\u00d7\3\2"+
+		"\2\2\u00b2\u00b3\f\21\2\2\u00b3\u00b4\t\2\2\2\u00b4\u00b5\5\26\f\22\u00b5"+
+		"\u00b6\b\f\1\2\u00b6\u00d6\3\2\2\2\u00b7\u00b8\f\20\2\2\u00b8\u00b9\t"+
+		"\3\2\2\u00b9\u00ba\5\26\f\21\u00ba\u00bb\b\f\1\2\u00bb\u00d6\3\2\2\2\u00bc"+
+		"\u00bd\f\17\2\2\u00bd\u00be\t\4\2\2\u00be\u00bf\5\26\f\20\u00bf\u00c0"+
+		"\b\f\1\2\u00c0\u00d6\3\2\2\2\u00c1\u00c2\f\16\2\2\u00c2\u00c3\t\5\2\2"+
+		"\u00c3\u00c4\5\26\f\17\u00c4\u00c5\b\f\1\2\u00c5\u00d6\3\2\2\2\u00c6\u00c7"+
+		"\f\r\2\2\u00c7\u00c8\t\6\2\2\u00c8\u00c9\5\26\f\16\u00c9\u00ca\b\f\1\2"+
+		"\u00ca\u00d6\3\2\2\2\u00cb\u00cc\f\f\2\2\u00cc\u00cd\7\32\2\2\u00cd\u00ce"+
+		"\5\26\f\r\u00ce\u00cf\b\f\1\2\u00cf\u00d6\3\2\2\2\u00d0\u00d1\f\13\2\2"+
+		"\u00d1\u00d2\7\31\2\2\u00d2\u00d3\5\26\f\f\u00d3\u00d4\b\f\1\2\u00d4\u00d6"+
+		"\3\2\2\2\u00d5\u00b2\3\2\2\2\u00d5\u00b7\3\2\2\2\u00d5\u00bc\3\2\2\2\u00d5"+
+		"\u00c1\3\2\2\2\u00d5\u00c6\3\2\2\2\u00d5\u00cb\3\2\2\2\u00d5\u00d0\3\2"+
+		"\2\2\u00d6\u00d9\3\2\2\2\u00d7\u00d5\3\2\2\2\u00d7\u00d8\3\2\2\2\u00d8"+
+		"\27\3\2\2\2\u00d9\u00d7\3\2\2\2\u00da\u00db\7\25\2\2\u00db\u00dc\b\r\1"+
+		"\2\u00dc\31\3\2\2\2\u00dd\u00de\7\3\2\2\u00de\u00e8\b\16\1\2\u00df\u00e0"+
+		"\7\4\2\2\u00e0\u00e8\b\16\1\2\u00e1\u00e2\7\5\2\2\u00e2\u00e8\b\16\1\2"+
+		"\u00e3\u00e4\7\6\2\2\u00e4\u00e8\b\16\1\2\u00e5\u00e6\7\7\2\2\u00e6\u00e8"+
+		"\b\16\1\2\u00e7\u00dd\3\2\2\2\u00e7\u00df\3\2\2\2\u00e7\u00e1\3\2\2\2"+
+		"\u00e7\u00e3\3\2\2\2\u00e7\u00e5\3\2\2\2\u00e8\33\3\2\2\2\13#\66Sc\u0084"+
+		"\u00b0\u00d5\u00d7\u00e7";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
