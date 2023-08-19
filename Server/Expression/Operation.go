@@ -152,11 +152,11 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 			if (op1.Tipo==0 && op2.Tipo == 0) {   //int
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) > op2.Valor.(int)}
-			} else if (op1.Tipo==1 && op2.Tipo == 1) {  //string
+			} else if (op1.Tipo==1 && op2.Tipo == 1) {  //float
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 > val2}
-			} else if(op1.Tipo==2 && op2.Tipo == 2) { //char
+			} else if(op1.Tipo==2 && op2.Tipo == 2) { //string
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 > r2}

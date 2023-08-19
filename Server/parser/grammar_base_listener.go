@@ -92,6 +92,12 @@ func (s *BaseGrammarListener) EnterAccessstmt(ctx *AccessstmtContext) {}
 // ExitAccessstmt is called when production accessstmt is exited.
 func (s *BaseGrammarListener) ExitAccessstmt(ctx *AccessstmtContext) {}
 
+// EnterIncreaseanddecreasestmt is called when production increaseanddecreasestmt is entered.
+func (s *BaseGrammarListener) EnterIncreaseanddecreasestmt(ctx *IncreaseanddecreasestmtContext) {}
+
+// ExitIncreaseanddecreasestmt is called when production increaseanddecreasestmt is exited.
+func (s *BaseGrammarListener) ExitIncreaseanddecreasestmt(ctx *IncreaseanddecreasestmtContext) {}
+
 // EnterType is called when production type is entered.
 func (s *BaseGrammarListener) EnterType(ctx *TypeContext) {}
 

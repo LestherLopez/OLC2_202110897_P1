@@ -38,6 +38,7 @@ instruction returns [interfaces.Instruction inst]
 | constantstmt {$inst = $constantstmt.const}
 | ifstmt { $inst = $ifstmt.ift }
 | assignationstmt {$inst = $assignationstmt.assign}
+| increaseanddecreasestmt {$inst = $increaseanddecreasestmt.increasedecrease}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -110,11 +111,18 @@ expr returns [interfaces.Expression e]
 | FALSE { $e = expressions.NewPrimitive($FALSE.line, $FALSE.pos, false, environment.BOOLEAN) }
 | NIL { $e = expressions.NewPrimitive($NIL.line, $NIL.pos, nil, environment.NULL) }
 | accessstmt {$e = $accessstmt.access}
+
 ;
 
 accessstmt returns [interfaces.Expression access]
 : op=ID {$access = expressions.NewAccess($op.line, $op.pos, $op.text)}
 ;
+
+increaseanddecreasestmt returns [interfaces.Instruction increasedecrease]
+: ID IG_ADD expr {$increasedecrease = instructions.NewIncreaseDecrease($ID.line, $ID.pos, $ID.text, $IG_ADD.text, $expr.e)}
+| ID IG_SUB expr {$increasedecrease = instructions.NewIncreaseDecrease($ID.line, $ID.pos, $ID.text, $IG_SUB.text, $expr.e)}
+;
+
 
 type returns [environment.TipoExpresion t]
   : STRINGS {$t = environment.STRING}      

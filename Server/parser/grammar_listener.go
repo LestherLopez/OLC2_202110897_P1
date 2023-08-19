@@ -43,6 +43,9 @@ type GrammarListener interface {
 	// EnterAccessstmt is called when entering the accessstmt production.
 	EnterAccessstmt(c *AccessstmtContext)
 
+	// EnterIncreaseanddecreasestmt is called when entering the increaseanddecreasestmt production.
+	EnterIncreaseanddecreasestmt(c *IncreaseanddecreasestmtContext)
+
 	// EnterType is called when entering the type production.
 	EnterType(c *TypeContext)
 
@@ -81,6 +84,9 @@ type GrammarListener interface {
 
 	// ExitAccessstmt is called when exiting the accessstmt production.
 	ExitAccessstmt(c *AccessstmtContext)
+
+	// ExitIncreaseanddecreasestmt is called when exiting the increaseanddecreasestmt production.
+	ExitIncreaseanddecreasestmt(c *IncreaseanddecreasestmtContext)
 
 	// ExitType is called when exiting the type production.
 	ExitType(c *TypeContext)

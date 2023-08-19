@@ -4,7 +4,6 @@ import (
 	environment "Server/Environment"
 	primitive "Server/Expression"
 	interfaces "Server/Interfaces"
-	"fmt"
 )
 
 type Todeclare struct {
@@ -29,7 +28,7 @@ func (p Todeclare) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 				if(valueTodeclare.Tipo==p.type_var){
 						valueTodeclare.Mutable = true
 						env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
-						fmt.Println(valueTodeclare.Mutable)
+						//fmt.Println(valueTodeclare.Mutable)
 						
 				} else{
 					
@@ -50,13 +49,13 @@ func (p Todeclare) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		}
 	//se definen las constantes
 	}else if(p.constant){
-		fmt.Println("Es constante")
+	//	fmt.Println("Es constante")
 		if(p.type_var != environment.NULL && p.valor != nil){
 				valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
 				if(valueTodeclare.Tipo==p.type_var){
 				
 						env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
-						fmt.Println(valueTodeclare.Mutable)
+						//fmt.Println(valueTodeclare.Mutable)
 						
 				} else{
 				
@@ -66,7 +65,7 @@ func (p Todeclare) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 				valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
 				
 				env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
-				fmt.Println(valueTodeclare.Mutable)
+				//fmt.Println(valueTodeclare.Mutable)
 			
 		//variable con tipo pero sin valor
 		}

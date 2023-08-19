@@ -33,6 +33,8 @@ NOT:            '!';
 OR:             '||';
 AND:            '&&';
 IG:          '=';
+IG_ADD:      '+=';
+IG_SUB:      '-=';
 MAY_IG:     '>=';
 MEN_IG:     '<=';
 MAYOR:          '>';
