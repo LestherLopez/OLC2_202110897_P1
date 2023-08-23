@@ -36,13 +36,14 @@ func (p Todeclare) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		//variable con valor pero sin tipo
 		}else if(p.type_var==environment.NULL && p.valor != nil){
 				valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
+				valueTodeclare.Mutable = true
 				env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
-		
+				
 		//variable con tipo pero sin valor
 		}else if(p.type_var!=environment.NULL && p.valor == nil){
-			
+			//asignar nil por defecto si no tiene valor
 			val := primitive.NewPrimitive(p.Lin, p.Col, nil, environment.NULL) 
-			
+			//ejecutar el valor, colocarlo mutable y guardarlo
 			valueTodeclare := val.Ejecutar(ast, env)
 			valueTodeclare.Mutable = true
 			env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)

@@ -39,6 +39,7 @@ instruction returns [interfaces.Instruction inst]
 | ifstmt { $inst = $ifstmt.ift }
 | assignationstmt {$inst = $assignationstmt.assign}
 | increaseanddecreasestmt {$inst = $increaseanddecreasestmt.increasedecrease}
+| whilestmt {$inst = $whilestmt.while}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
