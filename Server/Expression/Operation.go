@@ -36,10 +36,24 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 		{environment.NULL, environment.NULL, environment.NULL, environment.NULL, environment.NULL},
 	}
 
+	if(o.Op_der==nil){
+		var op1 environment.Symbol
+		op1 = o.Op_izq.Ejecutar(ast, env)
+		if(o.Operador=="-"){
+			if op1.Tipo==0{ //int
+				
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: op1.Tipo, Valor: -op1.Valor.(int) }
+			}else if op1.Tipo==1{ //float
+				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: op1.Tipo, Valor: -val1 }
+			}
+		}
+	}
+
 	var op1, op2 environment.Symbol
 	op1 = o.Op_izq.Ejecutar(ast, env)
 	op2 = o.Op_der.Ejecutar(ast, env)
-
+	
 	switch o.Operador {
 	case "+":
 		{
@@ -125,24 +139,77 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 				ast.SetError("ERROR: No es posible obtener el modulo")
 			}
 		}
+	case "+=":
+		{
+			value := env.(environment.Environment).GetVariable(op1.Id)
+			
+			if op2.Tipo==value.Tipo{
+				//int
+				if(op2.Tipo==0){
+					value.Valor = value.Valor.(int) + op2.Valor.(int)
+					env.(environment.Environment).SetVariable(value.Id, value)
+					//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: value.Valor}
+				//float
+				}else if(op2.Tipo==1){
+					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", value.Valor), 64)
+					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
+					value.Valor = val1+ val2
+					env.(environment.Environment).SetVariable(value.Id, value)
+					//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
+					//string	
+				}else if(op2.Tipo==2){
+					r1 := fmt.Sprintf("%v", value.Valor)
+					r2 := fmt.Sprintf("%v", op2.Valor)
+					value.Valor = r1 + r2
+					env.(environment.Environment).SetVariable(value.Id, value)
+					//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
+				}
+			}else{
+				ast.SetError("ERROR: No son compatibles los tipos")
+			}
+		}
+	case "-=":
+		{
+			value := env.(environment.Environment).GetVariable(op1.Id)
+			
+			if op2.Tipo==value.Tipo{
+				//int
+				if(op2.Tipo==0){
+					value.Valor = value.Valor.(int) - op2.Valor.(int)
+					env.(environment.Environment).SetVariable(value.Id, value)
+					//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: value.Valor}
+				//float
+				}else if(op2.Tipo==1){
+					val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", value.Valor), 64)
+					val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
+					value.Valor = val1+ val2
+					env.(environment.Environment).SetVariable(value.Id, value)
+					//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
+					//string	
+				}
+			}else{
+				ast.SetError("ERROR: No son compatibles los tipos")
+			}
+		}
 		//relational operations with int, float/ string y character
 	case "<":
 		{
 			dominante = tabla_dominante[op1.Tipo][op2.Tipo]
 			if (op1.Tipo==0 && op2.Tipo == 0) {   //int
+				
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor.(int) < op2.Valor.(int)}
-			} else if (op1.Tipo==1 && op2.Tipo == 1) {  //string
+			} else if (op1.Tipo==1 && op2.Tipo == 1) {  //float
 				val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", op1.Valor), 64)
 				val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", op2.Valor), 64)
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: val1 < val2}
-			} else if(op1.Tipo==2 && op2.Tipo == 2) { //char
+			} else if(op1.Tipo==2 && op2.Tipo == 2) { //string
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 < r2}
-			} else if(op1.Tipo==3 && op2.Tipo == 3){ //char
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 < r2}
+			} else if(op1.Tipo==5 && op2.Tipo == 5){ //char
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 < r2}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 < r2}
 			}else{
 				ast.SetError("ERROR: No es posible comparar <")
 			}
@@ -159,11 +226,11 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			} else if(op1.Tipo==2 && op2.Tipo == 2) { //string
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 > r2}
-			} else if(op1.Tipo==3 && op2.Tipo == 3){ //char
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 > r2}
+			} else if(op1.Tipo==5 && op2.Tipo == 5){ //char
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 > r2}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 > r2}
 			}else{
 				ast.SetError("ERROR: No es posible comparar <")
 			}
@@ -180,11 +247,11 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			} else if(op1.Tipo==2 && op2.Tipo == 2) { //char
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 <= r2}
-			} else if(op1.Tipo==3 && op2.Tipo == 3){ //char
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 <= r2}
+			} else if(op1.Tipo==5 && op2.Tipo == 5){ //char
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 <= r2}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 <= r2}
 			}else{
 				ast.SetError("ERROR: No es posible comparar <")
 			}
@@ -201,11 +268,11 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 			} else if(op1.Tipo==2 && op2.Tipo == 2) { //char
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 >= r2}
-			} else if(op1.Tipo==3 && op2.Tipo == 3){ //char
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 >= r2}
+			} else if(op1.Tipo==5 && op2.Tipo == 5){ //char
 				r1 := fmt.Sprintf("%v", op1.Valor)
 				r2 := fmt.Sprintf("%v", op2.Valor)
-				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: dominante, Valor: r1 >= r2}
+				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: r1 >= r2}
 			}else{
 				ast.SetError("ERROR: No es posible comparar <")
 			}
@@ -213,6 +280,7 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 	case "==":
 		{
 			if op1.Tipo == op2.Tipo {
+				
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor == op2.Valor}
 			} else {
 				ast.SetError("ERROR: No es posible comparar == ")
@@ -221,6 +289,7 @@ func (o Operation) Ejecutar(ast *environment.AST, env interface{}) environment.S
 	case "!=":
 		{
 			if op1.Tipo == op2.Tipo {
+			
 				return environment.Symbol{Lin: o.Lin, Col: o.Col, Tipo: environment.BOOLEAN, Valor: op1.Valor != op2.Valor}
 			} else {
 				ast.SetError("ERROR: No es posible comparar !=")

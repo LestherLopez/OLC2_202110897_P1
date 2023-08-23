@@ -85,6 +85,7 @@ expr returns [interfaces.Expression e]
 | left=expr op=AND right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | left=expr op=OR right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
 | op= NOT   left=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $left.e) }
+| op = SUB  left=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e,  $op.text, nil)}
 | PARIZQ expr PARDER { $e = $expr.e } 
 | NUMBER                             
     {

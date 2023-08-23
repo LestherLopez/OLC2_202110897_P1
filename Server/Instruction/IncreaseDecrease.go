@@ -34,19 +34,22 @@ func (p IncreaseDecrease) Ejecutar(ast *environment.AST, env interface{}) interf
 					//int
 					if(valor.Tipo==0){
 						value.Valor = value.Valor.(int) + valor.Valor.(int)
-						return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: value.Valor}
+						env.(environment.Environment).SetVariable(p.id_var, value)
+						//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: value.Valor}
 					//float
 					}else if(valor.Tipo==1){
 						val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", value.Valor), 64)
 						val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", valor.Valor), 64)
 						value.Valor = val1+ val2
-						return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
+						env.(environment.Environment).SetVariable(p.id_var, value)
+						//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
 						//string	
 					}else if(valor.Tipo==2){
 						r1 := fmt.Sprintf("%v", value.Valor)
 						r2 := fmt.Sprintf("%v", valor.Valor)
 						value.Valor = r1 + r2
-						return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
+						env.(environment.Environment).SetVariable(p.id_var, value)
+						//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
 					}
 				}else{
 					ast.SetError("ERROR: No son compatibles los tipos")
@@ -60,13 +63,15 @@ func (p IncreaseDecrease) Ejecutar(ast *environment.AST, env interface{}) interf
 					//int
 					if(valor.Tipo==0){
 						value.Valor = value.Valor.(int) - valor.Valor.(int)
-						return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: value.Valor}
+						env.(environment.Environment).SetVariable(p.id_var, value)
+						//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.INTEGER, Valor: value.Valor}
 					//float
 					}else if(valor.Tipo==1){
 						val1, _ := strconv.ParseFloat(fmt.Sprintf("%v", value.Valor), 64)
 						val2, _ := strconv.ParseFloat(fmt.Sprintf("%v", valor.Valor), 64)
 						value.Valor = val1+ val2
-						return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
+						env.(environment.Environment).SetVariable(p.id_var, value)
+						//return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.FLOAT, Valor: value.Valor}
 						//string	
 					}
 				}else{
@@ -75,6 +80,5 @@ func (p IncreaseDecrease) Ejecutar(ast *environment.AST, env interface{}) interf
 			}
 	
 	}
-	var result interface{}
-	return environment.Symbol{Lin: p.Lin, Col: p.Col, Tipo: environment.NULL, Valor: result}
+	return nil	
 }
