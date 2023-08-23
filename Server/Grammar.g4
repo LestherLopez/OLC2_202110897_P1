@@ -59,9 +59,9 @@ constantstmt returns [interfaces.Instruction const]
 
 //(lin, col, exp_conditional, sentence, sentence else)
 ifstmt  returns [interfaces.Instruction ift]
-: IF PARIZQ expr PARDER LLAVEIZQ instruction LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $instruction.inst, nil) }
-| IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER 
-| IF PARIZQ expr PARDER LLAVEIZQ block LLAVEDER ELSE ifstmt
+: IF expr  LLAVEIZQ block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
+| IF expr  LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
+| IF expr  LLAVEIZQ block LLAVEDER ELSE ifstmt { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
 ;
 
 assignationstmt returns [interfaces.Instruction assign]
@@ -69,7 +69,7 @@ assignationstmt returns [interfaces.Instruction assign]
 ;
 
 whilestmt returns [interfaces.Instruction while]
-: WHILE expr LLAVEIZQ block LLAVEDER
+: WHILE expr LLAVEIZQ block LLAVEDER {$while = instructions.NewWhile($WHILE.line, $WHILE.pos,  $expr.e, $block.blk)}
 ;
 
 forstmt returns [interfaces.Instruction for]

@@ -10,35 +10,40 @@ type If struct {
 	Lin   int
 	Col   int
 	exp_conditional interfaces.Expression
-	sentence interfaces.Instruction
-	sentence_else interfaces.Instruction
+	sentence []interface{}
+	sentence_else []interface{}
 }
 
-func NewIf(lin int, col int, expc interfaces.Expression, senten interfaces.Instruction, senten_else interfaces.Instruction) If {
+func NewIf(lin int, col int, expc interfaces.Expression, senten []interface{}, senten_else []interface{}) If {
 	return If{Lin: lin, Col: col, exp_conditional: expc, sentence: senten, sentence_else: senten_else}
 }
 
 func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	
-	conditional := p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
+	var conditional environment.Symbol
+	conditional = p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
 	if(conditional.Tipo != environment.BOOLEAN){
 		fmt.Println("El tipo de variable es incorrecto para un If")
 		return nil
 	}
 	if(conditional.Valor.(bool)){
 		//hacer nuevo environment
-	
-		ifEnv := environment.NewEnvironment(env, "If environment")
+		var ifEnv environment.Environment
+		ifEnv = environment.NewEnvironment(env, "If environment")
 			//ejecutar sentencias
-		p.sentence.Ejecutar(ast, ifEnv)
+		for _, inst := range p.sentence {
+				inst.(interfaces.Instruction).Ejecutar(ast, ifEnv)
+		}
+		return nil
 		
 		
 			//condicional por si viene return
 		
 	}else{
-		
-		elseEnv := environment.NewEnvironment(env, "Else")
-		p.sentence_else.Ejecutar(ast, elseEnv)
+		var elseEnv environment.Environment
+		elseEnv = environment.NewEnvironment(env, "Else environment")
+		for _, inst := range p.sentence_else {
+			inst.(interfaces.Instruction).Ejecutar(ast, elseEnv)
+		}
 	}
 	
 	return nil
