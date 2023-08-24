@@ -25,6 +25,9 @@ type GrammarListener interface {
 	// EnterConstantstmt is called when entering the constantstmt production.
 	EnterConstantstmt(c *ConstantstmtContext)
 
+	// EnterBlockelifs is called when entering the blockelifs production.
+	EnterBlockelifs(c *BlockelifsContext)
+
 	// EnterIfstmt is called when entering the ifstmt production.
 	EnterIfstmt(c *IfstmtContext)
 
@@ -66,6 +69,9 @@ type GrammarListener interface {
 
 	// ExitConstantstmt is called when exiting the constantstmt production.
 	ExitConstantstmt(c *ConstantstmtContext)
+
+	// ExitBlockelifs is called when exiting the blockelifs production.
+	ExitBlockelifs(c *BlockelifsContext)
 
 	// ExitIfstmt is called when exiting the ifstmt production.
 	ExitIfstmt(c *IfstmtContext)

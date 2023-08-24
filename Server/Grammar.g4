@@ -37,6 +37,7 @@ instruction returns [interfaces.Instruction inst]
 | declarestmt {$inst = $declarestmt.dec}
 | constantstmt {$inst = $constantstmt.const}
 | ifstmt { $inst = $ifstmt.ift }
+
 | assignationstmt {$inst = $assignationstmt.assign}
 | increaseanddecreasestmt {$inst = $increaseanddecreasestmt.increasedecrease}
 | whilestmt {$inst = $whilestmt.while}
@@ -59,11 +60,32 @@ constantstmt returns [interfaces.Instruction const]
 ;
 
 //(lin, col, exp_conditional, sentence, sentence else)
-ifstmt  returns [interfaces.Instruction ift]
-: IF expr  LLAVEIZQ block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
-| IF expr  LLAVEIZQ block LLAVEDER ELSE LLAVEIZQ block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
-| IF expr  LLAVEIZQ block LLAVEDER ELSE ifstmt { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $block.blk, nil) }
+   
+blockelifs returns [[]interface{} blkef]
+@init{
+$blkef = []interface{}{}
+    var listifs []IIfstmtContext
+  }
+: elif+=ifstmt+
+    {
+        listifs = localctx.(*BlockelifsContext).GetElif()
+        for _, a := range listifs {
+            $blkef = append($blkef, a.GetIft())
+        }
+    }
 ;
+
+ifstmt  returns [interfaces.Instruction ift, []interface{} el, interfaces.Instruction else]
+: IF expr  LLAVEIZQ ifb=block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifb.blk, nil); 
+                                        $el = $ifb.blk;}
+| IF expr  LLAVEIZQ ifelseblck=block LLAVEDER ELSE LLAVEIZQ elseifblck=block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifelseblck.blk, $elseifblck.blk); 
+                                                                                        $el = $ifelseblck.blk;
+                                                                                        }
+| IF expr  LLAVEIZQ elif=block LLAVEDER ELSE  blockelifs { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $elif.blk, $blockelifs.blkef);}
+;
+
+
+ 
 
 assignationstmt returns [interfaces.Instruction assign]
 : ID IG expr {$assign = instructions.NewAssignation($IG.line, $IG.pos,  $ID.text, $expr.e)}
@@ -74,7 +96,7 @@ whilestmt returns [interfaces.Instruction while]
 ;
 
 forstmt returns [interfaces.Instruction for]
-: FOR ID IN  expr LLAVEIZQ block LLAVEDER
+: FOR ID IN  expr LLAVEIZQ block LLAVEDER 
 ;
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]

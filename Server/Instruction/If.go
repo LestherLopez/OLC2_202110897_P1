@@ -19,6 +19,7 @@ func NewIf(lin int, col int, expc interfaces.Expression, senten []interface{}, s
 }
 
 func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+	fmt.Println("entre a if")
 	var conditional environment.Symbol
 	conditional = p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
 	if(conditional.Tipo != environment.BOOLEAN){
@@ -29,11 +30,13 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		//hacer nuevo environment
 		var ifEnv environment.Environment
 		ifEnv = environment.NewEnvironment(env, "If environment")
+		fmt.Println("a")
 			//ejecutar sentencias
 		for _, inst := range p.sentence {
 				inst.(interfaces.Instruction).Ejecutar(ast, ifEnv)
 		}
-		return nil
+
+		//return nil
 		
 		
 			//condicional por si viene return
@@ -43,8 +46,9 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		elseEnv = environment.NewEnvironment(env, "Else environment")
 		for _, inst := range p.sentence_else {
 			inst.(interfaces.Instruction).Ejecutar(ast, elseEnv)
+			
 		}
+
 	}
-	
 	return nil
 }

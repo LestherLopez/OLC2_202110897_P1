@@ -56,6 +56,12 @@ func (s *BaseGrammarListener) EnterConstantstmt(ctx *ConstantstmtContext) {}
 // ExitConstantstmt is called when production constantstmt is exited.
 func (s *BaseGrammarListener) ExitConstantstmt(ctx *ConstantstmtContext) {}
 
+// EnterBlockelifs is called when production blockelifs is entered.
+func (s *BaseGrammarListener) EnterBlockelifs(ctx *BlockelifsContext) {}
+
+// ExitBlockelifs is called when production blockelifs is exited.
+func (s *BaseGrammarListener) ExitBlockelifs(ctx *BlockelifsContext) {}
+
 // EnterIfstmt is called when production ifstmt is entered.
 func (s *BaseGrammarListener) EnterIfstmt(ctx *IfstmtContext) {}
 
