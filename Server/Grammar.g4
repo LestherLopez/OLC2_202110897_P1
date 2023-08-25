@@ -36,11 +36,11 @@ instruction returns [interfaces.Instruction inst]
 : printstmt { $inst = $printstmt.prnt}
 | declarestmt {$inst = $declarestmt.dec}
 | constantstmt {$inst = $constantstmt.const}
-| ifstmt { $inst = $ifstmt.ift }
-
 | assignationstmt {$inst = $assignationstmt.assign}
 | increaseanddecreasestmt {$inst = $increaseanddecreasestmt.increasedecrease}
+| ifstmt { $inst = $ifstmt.ift }
 | whilestmt {$inst = $whilestmt.while}
+| forstmt {$inst = $forstmt.for}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -96,7 +96,8 @@ whilestmt returns [interfaces.Instruction while]
 ;
 
 forstmt returns [interfaces.Instruction for]
-: FOR ID IN  expr LLAVEIZQ block LLAVEDER 
+: FOR ID IN  expr LLAVEIZQ block LLAVEDER {$for = instructions.NewFor($FOR.line, $FOR.pos, $ID.text, $expr.e, nil, $block.blk)}
+| FOR ID IN first=expr POINT POINT second=expr LLAVEIZQ block LLAVEDER {$for = instructions.NewFor($FOR.line, $FOR.pos, $ID.text, $first.e, $second.e, $block.blk)}
 ;
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]

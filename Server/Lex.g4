@@ -50,6 +50,7 @@ LLAVEIZQ:       '{';
 LLAVEDER:       '}';
 DOUBLEPTS:      ':';
 QUESTION:       '?';
+POINT:          '.';
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 COMMENT : '/*' .*? '*/' -> skip;
