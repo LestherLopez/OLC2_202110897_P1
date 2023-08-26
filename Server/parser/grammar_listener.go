@@ -31,6 +31,12 @@ type GrammarListener interface {
 	// EnterIfstmt is called when entering the ifstmt production.
 	EnterIfstmt(c *IfstmtContext)
 
+	// EnterBlockcases is called when entering the blockcases production.
+	EnterBlockcases(c *BlockcasesContext)
+
+	// EnterSwitchstmt is called when entering the switchstmt production.
+	EnterSwitchstmt(c *SwitchstmtContext)
+
 	// EnterAssignationstmt is called when entering the assignationstmt production.
 	EnterAssignationstmt(c *AssignationstmtContext)
 
@@ -75,6 +81,12 @@ type GrammarListener interface {
 
 	// ExitIfstmt is called when exiting the ifstmt production.
 	ExitIfstmt(c *IfstmtContext)
+
+	// ExitBlockcases is called when exiting the blockcases production.
+	ExitBlockcases(c *BlockcasesContext)
+
+	// ExitSwitchstmt is called when exiting the switchstmt production.
+	ExitSwitchstmt(c *SwitchstmtContext)
 
 	// ExitAssignationstmt is called when exiting the assignationstmt production.
 	ExitAssignationstmt(c *AssignationstmtContext)

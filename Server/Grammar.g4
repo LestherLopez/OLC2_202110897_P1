@@ -41,6 +41,7 @@ instruction returns [interfaces.Instruction inst]
 | ifstmt { $inst = $ifstmt.ift }
 | whilestmt {$inst = $whilestmt.while}
 | forstmt {$inst = $forstmt.for}
+| switchstmt {$inst = $switchstmt.switch}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -83,9 +84,31 @@ ifstmt  returns [interfaces.Instruction ift, []interface{} el, interfaces.Instru
                                                                                         }
 | IF expr  LLAVEIZQ elif=block LLAVEDER ELSE  blockelifs { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $elif.blk, $blockelifs.blkef);}
 ;
+//lin int, col int, expc interfaces.Expression, exp interfaces.Expression,senten []interface{}, senten_deafult []interface{}
+blockcases returns [[]interface{} blkcase]
+@init{
+$blkcase = []interface{}{}
+    var listcases []ISwitchstmtContext
+  }
+: case+=switchstmt+
+    {
+        listcases = localctx.(*BlockcasesContext).GetCase_()
+        for _, a := range listcases {
+            $blkcase = append($blkcase, a.GetSwitch_())
+        }
+    }
+;
+          
+switchstmt returns [interfaces.Instruction switch]
+: SWITCH expc=expr LLAVEIZQ CASE expv=expr DOUBLEPTS case=block LLAVEDER  { $switch = instructions.NewSwitch($SWITCH.line, $SWITCH.pos, $expc.e, $expv.e, $block.blk, nil);}
+| SWITCH expr LLAVEIZQ blockcases DEFAULT DOUBLEPTS block LLAVEDER { $switch = instructions.NewSwitch($SWITCH.line, $SWITCH.pos, $expr.e, nil,  nil, $block.blk);}
+| SWITCH expc=expr LLAVEIZQ CASE exp=expr DOUBLEPTS block blockcases LLAVEDER 
+;
 
+ casetmt returns [interfaces.Instruction case]
+| CASE expr DOUBLEPTS block
+| CASE expr DOUBLEPTS 
 
- 
 
 assignationstmt returns [interfaces.Instruction assign]
 : ID IG expr {$assign = instructions.NewAssignation($IG.line, $IG.pos,  $ID.text, $expr.e)}
@@ -99,6 +122,11 @@ forstmt returns [interfaces.Instruction for]
 : FOR ID IN  expr LLAVEIZQ block LLAVEDER {$for = instructions.NewFor($FOR.line, $FOR.pos, $ID.text, $expr.e, nil, $block.blk)}
 | FOR ID IN first=expr POINT POINT second=expr LLAVEIZQ block LLAVEDER {$for = instructions.NewFor($FOR.line, $FOR.pos, $ID.text, $first.e, $second.e, $block.blk)}
 ;
+
+
+guardstmt returns [interfaces.Instruction gua]
+: GUARD expr ELSE LLAVEIZQ block r=(CONTINUE|RETURN|BREAK) LLAVEDER
+; 
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]
 : left=expr op=(MUL|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }

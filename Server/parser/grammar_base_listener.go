@@ -68,6 +68,18 @@ func (s *BaseGrammarListener) EnterIfstmt(ctx *IfstmtContext) {}
 // ExitIfstmt is called when production ifstmt is exited.
 func (s *BaseGrammarListener) ExitIfstmt(ctx *IfstmtContext) {}
 
+// EnterBlockcases is called when production blockcases is entered.
+func (s *BaseGrammarListener) EnterBlockcases(ctx *BlockcasesContext) {}
+
+// ExitBlockcases is called when production blockcases is exited.
+func (s *BaseGrammarListener) ExitBlockcases(ctx *BlockcasesContext) {}
+
+// EnterSwitchstmt is called when production switchstmt is entered.
+func (s *BaseGrammarListener) EnterSwitchstmt(ctx *SwitchstmtContext) {}
+
+// ExitSwitchstmt is called when production switchstmt is exited.
+func (s *BaseGrammarListener) ExitSwitchstmt(ctx *SwitchstmtContext) {}
+
 // EnterAssignationstmt is called when production assignationstmt is entered.
 func (s *BaseGrammarListener) EnterAssignationstmt(ctx *AssignationstmtContext) {}
 

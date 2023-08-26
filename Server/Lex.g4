@@ -20,6 +20,14 @@ WHILE: 'while';
 LET:   'let';
 FOR: 'for';
 IN: 'in';
+SWITCH:'switch';
+CASE: 'case';
+DEFAULT: 'default';
+GUARD: 'guard';
+CONTINUE: 'continue';
+RETURN: 'return';
+BREAK: 'break';
+
 //STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
 STRING: '"'~["]*'"';
