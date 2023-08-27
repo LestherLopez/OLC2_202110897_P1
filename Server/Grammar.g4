@@ -42,6 +42,8 @@ instruction returns [interfaces.Instruction inst]
 | whilestmt {$inst = $whilestmt.while}
 | forstmt {$inst = $forstmt.for}
 | switchstmt {$inst = $switchstmt.switch}
+| guardstmt {$inst = $guardstmt.gua}
+
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -66,48 +68,52 @@ blockelifs returns [[]interface{} blkef]
 @init{
 $blkef = []interface{}{}
     var listifs []IIfstmtContext
+    
   }
 : elif+=ifstmt+
-    {
+
+    {   
         listifs = localctx.(*BlockelifsContext).GetElif()
         for _, a := range listifs {
             $blkef = append($blkef, a.GetIft())
+            
         }
     }
 ;
 
 ifstmt  returns [interfaces.Instruction ift, []interface{} el, interfaces.Instruction else]
 : IF expr  LLAVEIZQ ifb=block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifb.blk, nil); 
-                                        $el = $ifb.blk;}
+                                        $el = $ifb.blk}
 | IF expr  LLAVEIZQ ifelseblck=block LLAVEDER ELSE LLAVEIZQ elseifblck=block LLAVEDER { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $ifelseblck.blk, $elseifblck.blk); 
                                                                                         $el = $ifelseblck.blk;
+                                                                                        
                                                                                         }
-| IF expr  LLAVEIZQ elif=block LLAVEDER ELSE  blockelifs { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $elif.blk, $blockelifs.blkef);}
+| IF expr  LLAVEIZQ elif=block LLAVEDER ELSE  blockelifs { $ift = instructions.NewIf($IF.line, $IF.pos, $expr.e, $elif.blk, $blockelifs.blkef); }
 ;
 //lin int, col int, expc interfaces.Expression, exp interfaces.Expression,senten []interface{}, senten_deafult []interface{}
+switchstmt returns [interfaces.Instruction switch]
+: SWITCH expr LLAVEIZQ DEFAULT DOUBLEPTS block LLAVEDER { $switch = instructions.NewSwitch($SWITCH.line, $SWITCH.pos, $expr.e, nil,  nil, $block.blk);}
+| SWITCH expr LLAVEIZQ  casestmt LLAVEDER  {$switch = instructions.NewSwitch($SWITCH.line, $SWITCH.pos, $expr.e, nil, $casestmt.cas, nil);}
+;
+casestmt returns [interfaces.Instruction cas]
+: CASE expr DOUBLEPTS block blockcases { $cas = instructions.NewCase($CASE.line,$CASE.pos, $expr.e,$block.blk, $blockcases.blkcase)
+                                fmt.Println("entro")}
+| CASE expr DOUBLEPTS sen=block DEFAULT DOUBLEPTS def=block  { $cas = instructions.NewCase($CASE.line,$CASE.pos, $expr.e,$sen.blk, $def.blk)}
+;
 blockcases returns [[]interface{} blkcase]
 @init{
-$blkcase = []interface{}{}
-    var listcases []ISwitchstmtContext
+    $blkcase = []interface{}{}
+    var listcases []ICasestmtContext
   }
-: case+=switchstmt+
+: casedef+=casestmt+
     {
-        listcases = localctx.(*BlockcasesContext).GetCase_()
+        listcases = localctx.(*BlockcasesContext).GetCasedef()
         for _, a := range listcases {
-            $blkcase = append($blkcase, a.GetSwitch_())
+            $blkcase = append($blkcase, a.GetCas())
+      
         }
     }
 ;
-          
-switchstmt returns [interfaces.Instruction switch]
-: SWITCH expc=expr LLAVEIZQ CASE expv=expr DOUBLEPTS case=block LLAVEDER  { $switch = instructions.NewSwitch($SWITCH.line, $SWITCH.pos, $expc.e, $expv.e, $block.blk, nil);}
-| SWITCH expr LLAVEIZQ blockcases DEFAULT DOUBLEPTS block LLAVEDER { $switch = instructions.NewSwitch($SWITCH.line, $SWITCH.pos, $expr.e, nil,  nil, $block.blk);}
-| SWITCH expc=expr LLAVEIZQ CASE exp=expr DOUBLEPTS block blockcases LLAVEDER 
-;
-
- casetmt returns [interfaces.Instruction case]
-| CASE expr DOUBLEPTS block
-| CASE expr DOUBLEPTS 
 
 
 assignationstmt returns [interfaces.Instruction assign]
@@ -125,8 +131,27 @@ forstmt returns [interfaces.Instruction for]
 
 
 guardstmt returns [interfaces.Instruction gua]
-: GUARD expr ELSE LLAVEIZQ block r=(CONTINUE|RETURN|BREAK) LLAVEDER
+: GUARD expr ELSE LLAVEIZQ block r=(CONTINUE|RETURN|BREAK) LLAVEDER {$gua = instructions.NewGuard($GUARD.line, $GUARD.pos, $expr.e, $block.blk, $r.text)}
 ; 
+
+
+//-----------------VECTORES-----------------------------
+declarevectorstmt returns [interfaces.Instruction decvec]
+: VAR ID DOUBLEPTS type IG PARIZQ PARDER
+;
+
+//-------------------------FUBCIONES-----------------------
+listParams returns[[]interface{} l]
+: list=listParams COMA expr {
+                                var arr []interface{}
+                                arr = append($list.l, $expr.e)
+                                $l = arr
+                            }   
+| expr {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        }
+;
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]
 : left=expr op=(MUL|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }

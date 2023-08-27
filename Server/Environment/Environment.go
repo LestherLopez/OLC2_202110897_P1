@@ -6,6 +6,7 @@ type Environment struct {
 	
 	Anterior  interface{}
 	Variables map[string]Symbol
+	SwitchVar Symbol
 	NameEnv   string
 }
 
@@ -75,3 +76,4 @@ func (env Environment) SetVariable(id string, value Symbol) Symbol {
 	fmt.Println("La variable ", id, " no existe")
 	return Symbol{Lin: 0, Col: 0, Id: "", Tipo: NULL, Valor: 0, Mutable: false}
 }
+

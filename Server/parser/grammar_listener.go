@@ -31,11 +31,14 @@ type GrammarListener interface {
 	// EnterIfstmt is called when entering the ifstmt production.
 	EnterIfstmt(c *IfstmtContext)
 
-	// EnterBlockcases is called when entering the blockcases production.
-	EnterBlockcases(c *BlockcasesContext)
-
 	// EnterSwitchstmt is called when entering the switchstmt production.
 	EnterSwitchstmt(c *SwitchstmtContext)
+
+	// EnterCasestmt is called when entering the casestmt production.
+	EnterCasestmt(c *CasestmtContext)
+
+	// EnterBlockcases is called when entering the blockcases production.
+	EnterBlockcases(c *BlockcasesContext)
 
 	// EnterAssignationstmt is called when entering the assignationstmt production.
 	EnterAssignationstmt(c *AssignationstmtContext)
@@ -45,6 +48,15 @@ type GrammarListener interface {
 
 	// EnterForstmt is called when entering the forstmt production.
 	EnterForstmt(c *ForstmtContext)
+
+	// EnterGuardstmt is called when entering the guardstmt production.
+	EnterGuardstmt(c *GuardstmtContext)
+
+	// EnterDeclarevectorstmt is called when entering the declarevectorstmt production.
+	EnterDeclarevectorstmt(c *DeclarevectorstmtContext)
+
+	// EnterListParams is called when entering the listParams production.
+	EnterListParams(c *ListParamsContext)
 
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
@@ -82,11 +94,14 @@ type GrammarListener interface {
 	// ExitIfstmt is called when exiting the ifstmt production.
 	ExitIfstmt(c *IfstmtContext)
 
-	// ExitBlockcases is called when exiting the blockcases production.
-	ExitBlockcases(c *BlockcasesContext)
-
 	// ExitSwitchstmt is called when exiting the switchstmt production.
 	ExitSwitchstmt(c *SwitchstmtContext)
+
+	// ExitCasestmt is called when exiting the casestmt production.
+	ExitCasestmt(c *CasestmtContext)
+
+	// ExitBlockcases is called when exiting the blockcases production.
+	ExitBlockcases(c *BlockcasesContext)
 
 	// ExitAssignationstmt is called when exiting the assignationstmt production.
 	ExitAssignationstmt(c *AssignationstmtContext)
@@ -96,6 +111,15 @@ type GrammarListener interface {
 
 	// ExitForstmt is called when exiting the forstmt production.
 	ExitForstmt(c *ForstmtContext)
+
+	// ExitGuardstmt is called when exiting the guardstmt production.
+	ExitGuardstmt(c *GuardstmtContext)
+
+	// ExitDeclarevectorstmt is called when exiting the declarevectorstmt production.
+	ExitDeclarevectorstmt(c *DeclarevectorstmtContext)
+
+	// ExitListParams is called when exiting the listParams production.
+	ExitListParams(c *ListParamsContext)
 
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)

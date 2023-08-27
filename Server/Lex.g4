@@ -59,6 +59,7 @@ LLAVEDER:       '}';
 DOUBLEPTS:      ':';
 QUESTION:       '?';
 POINT:          '.';
+COMA:           ',';
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 COMMENT : '/*' .*? '*/' -> skip;

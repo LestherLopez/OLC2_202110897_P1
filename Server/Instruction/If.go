@@ -22,6 +22,7 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	fmt.Println("entre a if")
 	var conditional environment.Symbol
 	conditional = p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
+	
 	if(conditional.Tipo != environment.BOOLEAN){
 		fmt.Println("El tipo de variable es incorrecto para un If")
 		return nil
@@ -30,10 +31,11 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		//hacer nuevo environment
 		var ifEnv environment.Environment
 		ifEnv = environment.NewEnvironment(env, "If environment")
-		fmt.Println("a")
+		
 			//ejecutar sentencias
 		for _, inst := range p.sentence {
 				inst.(interfaces.Instruction).Ejecutar(ast, ifEnv)
+				
 		}
 
 		//return nil

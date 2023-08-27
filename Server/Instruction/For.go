@@ -36,15 +36,18 @@ func (p For) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		if(expresion1.Tipo==environment.INTEGER && expresion2.Tipo==environment.INTEGER){
 			fmt.Println("entra 2")
 			if(expresion2.Valor.(int)>=expresion1.Valor.(int)){
+				//guardar variable que inicia el rango
 				forEnv := environment.NewEnvironment(env, "For environment")
 				id := NewTodeclare(p.Lin, p.Col, p.id_var, environment.INTEGER, p.first_exp, false)
 				id.Ejecutar(ast, forEnv)
-				//guardar variable que inicia el rango
+				
 				
 
 				valint1 := expresion1.Valor.(int)
 				valint2 := expresion2.Valor.(int)
+				//bucle que se ejecuta mientras el valor 1 y valor dos sean diferentes
 				for valint1 != (valint2+1) {
+					//ejecutar bloque
 					for _, inst := range p.sentences {
 						fmt.Println("bloque")
 						inst.(interfaces.Instruction).Ejecutar(ast, forEnv)
@@ -52,14 +55,14 @@ func (p For) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 				
 					
 									
-					
+					//actualizar valor y sumarle uno 
 					valint1 = valint1 + 1
 					exp := expressions.NewPrimitive(p.Lin,p.Col,1,environment.INTEGER)
 					exp.Ejecutar(ast, forEnv)
 					aumento := NewIncreaseDecrease(p.Lin, p.Col, p.id_var, "+=", exp)
 					aumento.Ejecutar(ast, forEnv)
 				}
-				fmt.Println("entra 3")
+				
 			}else{
 				ast.SetError("ERROR: El segundo valor tiene que ser mayor o igual que el primero")
 			}

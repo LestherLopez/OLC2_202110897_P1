@@ -68,17 +68,23 @@ func (s *BaseGrammarListener) EnterIfstmt(ctx *IfstmtContext) {}
 // ExitIfstmt is called when production ifstmt is exited.
 func (s *BaseGrammarListener) ExitIfstmt(ctx *IfstmtContext) {}
 
-// EnterBlockcases is called when production blockcases is entered.
-func (s *BaseGrammarListener) EnterBlockcases(ctx *BlockcasesContext) {}
-
-// ExitBlockcases is called when production blockcases is exited.
-func (s *BaseGrammarListener) ExitBlockcases(ctx *BlockcasesContext) {}
-
 // EnterSwitchstmt is called when production switchstmt is entered.
 func (s *BaseGrammarListener) EnterSwitchstmt(ctx *SwitchstmtContext) {}
 
 // ExitSwitchstmt is called when production switchstmt is exited.
 func (s *BaseGrammarListener) ExitSwitchstmt(ctx *SwitchstmtContext) {}
+
+// EnterCasestmt is called when production casestmt is entered.
+func (s *BaseGrammarListener) EnterCasestmt(ctx *CasestmtContext) {}
+
+// ExitCasestmt is called when production casestmt is exited.
+func (s *BaseGrammarListener) ExitCasestmt(ctx *CasestmtContext) {}
+
+// EnterBlockcases is called when production blockcases is entered.
+func (s *BaseGrammarListener) EnterBlockcases(ctx *BlockcasesContext) {}
+
+// ExitBlockcases is called when production blockcases is exited.
+func (s *BaseGrammarListener) ExitBlockcases(ctx *BlockcasesContext) {}
 
 // EnterAssignationstmt is called when production assignationstmt is entered.
 func (s *BaseGrammarListener) EnterAssignationstmt(ctx *AssignationstmtContext) {}
@@ -97,6 +103,24 @@ func (s *BaseGrammarListener) EnterForstmt(ctx *ForstmtContext) {}
 
 // ExitForstmt is called when production forstmt is exited.
 func (s *BaseGrammarListener) ExitForstmt(ctx *ForstmtContext) {}
+
+// EnterGuardstmt is called when production guardstmt is entered.
+func (s *BaseGrammarListener) EnterGuardstmt(ctx *GuardstmtContext) {}
+
+// ExitGuardstmt is called when production guardstmt is exited.
+func (s *BaseGrammarListener) ExitGuardstmt(ctx *GuardstmtContext) {}
+
+// EnterDeclarevectorstmt is called when production declarevectorstmt is entered.
+func (s *BaseGrammarListener) EnterDeclarevectorstmt(ctx *DeclarevectorstmtContext) {}
+
+// ExitDeclarevectorstmt is called when production declarevectorstmt is exited.
+func (s *BaseGrammarListener) ExitDeclarevectorstmt(ctx *DeclarevectorstmtContext) {}
+
+// EnterListParams is called when production listParams is entered.
+func (s *BaseGrammarListener) EnterListParams(ctx *ListParamsContext) {}
+
+// ExitListParams is called when production listParams is exited.
+func (s *BaseGrammarListener) ExitListParams(ctx *ListParamsContext) {}
 
 // EnterExpr is called when production expr is entered.
 func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
