@@ -27,6 +27,12 @@ GUARD: 'guard';
 CONTINUE: 'continue';
 RETURN: 'return';
 BREAK: 'break';
+APPEND: 'append';
+REMOVELAST: 'removeLast';
+REMOVE: 'remove';
+AT:     'at';
+ISEMPTY: 'IsEmpty';
+COUNT:  'count';
 
 //STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
@@ -60,6 +66,9 @@ DOUBLEPTS:      ':';
 QUESTION:       '?';
 POINT:          '.';
 COMA:           ',';
+PTCOMA:         ';';
+CORCHETEIZQ:    '[';
+CORCHETEDER:    ']';
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 COMMENT : '/*' .*? '*/' -> skip;

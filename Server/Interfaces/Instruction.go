@@ -7,5 +7,5 @@ type Instruction interface {
 }
 
 type InstructionSymbol interface {
-	Ejecutar(ast *environment.AST, env interface{}) interface{}
+	Ejecutar(ast *environment.AST, env interface{}) InstructionSymbol
 }

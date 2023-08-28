@@ -34,8 +34,22 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		
 			//ejecutar sentencias
 		for _, inst := range p.sentence {
-				inst.(interfaces.Instruction).Ejecutar(ast, ifEnv)
-				
+				element := inst.(interfaces.Instruction).Ejecutar(ast, ifEnv)
+				if(element!= nil){
+					symbolret := element.(environment.Symbol)
+					if(symbolret.Transfer == environment.RETURN){
+						fmt.Println("a")
+						return symbolret
+					}else if(symbolret.Transfer==environment.BREAK){
+						fmt.Println("b")
+						break
+						
+					}else if(symbolret.Transfer==environment.CONTINUE){
+						fmt.Println("c")
+						break
+					}
+					
+				}
 		}
 
 		//return nil
@@ -47,8 +61,21 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		var elseEnv environment.Environment
 		elseEnv = environment.NewEnvironment(env, "Else environment")
 		for _, inst := range p.sentence_else {
-			inst.(interfaces.Instruction).Ejecutar(ast, elseEnv)
-			
+			element := inst.(interfaces.Instruction).Ejecutar(ast, elseEnv)
+			if(element!= nil){
+				symbolret := element.(environment.Symbol)
+				if(symbolret.Transfer == environment.RETURN){
+					fmt.Println("a")
+					return symbolret
+				}else if(symbolret.Transfer==environment.BREAK){
+					fmt.Println("b")
+					return nil
+				}else if(symbolret.Transfer==environment.CONTINUE){
+					fmt.Println("c")
+					break
+				}
+				
+			}
 		}
 
 	}

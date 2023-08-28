@@ -52,8 +52,26 @@ type GrammarListener interface {
 	// EnterGuardstmt is called when entering the guardstmt production.
 	EnterGuardstmt(c *GuardstmtContext)
 
+	// EnterTransferstmt is called when entering the transferstmt production.
+	EnterTransferstmt(c *TransferstmtContext)
+
 	// EnterDeclarevectorstmt is called when entering the declarevectorstmt production.
 	EnterDeclarevectorstmt(c *DeclarevectorstmtContext)
+
+	// EnterAppendstmt is called when entering the appendstmt production.
+	EnterAppendstmt(c *AppendstmtContext)
+
+	// EnterRemovelaststmt is called when entering the removelaststmt production.
+	EnterRemovelaststmt(c *RemovelaststmtContext)
+
+	// EnterRemovestmt is called when entering the removestmt production.
+	EnterRemovestmt(c *RemovestmtContext)
+
+	// EnterEmptvecstmt is called when entering the emptvecstmt production.
+	EnterEmptvecstmt(c *EmptvecstmtContext)
+
+	// EnterCountvecstmt is called when entering the countvecstmt production.
+	EnterCountvecstmt(c *CountvecstmtContext)
 
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
@@ -115,8 +133,26 @@ type GrammarListener interface {
 	// ExitGuardstmt is called when exiting the guardstmt production.
 	ExitGuardstmt(c *GuardstmtContext)
 
+	// ExitTransferstmt is called when exiting the transferstmt production.
+	ExitTransferstmt(c *TransferstmtContext)
+
 	// ExitDeclarevectorstmt is called when exiting the declarevectorstmt production.
 	ExitDeclarevectorstmt(c *DeclarevectorstmtContext)
+
+	// ExitAppendstmt is called when exiting the appendstmt production.
+	ExitAppendstmt(c *AppendstmtContext)
+
+	// ExitRemovelaststmt is called when exiting the removelaststmt production.
+	ExitRemovelaststmt(c *RemovelaststmtContext)
+
+	// ExitRemovestmt is called when exiting the removestmt production.
+	ExitRemovestmt(c *RemovestmtContext)
+
+	// ExitEmptvecstmt is called when exiting the emptvecstmt production.
+	ExitEmptvecstmt(c *EmptvecstmtContext)
+
+	// ExitCountvecstmt is called when exiting the countvecstmt production.
+	ExitCountvecstmt(c *CountvecstmtContext)
 
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)

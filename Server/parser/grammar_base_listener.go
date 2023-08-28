@@ -110,11 +110,47 @@ func (s *BaseGrammarListener) EnterGuardstmt(ctx *GuardstmtContext) {}
 // ExitGuardstmt is called when production guardstmt is exited.
 func (s *BaseGrammarListener) ExitGuardstmt(ctx *GuardstmtContext) {}
 
+// EnterTransferstmt is called when production transferstmt is entered.
+func (s *BaseGrammarListener) EnterTransferstmt(ctx *TransferstmtContext) {}
+
+// ExitTransferstmt is called when production transferstmt is exited.
+func (s *BaseGrammarListener) ExitTransferstmt(ctx *TransferstmtContext) {}
+
 // EnterDeclarevectorstmt is called when production declarevectorstmt is entered.
 func (s *BaseGrammarListener) EnterDeclarevectorstmt(ctx *DeclarevectorstmtContext) {}
 
 // ExitDeclarevectorstmt is called when production declarevectorstmt is exited.
 func (s *BaseGrammarListener) ExitDeclarevectorstmt(ctx *DeclarevectorstmtContext) {}
+
+// EnterAppendstmt is called when production appendstmt is entered.
+func (s *BaseGrammarListener) EnterAppendstmt(ctx *AppendstmtContext) {}
+
+// ExitAppendstmt is called when production appendstmt is exited.
+func (s *BaseGrammarListener) ExitAppendstmt(ctx *AppendstmtContext) {}
+
+// EnterRemovelaststmt is called when production removelaststmt is entered.
+func (s *BaseGrammarListener) EnterRemovelaststmt(ctx *RemovelaststmtContext) {}
+
+// ExitRemovelaststmt is called when production removelaststmt is exited.
+func (s *BaseGrammarListener) ExitRemovelaststmt(ctx *RemovelaststmtContext) {}
+
+// EnterRemovestmt is called when production removestmt is entered.
+func (s *BaseGrammarListener) EnterRemovestmt(ctx *RemovestmtContext) {}
+
+// ExitRemovestmt is called when production removestmt is exited.
+func (s *BaseGrammarListener) ExitRemovestmt(ctx *RemovestmtContext) {}
+
+// EnterEmptvecstmt is called when production emptvecstmt is entered.
+func (s *BaseGrammarListener) EnterEmptvecstmt(ctx *EmptvecstmtContext) {}
+
+// ExitEmptvecstmt is called when production emptvecstmt is exited.
+func (s *BaseGrammarListener) ExitEmptvecstmt(ctx *EmptvecstmtContext) {}
+
+// EnterCountvecstmt is called when production countvecstmt is entered.
+func (s *BaseGrammarListener) EnterCountvecstmt(ctx *CountvecstmtContext) {}
+
+// ExitCountvecstmt is called when production countvecstmt is exited.
+func (s *BaseGrammarListener) ExitCountvecstmt(ctx *CountvecstmtContext) {}
 
 // EnterListParams is called when production listParams is entered.
 func (s *BaseGrammarListener) EnterListParams(ctx *ListParamsContext) {}

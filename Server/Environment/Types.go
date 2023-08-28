@@ -9,4 +9,7 @@ const (
 	BOOLEAN                        //3
 	NULL                           //4
 	CHARACTER                      //5
+	RETURN                         //6
+	BREAK                          //7
+	CONTINUE                       //8
 )

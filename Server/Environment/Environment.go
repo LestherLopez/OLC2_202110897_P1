@@ -1,6 +1,9 @@
 package environment
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Environment struct {
 	
@@ -8,12 +11,14 @@ type Environment struct {
 	Variables map[string]Symbol
 	SwitchVar Symbol
 	NameEnv   string
+	Vectors   map[string]SymbolVector
 }
 
 func NewEnvironment(ant interface{}, ide string) Environment {
 	return Environment{
 		Anterior:  ant,
 		Variables: make(map[string]Symbol),
+		Vectors: make(map[string]SymbolVector),
 		NameEnv:   ide,
 	}
 }
@@ -76,4 +81,51 @@ func (env Environment) SetVariable(id string, value Symbol) Symbol {
 	fmt.Println("La variable ", id, " no existe")
 	return Symbol{Lin: 0, Col: 0, Id: "", Tipo: NULL, Valor: 0, Mutable: false}
 }
+
+func (env Environment) KeepVector(id string, value SymbolVector) {
+	
+	if variable, ok := env.Vectors[id]; ok {
+		fmt.Println("El vector "+id+" ya existe", variable)
+		return
+	}
+	env.Vectors[id] = value
+	
+}
+
+func (env Environment) GetVector(id string) SymbolVector {
+	var tmpEnv Environment
+	tmpEnv = env
+	for {
+		if variable, ok := tmpEnv.Vectors[id]; ok {
+			return variable
+		}
+		if tmpEnv.Anterior == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.Anterior.(Environment)
+		}
+	}
+	fmt.Println("La variable ", id, " no existe en este environment")
+	return SymbolVector{Lin: 0, Col: 0, Id: "", Tipo: NULL, Valor: nil, Transfer: NULL}
+}
+
+ 
+
+func (env Environment) VerifyFunc() bool {
+	var tmpEnv Environment
+	tmpEnv = env
+	for {
+		if strings.Contains(tmpEnv.NameEnv, "FUNCTION") {
+			return true
+		}
+		if tmpEnv.Anterior == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.Anterior.(Environment)
+		}
+	}
+	fmt.Println("la sentencia tiene que estar dentro de un ciclo")
+	return false
+}
+
 

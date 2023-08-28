@@ -28,6 +28,7 @@ $blk = []interface{}{}
         listInt = localctx.(*BlockContext).GetIns()
         for _, e := range listInt {
             $blk = append($blk, e.GetInst())
+            
         }
     }
 ;
@@ -43,7 +44,9 @@ instruction returns [interfaces.Instruction inst]
 | forstmt {$inst = $forstmt.for}
 | switchstmt {$inst = $switchstmt.switch}
 | guardstmt {$inst = $guardstmt.gua}
-
+| transferstmt {$inst = $transferstmt.tran}
+| declarevectorstmt {$inst = $declarevectorstmt.decvec}
+| appendstmt    {$inst = $appendstmt.app}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -134,13 +137,41 @@ guardstmt returns [interfaces.Instruction gua]
 : GUARD expr ELSE LLAVEIZQ block r=(CONTINUE|RETURN|BREAK) LLAVEDER {$gua = instructions.NewGuard($GUARD.line, $GUARD.pos, $expr.e, $block.blk, $r.text)}
 ; 
 
-
+transferstmt returns [interfaces.Instruction tran]
+: RETURN PTCOMA {$tran = instructions.NewReturnIn($RETURN.line, $RETURN.pos, nil)}
+| RETURN expr PTCOMA {$tran = instructions.NewReturnIn($RETURN.line, $RETURN.pos, $expr.e)}
+| CONTINUE PTCOMA {$tran = instructions.NewContinue($CONTINUE.line, $CONTINUE.pos)}
+| BREAK PTCOMA {$tran = instructions.NewBreak($BREAK.line, $BREAK.pos)}
+;
 //-----------------VECTORES-----------------------------
 declarevectorstmt returns [interfaces.Instruction decvec]
-: VAR ID DOUBLEPTS type IG PARIZQ PARDER
+: VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ listParams CORCHETEDER {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, $listParams.l)}
+| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ CORCHETEDER {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, nil)}
+| VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER
+| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG ID
+;
+//vec1.append(100)
+appendstmt returns [interfaces.Instruction app]
+: ID POINT APPEND PARIZQ expr PARDER {$app = instructions.NewAppend($ID.line, $ID.pos, $ID.text, $expr.e)}
 ;
 
-//-------------------------FUBCIONES-----------------------
+removelaststmt returns [interfaces.Instruction removl]
+: ID POINT REMOVELAST PARIZQ PARDER 
+;
+
+//vec1.remove( at: 0);
+removestmt returns [interfaces.Instruction remov]
+: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER
+;
+
+emptvecstmt returns [interfaces.Expression emptyvec]
+: ID POINT ISEMPTY
+;
+
+countvecstmt returns [interfaces.Expression count]
+: ID POINT COUNT
+; 
+//-------------------------FUNCIONES-----------------------
 listParams returns[[]interface{} l]
 : list=listParams COMA expr {
                                 var arr []interface{}

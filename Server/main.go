@@ -4,6 +4,7 @@ import (
 	environment "Server/Environment"
 	interfaces "Server/Interfaces"
 	"Server/parser"
+	"errors"
 	"fmt"
 
 	"github.com/antlr4-go/antlr/v4"
@@ -15,7 +16,10 @@ type TreeShapeListener struct {
 	*parser.BaseGrammarListener
 	Code []interface{}
 }
-
+type ErrorListener struct {
+	*antlr.DefaultErrorListener
+	Errors []error
+}
 
 func main() {
 	
@@ -37,6 +41,9 @@ func main() {
 		tokens := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 		//creacion de parser
 		p := parser.NewGrammarParser(tokens)
+		errorlisterner := NewErrorListener()
+		p.RemoveErrorListeners()
+		p.AddErrorListener(errorlisterner)
 		p.BuildParseTrees = true
 		tree := p.S()
 		//listener
@@ -67,4 +74,15 @@ func NewTreeShapeListener() *TreeShapeListener {
 
 func (this *TreeShapeListener) ExitS(ctx *parser.SContext) {
 	this.Code = ctx.GetCode()
+}
+func NewErrorListener() *ErrorListener {
+	return &ErrorListener{
+		DefaultErrorListener: antlr.NewDefaultErrorListener(),
+		Errors:               make([]error, 0),
+	}
+}
+
+func (e *ErrorListener) SyntaxError(_ antlr.Recognizer, _ interface{}, line, column int, msg string, _ antlr.RecognitionException) {
+	errorMsg := fmt.Sprintf("Syntax error at line %d, column %d: %s", line, column, msg)
+	e.Errors = append(e.Errors, errors.New(errorMsg))
 }

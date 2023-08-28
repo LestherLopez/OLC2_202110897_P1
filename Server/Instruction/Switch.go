@@ -31,12 +31,40 @@ func (p Switch) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		if(p.sentence!=nil){
 			var SwitchEnv environment.Environment
 			SwitchEnv = environment.NewEnvironment(env, "Switch case environment")
-			p.sentence.(interfaces.Instruction).Ejecutar(ast, SwitchEnv)
+			element := p.sentence.(interfaces.Instruction).Ejecutar(ast, SwitchEnv)
+			if(element!= nil){
+				symbolret := element.(environment.Symbol)
+				if(symbolret.Transfer == environment.RETURN){
+					fmt.Println("a")
+					return symbolret
+				}else if(symbolret.Transfer==environment.BREAK){
+					fmt.Println("b")
+					return nil
+				}else if(symbolret.Transfer==environment.CONTINUE){
+					fmt.Println("c")
+				    return nil
+				}
+				
+			}
 		}else{
 			var deafultEnv environment.Environment
 			deafultEnv = environment.NewEnvironment(env, "Switch case environment")
 			for _, inst := range p.sentence_deafult {
-				inst.(interfaces.Instruction).Ejecutar(ast, deafultEnv)
+				element:=inst.(interfaces.Instruction).Ejecutar(ast, deafultEnv)
+				if(element!= nil){
+					symbolret := element.(environment.Symbol)
+					if(symbolret.Transfer == environment.RETURN){
+						fmt.Println("a")
+						return symbolret
+					}else if(symbolret.Transfer==environment.BREAK){
+						fmt.Println("b")
+						return nil
+					}else if(symbolret.Transfer==environment.CONTINUE){
+						fmt.Println("c")
+						break
+					}
+					
+				}
 			}
 		}
 		

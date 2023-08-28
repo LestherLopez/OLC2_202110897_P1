@@ -1,11 +1,10 @@
 package environment
 
-type Symbol struct {
+type SymbolVector struct {
 	Lin      int
 	Col      int
 	Id       string
 	Tipo     TipoExpresion
-	Valor    interface{}
-	Mutable  bool
+	Valor    []interface{}
 	Transfer TipoExpresion
 }
