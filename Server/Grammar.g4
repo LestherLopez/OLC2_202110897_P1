@@ -171,7 +171,7 @@ emptvecstmt returns [interfaces.Expression emptyvec]
 ;
 
 countvecstmt returns [interfaces.Expression count]
-: ID POINT COUNT 
+: ID POINT COUNT {$count = expressions.NewCount($ID.line, $ID.pos, $ID.text)}
 ; 
 //-------------------------FUNCIONES-----------------------
 listParams returns[[]interface{} l]
@@ -223,6 +223,7 @@ expr returns [interfaces.Expression e]
 | NIL { $e = expressions.NewPrimitive($NIL.line, $NIL.pos, nil, environment.NULL) }
 | accessstmt {$e = $accessstmt.access}
 | emptvecstmt {$e = $emptvecstmt.emptyvec}
+| countvecstmt {$e = $countvecstmt.count}
 ;
 
 accessstmt returns [interfaces.Expression access]
