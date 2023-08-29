@@ -152,6 +152,18 @@ func (s *BaseGrammarListener) EnterCountvecstmt(ctx *CountvecstmtContext) {}
 // ExitCountvecstmt is called when production countvecstmt is exited.
 func (s *BaseGrammarListener) ExitCountvecstmt(ctx *CountvecstmtContext) {}
 
+// EnterAccessvecstmt is called when production accessvecstmt is entered.
+func (s *BaseGrammarListener) EnterAccessvecstmt(ctx *AccessvecstmtContext) {}
+
+// ExitAccessvecstmt is called when production accessvecstmt is exited.
+func (s *BaseGrammarListener) ExitAccessvecstmt(ctx *AccessvecstmtContext) {}
+
+// EnterDeclarematrixstmt is called when production declarematrixstmt is entered.
+func (s *BaseGrammarListener) EnterDeclarematrixstmt(ctx *DeclarematrixstmtContext) {}
+
+// ExitDeclarematrixstmt is called when production declarematrixstmt is exited.
+func (s *BaseGrammarListener) ExitDeclarematrixstmt(ctx *DeclarematrixstmtContext) {}
+
 // EnterListParams is called when production listParams is entered.
 func (s *BaseGrammarListener) EnterListParams(ctx *ListParamsContext) {}
 

@@ -73,6 +73,12 @@ type GrammarListener interface {
 	// EnterCountvecstmt is called when entering the countvecstmt production.
 	EnterCountvecstmt(c *CountvecstmtContext)
 
+	// EnterAccessvecstmt is called when entering the accessvecstmt production.
+	EnterAccessvecstmt(c *AccessvecstmtContext)
+
+	// EnterDeclarematrixstmt is called when entering the declarematrixstmt production.
+	EnterDeclarematrixstmt(c *DeclarematrixstmtContext)
+
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
 
@@ -153,6 +159,12 @@ type GrammarListener interface {
 
 	// ExitCountvecstmt is called when exiting the countvecstmt production.
 	ExitCountvecstmt(c *CountvecstmtContext)
+
+	// ExitAccessvecstmt is called when exiting the accessvecstmt production.
+	ExitAccessvecstmt(c *AccessvecstmtContext)
+
+	// ExitDeclarematrixstmt is called when exiting the declarematrixstmt production.
+	ExitDeclarematrixstmt(c *DeclarematrixstmtContext)
 
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)

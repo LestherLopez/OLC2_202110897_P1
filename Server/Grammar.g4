@@ -173,6 +173,16 @@ emptvecstmt returns [interfaces.Expression emptyvec]
 countvecstmt returns [interfaces.Expression count]
 : ID POINT COUNT {$count = expressions.NewCount($ID.line, $ID.pos, $ID.text)}
 ; 
+ 
+accessvecstmt returns [interfaces.Expression accessvec]
+: ID CORCHETEIZQ expr CORCHETEDER {$accessvec = expressions.NewAccessVector($ID.line, $ID.pos, $ID.text, $expr.e)}
+;
+
+//-------------------------MATRICES--------------------------------
+declarematrixstmt returns [interfaces.Instruction decmatrix]
+: VAR ID PARIZQ DOUBLEPTS type PARDER IG
+;
+
 //-------------------------FUNCIONES-----------------------
 listParams returns[[]interface{} l]
 : list=listParams COMA expr {
@@ -224,6 +234,7 @@ expr returns [interfaces.Expression e]
 | accessstmt {$e = $accessstmt.access}
 | emptvecstmt {$e = $emptvecstmt.emptyvec}
 | countvecstmt {$e = $countvecstmt.count}
+| accessvecstmt {$e = $accessvecstmt.accessvec}
 ;
 
 accessstmt returns [interfaces.Expression access]

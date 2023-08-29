@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 function Home(){
     const [editor, setEditor] = useState("");
     const [consola, setConsola] = useState("");
-    const [code, setCode] = useState("print('hello world!');");
+    const [code, setCode] = useState('print("hello world!")');
      //estados de modal para ast
      const [show, setShow] = useState(false);
      const handleClose = () => setShow(false);
