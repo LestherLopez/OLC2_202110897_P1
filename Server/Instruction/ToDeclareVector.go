@@ -33,6 +33,7 @@ func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interfa
 					}else{
 						
 						ast.SetError("ERROR: el valor "+fmt.Sprintf("%v", valor.Valor)+" no corresponde al tipo ingresado")
+						fmt.Print("ERROR: el valor "+fmt.Sprintf("%v", valor.Valor)+" no corresponde al tipo ingresado")
 						isType = false
 					}
 					

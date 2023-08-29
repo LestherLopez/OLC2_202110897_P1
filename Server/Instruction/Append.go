@@ -3,6 +3,7 @@ package instructions
 import (
 	environment "Server/Environment"
 	interfaces "Server/Interfaces"
+	"fmt"
 )
 
 type Append struct {
@@ -27,6 +28,7 @@ func (p Append) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		
 	}else{
 		ast.SetError("ERROR: El tipo a ingresar en el vector no corresponde a su tipo")
+		fmt.Print("ERROR: El tipo a ingresar en el vector no corresponde a su tipo")
 	}
 	return nil
 }

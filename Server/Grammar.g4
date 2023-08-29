@@ -163,7 +163,7 @@ removelaststmt returns [interfaces.Instruction removl]
 
 //vec1.remove( at: 0);
 removestmt returns [interfaces.Instruction remov]
-: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER //{$remov = instructions.NewRemove($ID.line, $ID.pos, $ID.text, $expr.e)}
+: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER {$remov = instructions.NewRemove($ID.line, $ID.pos, $ID.text, $expr.e)}
 ;
 
 emptvecstmt returns [interfaces.Expression emptyvec]
