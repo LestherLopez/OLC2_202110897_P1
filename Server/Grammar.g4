@@ -167,11 +167,11 @@ removestmt returns [interfaces.Instruction remov]
 ;
 
 emptvecstmt returns [interfaces.Expression emptyvec]
-: ID POINT ISEMPTY 
+: ID POINT ISEMPTY {$emptyvec = expressions.NewEmptyVector($ID.line, $ID.pos, $ID.text)}
 ;
 
 countvecstmt returns [interfaces.Expression count]
-: ID POINT COUNT
+: ID POINT COUNT 
 ; 
 //-------------------------FUNCIONES-----------------------
 listParams returns[[]interface{} l]
@@ -222,7 +222,7 @@ expr returns [interfaces.Expression e]
 | FALSE { $e = expressions.NewPrimitive($FALSE.line, $FALSE.pos, false, environment.BOOLEAN) }
 | NIL { $e = expressions.NewPrimitive($NIL.line, $NIL.pos, nil, environment.NULL) }
 | accessstmt {$e = $accessstmt.access}
-
+| emptvecstmt {$e = $emptvecstmt.emptyvec}
 ;
 
 accessstmt returns [interfaces.Expression access]
