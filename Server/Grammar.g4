@@ -47,6 +47,8 @@ instruction returns [interfaces.Instruction inst]
 | transferstmt {$inst = $transferstmt.tran}
 | declarevectorstmt {$inst = $declarevectorstmt.decvec}
 | appendstmt    {$inst = $appendstmt.app}
+| removelaststmt {$inst = $removelaststmt.removl}
+| removestmt {$inst = $removestmt.remov}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -156,16 +158,16 @@ appendstmt returns [interfaces.Instruction app]
 ;
 
 removelaststmt returns [interfaces.Instruction removl]
-: ID POINT REMOVELAST PARIZQ PARDER 
+: ID POINT REMOVELAST PARIZQ PARDER {$removl = instructions.NewRemoveLast($ID.line, $ID.pos, $ID.text)}
 ;
 
 //vec1.remove( at: 0);
 removestmt returns [interfaces.Instruction remov]
-: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER
+: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER //{$remov = instructions.NewRemove($ID.line, $ID.pos, $ID.text, $expr.e)}
 ;
 
 emptvecstmt returns [interfaces.Expression emptyvec]
-: ID POINT ISEMPTY
+: ID POINT ISEMPTY 
 ;
 
 countvecstmt returns [interfaces.Expression count]

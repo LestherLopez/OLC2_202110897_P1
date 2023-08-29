@@ -22,7 +22,7 @@ func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interfa
 	var isType bool  
 	isType = true
 	//se definen las no constantes
-	fmt.Println(p.valores[0])
+	
 		
 		if(p.type_var != environment.NULL && p.valores != nil){
 				for _, inst := range p.valores {

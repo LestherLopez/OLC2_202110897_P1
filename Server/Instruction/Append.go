@@ -23,7 +23,7 @@ func (p Append) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	if(vector.Tipo==valor.Tipo){
 		//value:=environment.Symbol{Lin: valor.Lin, Col: valor.Col, Id: valor.Id, Tipo: valor.Tipo, Valor: valor.Valor, Transfer: environment.NULL}
 		vector.Valor = append(vector.Valor, p.exp)
-		
+		env.(environment.Environment).SetVector(p.id_var, vector)
 		
 	}else{
 		ast.SetError("ERROR: El tipo a ingresar en el vector no corresponde a su tipo")

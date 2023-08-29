@@ -92,6 +92,27 @@ func (env Environment) KeepVector(id string, value SymbolVector) {
 	
 }
 
+func (env Environment) SetVector(id string, value SymbolVector) SymbolVector {
+	//value.Id = id
+	var tmpEnv Environment
+	tmpEnv = env
+	for {
+		if variable, ok := tmpEnv.Vectors[id]; ok {
+					tmpEnv.Vectors[id] = value
+					return variable
+		}
+		if tmpEnv.Anterior == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.Anterior.(Environment)
+		}
+	}
+	fmt.Println("La variable ", id, " no existe")
+	return SymbolVector{Lin: 0, Col: 0, Id: "", Tipo: NULL, Valor: nil}
+}
+
+
+
 func (env Environment) GetVector(id string) SymbolVector {
 	var tmpEnv Environment
 	tmpEnv = env
