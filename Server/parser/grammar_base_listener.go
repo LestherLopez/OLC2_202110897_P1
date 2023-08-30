@@ -158,6 +158,12 @@ func (s *BaseGrammarListener) EnterAccessvecstmt(ctx *AccessvecstmtContext) {}
 // ExitAccessvecstmt is called when production accessvecstmt is exited.
 func (s *BaseGrammarListener) ExitAccessvecstmt(ctx *AccessvecstmtContext) {}
 
+// EnterAssignationvecstmt is called when production assignationvecstmt is entered.
+func (s *BaseGrammarListener) EnterAssignationvecstmt(ctx *AssignationvecstmtContext) {}
+
+// ExitAssignationvecstmt is called when production assignationvecstmt is exited.
+func (s *BaseGrammarListener) ExitAssignationvecstmt(ctx *AssignationvecstmtContext) {}
+
 // EnterDeclarematrixstmt is called when production declarematrixstmt is entered.
 func (s *BaseGrammarListener) EnterDeclarematrixstmt(ctx *DeclarematrixstmtContext) {}
 

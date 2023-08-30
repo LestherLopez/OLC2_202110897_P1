@@ -76,6 +76,9 @@ type GrammarListener interface {
 	// EnterAccessvecstmt is called when entering the accessvecstmt production.
 	EnterAccessvecstmt(c *AccessvecstmtContext)
 
+	// EnterAssignationvecstmt is called when entering the assignationvecstmt production.
+	EnterAssignationvecstmt(c *AssignationvecstmtContext)
+
 	// EnterDeclarematrixstmt is called when entering the declarematrixstmt production.
 	EnterDeclarematrixstmt(c *DeclarematrixstmtContext)
 
@@ -162,6 +165,9 @@ type GrammarListener interface {
 
 	// ExitAccessvecstmt is called when exiting the accessvecstmt production.
 	ExitAccessvecstmt(c *AccessvecstmtContext)
+
+	// ExitAssignationvecstmt is called when exiting the assignationvecstmt production.
+	ExitAssignationvecstmt(c *AssignationvecstmtContext)
 
 	// ExitDeclarematrixstmt is called when exiting the declarematrixstmt production.
 	ExitDeclarematrixstmt(c *DeclarematrixstmtContext)

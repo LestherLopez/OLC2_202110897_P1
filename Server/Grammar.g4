@@ -49,6 +49,7 @@ instruction returns [interfaces.Instruction inst]
 | appendstmt    {$inst = $appendstmt.app}
 | removelaststmt {$inst = $removelaststmt.removl}
 | removestmt {$inst = $removestmt.remov}
+| assignationvecstmt {$inst = $assignationvecstmt.assignvec}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -149,8 +150,8 @@ transferstmt returns [interfaces.Instruction tran]
 declarevectorstmt returns [interfaces.Instruction decvec]
 : VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ listParams CORCHETEDER {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, $listParams.l)}
 | VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ CORCHETEDER {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, nil)}
-| VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER
-| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG ID
+| VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER //vector struct
+| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG ID //copia de vector
 ;
 //vec1.append(100)
 appendstmt returns [interfaces.Instruction app]
@@ -176,6 +177,10 @@ countvecstmt returns [interfaces.Expression count]
  
 accessvecstmt returns [interfaces.Expression accessvec]
 : ID CORCHETEIZQ expr CORCHETEDER {$accessvec = expressions.NewAccessVector($ID.line, $ID.pos, $ID.text, $expr.e)}
+;
+
+assignationvecstmt returns [interfaces.Instruction assignvec]
+: ID CORCHETEIZQ expprim=expr CORCHETEDER IG expsegundo=expr {$assignvec = instructions.NewAssignationVector($ID.line, $ID.pos, $ID.text, $expprim.e, $expsegundo.e)}
 ;
 
 //-------------------------MATRICES--------------------------------
