@@ -12,10 +12,11 @@ type ToDecalreVector struct {
 	id_var string
 	type_var environment.TipoExpresion
 	valores []interface{}
+	second_id string
 }
 //lin int, col int, id_var string, type_var environment.TipoExpresion, valor interfaces.Expression, constant bool
-func NewToDecalreVector(lin int, col int, id_var string, type_var environment.TipoExpresion, valores []interface{}) ToDecalreVector {
-	return ToDecalreVector{lin, col, id_var, type_var, valores}
+func NewToDecalreVector(lin int, col int, id_var string, type_var environment.TipoExpresion, valores []interface{}, second_id string) ToDecalreVector {
+	return ToDecalreVector{lin, col, id_var, type_var, valores, second_id}
 }
 
 func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interface{} {
@@ -23,7 +24,7 @@ func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interfa
 	isType = true
 	//se definen las no constantes
 	
-		
+	if(p.second_id==""){
 		if(p.type_var != environment.NULL && p.valores != nil){
 				for _, inst := range p.valores {
 					valor := inst.(interfaces.Expression).Ejecutar(ast, env)
@@ -48,7 +49,26 @@ func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interfa
 			value:=environment.SymbolVector{Lin: p.Lin, Col: p.Col, Id: p.id_var, Tipo: p.type_var, Valor: nil, Transfer: environment.NULL}
 			env.(environment.Environment).KeepVector(p.id_var,  value)
 		}
-
+	}else if(p.second_id!=""){
+		vector_copiar := env.(environment.Environment).GetVector(p.second_id)
+		if(vector_copiar.Tipo==p.type_var){
+	
+			
+			value := environment.SymbolVector{Lin: p.Lin, Col:p.Col, Id: p.id_var, Tipo: p.type_var, Valor: nil, Transfer: environment.NULL }
+			env.(environment.Environment).KeepVector(p.id_var, value)
+			newvector := env.(environment.Environment).GetVector(p.id_var)
+			
+			for _, inst := range vector_copiar.Valor {
+				value:=inst.(interfaces.Expression).Ejecutar(ast, env)
+				newvector.Valor = append(newvector.Valor, value)
+			}
+			 env.(environment.Environment).SetVector(newvector.Id, newvector)
+			return nil
+		}else{
+			ast.SetError("ERROR: El tipo del vector no corresponde al tipo del vector a declarar")
+			fmt.Print("ERROR: El tipo del vector no corresponde al tipo del vector a declarar")
+		}
+	}
 	return nil
 
 }

@@ -35,14 +35,14 @@ func (p AssignationVector) Ejecutar(ast *environment.AST, env interface{}) inter
 	if(indice.Tipo==environment.INTEGER){
 		
 		if(indice.Valor.(int)>=0 && indice.Valor.(int)<len(vector.Valor)){
-			if(valor_asignar.Tipo==vector.Tipo){
+			if(valor_asignar.Tipo==vector.Tipo && vector.Id==p.first_id){
 				
 				index:=indice.Valor.(int)
 				
 				
 				vector.Valor[index] = p.second_exp
 			
-				env.(environment.Environment).SetVector(vector.Id, vector)
+				env.(environment.Environment).SetVector(p.first_id, vector)
 				
 			}else{
 				ast.SetError("ERROR: El tipo del vector no corresponde al tipo de valor a asignar")

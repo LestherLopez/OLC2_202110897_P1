@@ -53,19 +53,19 @@ instruction returns [interfaces.Instruction inst]
 ;
 
 printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER { $prnt = instructions.NewPrint($PRINT.line, $PRINT.pos, $expr.e)}
+: PRINT PARIZQ expr PARDER PTCOMA? { $prnt = instructions.NewPrint($PRINT.line, $PRINT.pos, $expr.e)}
 ;
 //declaracion de variables
 //lin int, col int, id_var string, type_var environment.TipoExpresion, valor interfaces.Expression, constant bool
 declarestmt returns [interfaces.Instruction dec]
-: VAR ID DOUBLEPTS type IG expr {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, $expr.e, false)}//declaracion con tipo y valor
-| VAR ID IG expr {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, environment.NULL, $expr.e, false)}//declaracion con valor
-| VAR ID DOUBLEPTS type QUESTION {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, nil, false)}//declaracion con tipo y sin valor
+: VAR ID DOUBLEPTS type IG expr PTCOMA? {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, $expr.e, false)}//declaracion con tipo y valor
+| VAR ID IG expr PTCOMA? {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, environment.NULL, $expr.e, false)}//declaracion con valor
+| VAR ID DOUBLEPTS type QUESTION PTCOMA? {$dec = instructions.NewTodeclare($VAR.line, $VAR.pos, $ID.text, $type.t, nil, false)}//declaracion con tipo y sin valor
 ;
 //declaracion de constantes
 constantstmt returns [interfaces.Instruction const]
-: LET ID DOUBLEPTS type IG expr {$const = instructions.NewTodeclare($LET.line, $LET.pos, $ID.text, $type.t, $expr.e, true)} //declaracion con tipo y valor
-| LET ID IG expr {$const = instructions.NewTodeclare($LET.line, $LET.pos, $ID.text, environment.NULL, $expr.e, true)}//declaracion con valor
+: LET ID DOUBLEPTS type IG expr PTCOMA? {$const = instructions.NewTodeclare($LET.line, $LET.pos, $ID.text, $type.t, $expr.e, true)} //declaracion con tipo y valor
+| LET ID IG expr PTCOMA? {$const = instructions.NewTodeclare($LET.line, $LET.pos, $ID.text, environment.NULL, $expr.e, true)}//declaracion con valor
 ;
 
 //(lin, col, exp_conditional, sentence, sentence else)
@@ -123,7 +123,7 @@ blockcases returns [[]interface{} blkcase]
 
 
 assignationstmt returns [interfaces.Instruction assign]
-: ID IG expr {$assign = instructions.NewAssignation($IG.line, $IG.pos,  $ID.text, $expr.e)}
+: ID IG expr PTCOMA? {$assign = instructions.NewAssignation($IG.line, $IG.pos,  $ID.text, $expr.e)}
 ;
 
 whilestmt returns [interfaces.Instruction while]
@@ -141,34 +141,34 @@ guardstmt returns [interfaces.Instruction gua]
 ; 
 
 transferstmt returns [interfaces.Instruction tran]
-: RETURN PTCOMA {$tran = instructions.NewReturnIn($RETURN.line, $RETURN.pos, nil)}
-| RETURN expr PTCOMA {$tran = instructions.NewReturnIn($RETURN.line, $RETURN.pos, $expr.e)}
-| CONTINUE PTCOMA {$tran = instructions.NewContinue($CONTINUE.line, $CONTINUE.pos)}
-| BREAK PTCOMA {$tran = instructions.NewBreak($BREAK.line, $BREAK.pos)}
+: RETURN PTCOMA? {$tran = instructions.NewReturnIn($RETURN.line, $RETURN.pos, nil)}
+| RETURN expr PTCOMA? {$tran = instructions.NewReturnIn($RETURN.line, $RETURN.pos, $expr.e)}
+| CONTINUE PTCOMA? {$tran = instructions.NewContinue($CONTINUE.line, $CONTINUE.pos)}
+| BREAK PTCOMA? {$tran = instructions.NewBreak($BREAK.line, $BREAK.pos)}
 ;
 //-----------------VECTORES-----------------------------
 declarevectorstmt returns [interfaces.Instruction decvec]
-: VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ listParams CORCHETEDER {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, $listParams.l)}
-| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ CORCHETEDER {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, nil)}
-| VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER //vector struct
-| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG ID //copia de vector
+: VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ listParams CORCHETEDER PTCOMA? {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, $listParams.l, "")}
+| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ CORCHETEDER PTCOMA? {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, nil, "")}
+| VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER PTCOMA?//vector struct
+| VAR F=ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG S=ID PTCOMA? {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $F.text, $type.t, nil, $S.text)} //copia de vector
 ;
 //vec1.append(100)
 appendstmt returns [interfaces.Instruction app]
-: ID POINT APPEND PARIZQ expr PARDER {$app = instructions.NewAppend($ID.line, $ID.pos, $ID.text, $expr.e)}
+: ID POINT APPEND PARIZQ expr PARDER PTCOMA? {$app = instructions.NewAppend($ID.line, $ID.pos, $ID.text, $expr.e)}
 ;
 
 removelaststmt returns [interfaces.Instruction removl]
-: ID POINT REMOVELAST PARIZQ PARDER {$removl = instructions.NewRemoveLast($ID.line, $ID.pos, $ID.text)}
+: ID POINT REMOVELAST PARIZQ PARDER PTCOMA? {$removl = instructions.NewRemoveLast($ID.line, $ID.pos, $ID.text)}
 ;
 
 //vec1.remove( at: 0);
 removestmt returns [interfaces.Instruction remov]
-: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER {$remov = instructions.NewRemove($ID.line, $ID.pos, $ID.text, $expr.e)}
+: ID POINT REMOVE PARIZQ AT DOUBLEPTS expr PARDER PTCOMA? {$remov = instructions.NewRemove($ID.line, $ID.pos, $ID.text, $expr.e)}
 ;
 
 emptvecstmt returns [interfaces.Expression emptyvec]
-: ID POINT ISEMPTY {$emptyvec = expressions.NewEmptyVector($ID.line, $ID.pos, $ID.text)}
+: ID POINT ISEMPTY  {$emptyvec = expressions.NewEmptyVector($ID.line, $ID.pos, $ID.text)}
 ;
 
 countvecstmt returns [interfaces.Expression count]
@@ -180,12 +180,12 @@ accessvecstmt returns [interfaces.Expression accessvec]
 ;
 
 assignationvecstmt returns [interfaces.Instruction assignvec]
-: ID CORCHETEIZQ expprim=expr CORCHETEDER IG expsegundo=expr {$assignvec = instructions.NewAssignationVector($ID.line, $ID.pos, $ID.text, $expprim.e, $expsegundo.e)}
+: ID CORCHETEIZQ expprim=expr CORCHETEDER IG expsegundo=expr PTCOMA? {$assignvec = instructions.NewAssignationVector($ID.line, $ID.pos, $ID.text, $expprim.e, $expsegundo.e)}
 ;
 
 //-------------------------MATRICES--------------------------------
 declarematrixstmt returns [interfaces.Instruction decmatrix]
-: VAR ID PARIZQ DOUBLEPTS type PARDER IG
+: VAR ID PARIZQ DOUBLEPTS type PARDER IG PTCOMA?
 ;
 
 //-------------------------FUNCIONES-----------------------
@@ -247,8 +247,8 @@ accessstmt returns [interfaces.Expression access]
 ;
 
 increaseanddecreasestmt returns [interfaces.Instruction increasedecrease]
-: ID IG_ADD expr {$increasedecrease = instructions.NewIncreaseDecrease($ID.line, $ID.pos, $ID.text, $IG_ADD.text, $expr.e)}
-| ID IG_SUB expr {$increasedecrease = instructions.NewIncreaseDecrease($ID.line, $ID.pos, $ID.text, $IG_SUB.text, $expr.e)}
+: ID IG_ADD expr PTCOMA?{$increasedecrease = instructions.NewIncreaseDecrease($ID.line, $ID.pos, $ID.text, $IG_ADD.text, $expr.e)}
+| ID IG_SUB expr PTCOMA? {$increasedecrease = instructions.NewIncreaseDecrease($ID.line, $ID.pos, $ID.text, $IG_SUB.text, $expr.e)}
 ;
 
 

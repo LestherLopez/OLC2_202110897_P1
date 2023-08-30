@@ -97,7 +97,9 @@ func (env Environment) SetVector(id string, value SymbolVector) SymbolVector {
 	var tmpEnv Environment
 	tmpEnv = env
 	for {
+		
 		if variable, ok := tmpEnv.Vectors[id]; ok {
+					
 					tmpEnv.Vectors[id] = value
 					return variable
 		}
