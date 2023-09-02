@@ -50,6 +50,7 @@ instruction returns [interfaces.Instruction inst]
 | removelaststmt {$inst = $removelaststmt.removl}
 | removestmt {$inst = $removestmt.remov}
 | assignationvecstmt {$inst = $assignationvecstmt.assignvec}
+| declarefuncstmt {$inst = $declarefuncstmt.decfunc}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -148,10 +149,10 @@ transferstmt returns [interfaces.Instruction tran]
 ;
 //-----------------VECTORES-----------------------------
 declarevectorstmt returns [interfaces.Instruction decvec]
-: VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ listParams CORCHETEDER PTCOMA? {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, $listParams.l, "")}
-| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ CORCHETEDER PTCOMA? {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $ID.text, $type.t, nil, "")}
+: VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ listParams CORCHETEDER PTCOMA? {$decvec = instructions.NewToDeclareVector($VAR.line, $VAR.pos, $ID.text, $type.t, $listParams.l, "")}
+| VAR ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG CORCHETEIZQ CORCHETEDER PTCOMA? {$decvec = instructions.NewToDeclareVector($VAR.line, $VAR.pos, $ID.text, $type.t, nil, "")}
 | VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER PTCOMA?//vector struct
-| VAR F=ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG S=ID PTCOMA? {$decvec = instructions.NewToDecalreVector($VAR.line, $VAR.pos, $F.text, $type.t, nil, $S.text)} //copia de vector
+| VAR F=ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG S=ID PTCOMA? {$decvec = instructions.NewToDeclareVector($VAR.line, $VAR.pos, $F.text, $type.t, nil, $S.text)} //copia de vector
 ;
 //vec1.append(100)
 appendstmt returns [interfaces.Instruction app]
@@ -189,17 +190,35 @@ declarematrixstmt returns [interfaces.Instruction decmatrix]
 ;
 
 //-------------------------FUNCIONES-----------------------
-listParams returns[[]interface{} l]
-: list=listParams COMA expr {
-                                var arr []interface{}
-                                arr = append($list.l, $expr.e)
-                                $l = arr
+declarefuncstmt returns [interfaces.Instruction decfunc]
+: FUNC ID PARIZQ listParams PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParams.l, $type.t, $block.blk, 1)}
+| FUNC ID PARIZQ listParams PARDER LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParams.l, environment.NULL, $block.blk, 2)}
+| FUNC ID PARIZQ PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, nil, $type.t, $block.blk, 3)}
+| FUNC ID PARIZQ PARDER LLAVEIZQ block LLAVEDER {
+    if($block.blk!=nil){ 
+         $decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, nil, environment.NULL, $block.blk, 4)
+    }
+}
+;
+/* 
+listParamsFunc returns[[]interface{} lf]
+: listf=listParamsFunc COMA expr {
+                                var arrf []interface{}
+                                arrf = append($listf.lf, $expr.e)
+                                $lf = arrf
                             }   
 | expr {
-            $l = []interface{}{}
-            $l = append($l, $expr.e)
+            $lf = []interface{}{}
+            $lf = append($lf, $expr.e)
         }
 ;
+parameterfuncstmt returns[interfaces.Instruction p]
+: ID DOUBLEPTS type  
+| ID DOUBLEPTS INOUT type 
+| exte=(SUB|ID) ID DOUBLEPTS type
+| exte=(SUB|ID) ID DOUBLEPTS INOUT type
+;*/
+
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]
 : left=expr op=(MUL|DIV) right=expr { $e = expressions.NewOperation($left.start.GetLine(), $left.start.GetColumn(), $left.e, $op.text, $right.e) }
@@ -259,4 +278,14 @@ type returns [environment.TipoExpresion t]
   | BOOLS       {$t = environment.BOOLEAN }  
   | CHARACTERS    {$t = environment.CHARACTER}  
 ;
-
+listParams returns[[]interface{} l]
+: list=listParams COMA expr {
+                                var arr []interface{}
+                                arr = append($list.l, $expr.e)
+                                $l = arr
+                            }   
+| expr {
+            $l = []interface{}{}
+            $l = append($l, $expr.e)
+        }
+;

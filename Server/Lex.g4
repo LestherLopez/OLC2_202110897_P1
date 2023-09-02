@@ -33,7 +33,8 @@ REMOVE: 'remove';
 AT:     'at';
 ISEMPTY: 'IsEmpty';
 COUNT:  'count';
-
+FUNC:   'func';
+INOUT : 'inout';
 //STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
 STRING: '"'~["]*'"';

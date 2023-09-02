@@ -25,6 +25,7 @@ func (p AccessVector) Ejecutar(ast *environment.AST, env interface{}) environmen
 	if(valor.Tipo==environment.INTEGER){
 		if(valor.Valor.(int)>=0 && valor.Valor.(int)<len(vector.Valor)){
 			element := vector.Valor[valor.Valor.(int)].(interfaces.Expression).Ejecutar(ast, env)
+		
 			return element
 		}else{
 			ast.SetError("ERROR: El indice esta fuera del rango del vector")

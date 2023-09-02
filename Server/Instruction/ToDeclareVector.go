@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-type ToDecalreVector struct {
+type ToDeclareVector struct {
 	Lin   int
 	Col   int
 	id_var string
@@ -15,11 +15,11 @@ type ToDecalreVector struct {
 	second_id string
 }
 //lin int, col int, id_var string, type_var environment.TipoExpresion, valor interfaces.Expression, constant bool
-func NewToDecalreVector(lin int, col int, id_var string, type_var environment.TipoExpresion, valores []interface{}, second_id string) ToDecalreVector {
-	return ToDecalreVector{lin, col, id_var, type_var, valores, second_id}
+func NewToDeclareVector(lin int, col int, id_var string, type_var environment.TipoExpresion, valores []interface{}, second_id string) ToDeclareVector {
+	return ToDeclareVector{lin, col, id_var, type_var, valores, second_id}
 }
 
-func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interface{} {
+func (p ToDeclareVector) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	var isType bool  
 	isType = true
 	//se definen las no constantes
@@ -59,8 +59,8 @@ func (p ToDecalreVector) Ejecutar(ast *environment.AST, env interface{}) interfa
 			newvector := env.(environment.Environment).GetVector(p.id_var)
 			
 			for _, inst := range vector_copiar.Valor {
-				value:=inst.(interfaces.Expression).Ejecutar(ast, env)
-				newvector.Valor = append(newvector.Valor, value)
+				
+				newvector.Valor = append(newvector.Valor, inst)
 			}
 			 env.(environment.Environment).SetVector(newvector.Id, newvector)
 			return nil

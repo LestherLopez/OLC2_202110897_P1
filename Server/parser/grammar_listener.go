@@ -82,8 +82,8 @@ type GrammarListener interface {
 	// EnterDeclarematrixstmt is called when entering the declarematrixstmt production.
 	EnterDeclarematrixstmt(c *DeclarematrixstmtContext)
 
-	// EnterListParams is called when entering the listParams production.
-	EnterListParams(c *ListParamsContext)
+	// EnterDeclarefuncstmt is called when entering the declarefuncstmt production.
+	EnterDeclarefuncstmt(c *DeclarefuncstmtContext)
 
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
@@ -96,6 +96,9 @@ type GrammarListener interface {
 
 	// EnterType is called when entering the type production.
 	EnterType(c *TypeContext)
+
+	// EnterListParams is called when entering the listParams production.
+	EnterListParams(c *ListParamsContext)
 
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
@@ -172,8 +175,8 @@ type GrammarListener interface {
 	// ExitDeclarematrixstmt is called when exiting the declarematrixstmt production.
 	ExitDeclarematrixstmt(c *DeclarematrixstmtContext)
 
-	// ExitListParams is called when exiting the listParams production.
-	ExitListParams(c *ListParamsContext)
+	// ExitDeclarefuncstmt is called when exiting the declarefuncstmt production.
+	ExitDeclarefuncstmt(c *DeclarefuncstmtContext)
 
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
@@ -186,4 +189,7 @@ type GrammarListener interface {
 
 	// ExitType is called when exiting the type production.
 	ExitType(c *TypeContext)
+
+	// ExitListParams is called when exiting the listParams production.
+	ExitListParams(c *ListParamsContext)
 }

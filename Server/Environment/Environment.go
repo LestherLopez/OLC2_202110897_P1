@@ -12,6 +12,8 @@ type Environment struct {
 	SwitchVar Symbol
 	NameEnv   string
 	Vectors   map[string]SymbolVector
+	Functions map[string]SymbolFunction
+
 }
 
 func NewEnvironment(ant interface{}, ide string) Environment {
@@ -19,6 +21,7 @@ func NewEnvironment(ant interface{}, ide string) Environment {
 		Anterior:  ant,
 		Variables: make(map[string]Symbol),
 		Vectors: make(map[string]SymbolVector),
+		Functions: make(map[string]SymbolFunction),
 		NameEnv:   ide,
 	}
 }
@@ -120,6 +123,7 @@ func (env Environment) GetVector(id string) SymbolVector {
 	tmpEnv = env
 	for {
 		if variable, ok := tmpEnv.Vectors[id]; ok {
+			
 			return variable
 		}
 		if tmpEnv.Anterior == nil {
@@ -133,6 +137,30 @@ func (env Environment) GetVector(id string) SymbolVector {
 }
 
  
+func (env Environment) KeepFunction(id string, value SymbolFunction) {
+	if variable, ok := env.Functions[id]; ok {
+		fmt.Println("La funcion " + variable.Id + " ya existe")
+		return
+	}
+	env.Functions[id] = value
+}
+
+func (env Environment) GetFunction(id string) SymbolFunction {
+	var tmpEnv Environment
+	tmpEnv = env
+	for {
+		if variable, ok := tmpEnv.Functions[id]; ok {
+			return variable
+		}
+		if tmpEnv.Anterior == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.Anterior.(Environment)
+		}
+	}
+	fmt.Println("La funcion ", id, " no existe o es una funcion privada..")
+	return SymbolFunction{TipoReturn: NULL}
+}
 
 func (env Environment) VerifyFunc() bool {
 	var tmpEnv Environment

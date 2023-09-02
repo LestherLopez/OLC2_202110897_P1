@@ -170,11 +170,11 @@ func (s *BaseGrammarListener) EnterDeclarematrixstmt(ctx *DeclarematrixstmtConte
 // ExitDeclarematrixstmt is called when production declarematrixstmt is exited.
 func (s *BaseGrammarListener) ExitDeclarematrixstmt(ctx *DeclarematrixstmtContext) {}
 
-// EnterListParams is called when production listParams is entered.
-func (s *BaseGrammarListener) EnterListParams(ctx *ListParamsContext) {}
+// EnterDeclarefuncstmt is called when production declarefuncstmt is entered.
+func (s *BaseGrammarListener) EnterDeclarefuncstmt(ctx *DeclarefuncstmtContext) {}
 
-// ExitListParams is called when production listParams is exited.
-func (s *BaseGrammarListener) ExitListParams(ctx *ListParamsContext) {}
+// ExitDeclarefuncstmt is called when production declarefuncstmt is exited.
+func (s *BaseGrammarListener) ExitDeclarefuncstmt(ctx *DeclarefuncstmtContext) {}
 
 // EnterExpr is called when production expr is entered.
 func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
@@ -199,3 +199,9 @@ func (s *BaseGrammarListener) EnterType(ctx *TypeContext) {}
 
 // ExitType is called when production type is exited.
 func (s *BaseGrammarListener) ExitType(ctx *TypeContext) {}
+
+// EnterListParams is called when production listParams is entered.
+func (s *BaseGrammarListener) EnterListParams(ctx *ListParamsContext) {}
+
+// ExitListParams is called when production listParams is exited.
+func (s *BaseGrammarListener) ExitListParams(ctx *ListParamsContext) {}
