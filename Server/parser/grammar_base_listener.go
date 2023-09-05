@@ -122,6 +122,12 @@ func (s *BaseGrammarListener) EnterDeclarevectorstmt(ctx *DeclarevectorstmtConte
 // ExitDeclarevectorstmt is called when production declarevectorstmt is exited.
 func (s *BaseGrammarListener) ExitDeclarevectorstmt(ctx *DeclarevectorstmtContext) {}
 
+// EnterAccessfuncinstruction is called when production accessfuncinstruction is entered.
+func (s *BaseGrammarListener) EnterAccessfuncinstruction(ctx *AccessfuncinstructionContext) {}
+
+// ExitAccessfuncinstruction is called when production accessfuncinstruction is exited.
+func (s *BaseGrammarListener) ExitAccessfuncinstruction(ctx *AccessfuncinstructionContext) {}
+
 // EnterAppendstmt is called when production appendstmt is entered.
 func (s *BaseGrammarListener) EnterAppendstmt(ctx *AppendstmtContext) {}
 
@@ -176,11 +182,29 @@ func (s *BaseGrammarListener) EnterDeclarefuncstmt(ctx *DeclarefuncstmtContext) 
 // ExitDeclarefuncstmt is called when production declarefuncstmt is exited.
 func (s *BaseGrammarListener) ExitDeclarefuncstmt(ctx *DeclarefuncstmtContext) {}
 
+// EnterListParamsFunc is called when production listParamsFunc is entered.
+func (s *BaseGrammarListener) EnterListParamsFunc(ctx *ListParamsFuncContext) {}
+
+// ExitListParamsFunc is called when production listParamsFunc is exited.
+func (s *BaseGrammarListener) ExitListParamsFunc(ctx *ListParamsFuncContext) {}
+
+// EnterParameterfuncstmt is called when production parameterfuncstmt is entered.
+func (s *BaseGrammarListener) EnterParameterfuncstmt(ctx *ParameterfuncstmtContext) {}
+
+// ExitParameterfuncstmt is called when production parameterfuncstmt is exited.
+func (s *BaseGrammarListener) ExitParameterfuncstmt(ctx *ParameterfuncstmtContext) {}
+
 // EnterExpr is called when production expr is entered.
 func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
 
 // ExitExpr is called when production expr is exited.
 func (s *BaseGrammarListener) ExitExpr(ctx *ExprContext) {}
+
+// EnterAccessfuncstmt is called when production accessfuncstmt is entered.
+func (s *BaseGrammarListener) EnterAccessfuncstmt(ctx *AccessfuncstmtContext) {}
+
+// ExitAccessfuncstmt is called when production accessfuncstmt is exited.
+func (s *BaseGrammarListener) ExitAccessfuncstmt(ctx *AccessfuncstmtContext) {}
 
 // EnterAccessstmt is called when production accessstmt is entered.
 func (s *BaseGrammarListener) EnterAccessstmt(ctx *AccessstmtContext) {}

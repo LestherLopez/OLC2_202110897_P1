@@ -51,6 +51,7 @@ instruction returns [interfaces.Instruction inst]
 | removestmt {$inst = $removestmt.remov}
 | assignationvecstmt {$inst = $assignationvecstmt.assignvec}
 | declarefuncstmt {$inst = $declarefuncstmt.decfunc}
+| accessfuncinstruction {$inst = $accessfuncinstruction.accessfuncin}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -137,6 +138,7 @@ forstmt returns [interfaces.Instruction for]
 ;
 
 
+
 guardstmt returns [interfaces.Instruction gua]
 : GUARD expr ELSE LLAVEIZQ block r=(CONTINUE|RETURN|BREAK) LLAVEDER {$gua = instructions.NewGuard($GUARD.line, $GUARD.pos, $expr.e, $block.blk, $r.text)}
 ; 
@@ -154,6 +156,11 @@ declarevectorstmt returns [interfaces.Instruction decvec]
 | VAR ID IG CORCHETEIZQ type CORCHETEDER PARIZQ PARDER PTCOMA?//vector struct
 | VAR F=ID DOUBLEPTS CORCHETEIZQ type CORCHETEDER IG S=ID PTCOMA? {$decvec = instructions.NewToDeclareVector($VAR.line, $VAR.pos, $F.text, $type.t, nil, $S.text)} //copia de vector
 ;
+
+accessfuncinstruction returns [interfaces.Instruction accessfuncin]
+: ID PARIZQ PARDER {$accessfuncin = instructions.NewCallFunction($ID.line, $ID.pos, $ID.text)}
+;
+
 //vec1.append(100)
 appendstmt returns [interfaces.Instruction app]
 : ID POINT APPEND PARIZQ expr PARDER PTCOMA? {$app = instructions.NewAppend($ID.line, $ID.pos, $ID.text, $expr.e)}
@@ -200,24 +207,22 @@ declarefuncstmt returns [interfaces.Instruction decfunc]
     }
 }
 ;
-/* 
+ 
 listParamsFunc returns[[]interface{} lf]
-: listf=listParamsFunc COMA expr {
+: listf=listParamsFunc COMA  {
                                 var arrf []interface{}
-                                arrf = append($listf.lf, $expr.e)
+                                arrf = append($listf.lf, $parameterfuncstmt.parameterfunc)
                                 $lf = arrf
                             }   
-| expr {
+| parameterfuncstmt {
             $lf = []interface{}{}
-            $lf = append($lf, $expr.e)
+            $lf = append($lf, $parameterfuncstmt.parameterfunc)
         }
 ;
-parameterfuncstmt returns[interfaces.Instruction p]
-: ID DOUBLEPTS type  
-| ID DOUBLEPTS INOUT type 
-| exte=(SUB|ID) ID DOUBLEPTS type
-| exte=(SUB|ID) ID DOUBLEPTS INOUT type
-;*/
+parameterfuncstmt returns[interfaces.Expression parameterfunc]
+: ID DOUBLEPTS INOUT? type 
+| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? type
+;
 
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]
@@ -259,6 +264,11 @@ expr returns [interfaces.Expression e]
 | emptvecstmt {$e = $emptvecstmt.emptyvec}
 | countvecstmt {$e = $countvecstmt.count}
 | accessvecstmt {$e = $accessvecstmt.accessvec}
+;
+
+accessfuncstmt returns [interfaces.Expression access]
+: ID PARIZQ AND_SIMPLE PARDER
+| ID PARIZQ listParams PARDER
 ;
 
 accessstmt returns [interfaces.Expression access]

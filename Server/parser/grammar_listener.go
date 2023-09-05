@@ -58,6 +58,9 @@ type GrammarListener interface {
 	// EnterDeclarevectorstmt is called when entering the declarevectorstmt production.
 	EnterDeclarevectorstmt(c *DeclarevectorstmtContext)
 
+	// EnterAccessfuncinstruction is called when entering the accessfuncinstruction production.
+	EnterAccessfuncinstruction(c *AccessfuncinstructionContext)
+
 	// EnterAppendstmt is called when entering the appendstmt production.
 	EnterAppendstmt(c *AppendstmtContext)
 
@@ -85,8 +88,17 @@ type GrammarListener interface {
 	// EnterDeclarefuncstmt is called when entering the declarefuncstmt production.
 	EnterDeclarefuncstmt(c *DeclarefuncstmtContext)
 
+	// EnterListParamsFunc is called when entering the listParamsFunc production.
+	EnterListParamsFunc(c *ListParamsFuncContext)
+
+	// EnterParameterfuncstmt is called when entering the parameterfuncstmt production.
+	EnterParameterfuncstmt(c *ParameterfuncstmtContext)
+
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
+
+	// EnterAccessfuncstmt is called when entering the accessfuncstmt production.
+	EnterAccessfuncstmt(c *AccessfuncstmtContext)
 
 	// EnterAccessstmt is called when entering the accessstmt production.
 	EnterAccessstmt(c *AccessstmtContext)
@@ -151,6 +163,9 @@ type GrammarListener interface {
 	// ExitDeclarevectorstmt is called when exiting the declarevectorstmt production.
 	ExitDeclarevectorstmt(c *DeclarevectorstmtContext)
 
+	// ExitAccessfuncinstruction is called when exiting the accessfuncinstruction production.
+	ExitAccessfuncinstruction(c *AccessfuncinstructionContext)
+
 	// ExitAppendstmt is called when exiting the appendstmt production.
 	ExitAppendstmt(c *AppendstmtContext)
 
@@ -178,8 +193,17 @@ type GrammarListener interface {
 	// ExitDeclarefuncstmt is called when exiting the declarefuncstmt production.
 	ExitDeclarefuncstmt(c *DeclarefuncstmtContext)
 
+	// ExitListParamsFunc is called when exiting the listParamsFunc production.
+	ExitListParamsFunc(c *ListParamsFuncContext)
+
+	// ExitParameterfuncstmt is called when exiting the parameterfuncstmt production.
+	ExitParameterfuncstmt(c *ParameterfuncstmtContext)
+
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
+
+	// ExitAccessfuncstmt is called when exiting the accessfuncstmt production.
+	ExitAccessfuncstmt(c *AccessfuncstmtContext)
 
 	// ExitAccessstmt is called when exiting the accessstmt production.
 	ExitAccessstmt(c *AccessstmtContext)

@@ -35,6 +35,7 @@ ISEMPTY: 'IsEmpty';
 COUNT:  'count';
 FUNC:   'func';
 INOUT : 'inout';
+
 //STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
 STRING: '"'~["]*'"';
@@ -70,6 +71,8 @@ COMA:           ',';
 PTCOMA:         ';';
 CORCHETEIZQ:    '[';
 CORCHETEDER:    ']';
+GUION_BAJO:      '_';
+AND_SIMPLE:     '&';
 // skip
 WHITESPACE: [ \\\r\n\t]+ -> skip;
 COMMENT : '/*' .*? '*/' -> skip;
