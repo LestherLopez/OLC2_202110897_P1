@@ -200,6 +200,24 @@ func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
 // ExitExpr is called when production expr is exited.
 func (s *BaseGrammarListener) ExitExpr(ctx *ExprContext) {}
 
+// EnterIntfunctionstmt is called when production intfunctionstmt is entered.
+func (s *BaseGrammarListener) EnterIntfunctionstmt(ctx *IntfunctionstmtContext) {}
+
+// ExitIntfunctionstmt is called when production intfunctionstmt is exited.
+func (s *BaseGrammarListener) ExitIntfunctionstmt(ctx *IntfunctionstmtContext) {}
+
+// EnterFloatfunctionstmt is called when production floatfunctionstmt is entered.
+func (s *BaseGrammarListener) EnterFloatfunctionstmt(ctx *FloatfunctionstmtContext) {}
+
+// ExitFloatfunctionstmt is called when production floatfunctionstmt is exited.
+func (s *BaseGrammarListener) ExitFloatfunctionstmt(ctx *FloatfunctionstmtContext) {}
+
+// EnterStringfunctionstmt is called when production stringfunctionstmt is entered.
+func (s *BaseGrammarListener) EnterStringfunctionstmt(ctx *StringfunctionstmtContext) {}
+
+// ExitStringfunctionstmt is called when production stringfunctionstmt is exited.
+func (s *BaseGrammarListener) ExitStringfunctionstmt(ctx *StringfunctionstmtContext) {}
+
 // EnterAccessfuncstmt is called when production accessfuncstmt is entered.
 func (s *BaseGrammarListener) EnterAccessfuncstmt(ctx *AccessfuncstmtContext) {}
 

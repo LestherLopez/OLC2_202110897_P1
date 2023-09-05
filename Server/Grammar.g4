@@ -221,7 +221,7 @@ listParamsFunc returns[[]interface{} lf]
 ;
 parameterfuncstmt returns[interfaces.Expression parameterfunc]
 : ID DOUBLEPTS INOUT? type 
-| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? type
+| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? type 
 ;
 
 //----------------------------EXPRESIONES---------------------
@@ -264,6 +264,21 @@ expr returns [interfaces.Expression e]
 | emptvecstmt {$e = $emptvecstmt.emptyvec}
 | countvecstmt {$e = $countvecstmt.count}
 | accessvecstmt {$e = $accessvecstmt.accessvec}
+| intfunctionstmt {$e = $intfunctionstmt.intfunc}
+| floatfunctionstmt {$e = $floatfunctionstmt.floatfunc}
+| stringfunctionstmt {$e = $stringfunctionstmt.stringfunc}
+;
+
+intfunctionstmt returns [interfaces.Expression intfunc]
+: INTS PARIZQ expr PARDER {$intfunc = expressions.NewFunctionInt($INTS.line, $INTS.pos, $expr.e)}
+;
+
+floatfunctionstmt returns [interfaces.Expression floatfunc]
+: FLOATS PARIZQ expr PARDER {$floatfunc = expressions.NewFunctionFloat($FLOATS.line, $FLOATS.pos, $expr.e)}
+;
+
+stringfunctionstmt returns [interfaces.Expression stringfunc]
+: STRINGS PARIZQ expr PARDER {$stringfunc = expressions.NewFunctionString($STRINGS.line, $STRINGS.pos, $expr.e)}
 ;
 
 accessfuncstmt returns [interfaces.Expression access]
