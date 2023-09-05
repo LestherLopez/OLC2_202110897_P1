@@ -4,6 +4,7 @@ import (
 	environment "Server/Environment"
 	primitive "Server/Expression"
 	interfaces "Server/Interfaces"
+	"fmt"
 )
 
 type Todeclare struct {
@@ -37,6 +38,7 @@ func (p Todeclare) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		}else if(p.type_var==environment.NULL && p.valor != nil){
 				valueTodeclare := p.valor.(interfaces.Expression).Ejecutar(ast, env)
 				valueTodeclare.Mutable = true
+				fmt.Print("AAAAAAAAAAAAAAA")
 				env.(environment.Environment).KeepVariable(p.id_var, valueTodeclare)
 				
 		//variable con tipo pero sin valor

@@ -489,11 +489,11 @@ public class GrammarParser extends Parser {
 	public static class PrintstmtContext extends ParserRuleContext {
 		public interfaces.Instruction prnt;
 		public Token PRINT;
-		public ExprContext expr;
+		public ListParamsContext listParams;
 		public TerminalNode PRINT() { return getToken(GrammarParser.PRINT, 0); }
 		public TerminalNode PARIZQ() { return getToken(GrammarParser.PARIZQ, 0); }
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public ListParamsContext listParams() {
+			return getRuleContext(ListParamsContext.class,0);
 		}
 		public TerminalNode PARDER() { return getToken(GrammarParser.PARDER, 0); }
 		public TerminalNode PTCOMA() { return getToken(GrammarParser.PTCOMA, 0); }
@@ -515,7 +515,7 @@ public class GrammarParser extends Parser {
 			setState(138);
 			match(PARIZQ);
 			setState(139);
-			((PrintstmtContext)_localctx).expr = expr(0);
+			((PrintstmtContext)_localctx).listParams = listParams(0);
 			setState(140);
 			match(PARDER);
 			setState(142);
@@ -528,7 +528,7 @@ public class GrammarParser extends Parser {
 				}
 			}
 
-			 _localctx.prnt = instructions.NewPrint((((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getLine():0), (((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getCharPositionInLine():0), ((PrintstmtContext)_localctx).expr.e)
+			 _localctx.prnt = instructions.NewPrint((((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getLine():0), (((PrintstmtContext)_localctx).PRINT!=null?((PrintstmtContext)_localctx).PRINT.getCharPositionInLine():0), ((PrintstmtContext)_localctx).listParams.l)
 			}
 		}
 		catch (RecognitionException re) {
@@ -3395,7 +3395,7 @@ public class GrammarParser extends Parser {
 		"\u0089e\3\2\2\2\u0089h\3\2\2\2\u0089k\3\2\2\2\u0089n\3\2\2\2\u0089q\3"+
 		"\2\2\2\u0089t\3\2\2\2\u0089w\3\2\2\2\u0089z\3\2\2\2\u0089}\3\2\2\2\u0089"+
 		"\u0080\3\2\2\2\u0089\u0083\3\2\2\2\u0089\u0086\3\2\2\2\u008a\7\3\2\2\2"+
-		"\u008b\u008c\7\f\2\2\u008c\u008d\7\66\2\2\u008d\u008e\5<\37\2\u008e\u0090"+
+		"\u008b\u008c\7\f\2\2\u008c\u008d\7\66\2\2\u008d\u008e\5F$\2\u008e\u0090"+
 		"\7\67\2\2\u008f\u0091\7>\2\2\u0090\u008f\3\2\2\2\u0090\u0091\3\2\2\2\u0091"+
 		"\u0092\3\2\2\2\u0092\u0093\b\5\1\2\u0093\t\3\2\2\2\u0094\u0095\7\b\2\2"+
 		"\u0095\u0096\7$\2\2\u0096\u0097\7:\2\2\u0097\u0098\5D#\2\u0098\u0099\7"+

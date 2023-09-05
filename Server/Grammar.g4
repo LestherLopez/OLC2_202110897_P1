@@ -55,7 +55,7 @@ instruction returns [interfaces.Instruction inst]
 ;
 
 printstmt returns [interfaces.Instruction prnt]
-: PRINT PARIZQ expr PARDER PTCOMA? { $prnt = instructions.NewPrint($PRINT.line, $PRINT.pos, $expr.e)}
+: PRINT PARIZQ listParams PARDER PTCOMA? { $prnt = instructions.NewPrint($PRINT.line, $PRINT.pos, $listParams.l)}
 ;
 //declaracion de variables
 //lin int, col int, id_var string, type_var environment.TipoExpresion, valor interfaces.Expression, constant bool

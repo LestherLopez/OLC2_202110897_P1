@@ -27,12 +27,15 @@ func (p Assignation) Ejecutar(ast *environment.AST, env interface{}) interface{}
 	
 	valor_asignar = p.valor.(interfaces.Expression).Ejecutar(ast, env)
 	variable := env.(environment.Environment).GetVariable(p.id_var)
+	fmt.Print(variable)
 	//no se puede cambiar
 	if(!variable.Mutable){
 		fmt.Printf("No es posible cambiar el valor de la variable %v\n", p.id_var)
 	}else if(variable.Mutable){
 		if(valor_asignar.Tipo == variable.Tipo){
-			
+			valor_asignar.Mutable = variable.Mutable
+			valor_asignar.Transfer = variable.Transfer
+
 			env.(environment.Environment).SetVariable(p.id_var, valor_asignar)
 			
 			return nil

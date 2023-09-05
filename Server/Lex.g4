@@ -39,7 +39,7 @@ INOUT : 'inout';
 //STRING: '"'~['"]*'"' | '\''~["']*'\''; con comilla simple
 NUMBER : [0-9]+ ('.'[0-9]+)?;
 STRING: '"'~["]*'"';
-ID: ([a-zA-Z])[a-zA-Z0-9_]*;
+ID: ([a-zA-Z_])[a-zA-Z0-9_]*;
 
 // symbols
 

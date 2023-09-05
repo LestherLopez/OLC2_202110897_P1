@@ -177,7 +177,7 @@ func grammarParserInit() {
 		135, 108, 1, 0, 0, 0, 135, 111, 1, 0, 0, 0, 135, 114, 1, 0, 0, 0, 135,
 		117, 1, 0, 0, 0, 135, 120, 1, 0, 0, 0, 135, 123, 1, 0, 0, 0, 135, 126,
 		1, 0, 0, 0, 135, 129, 1, 0, 0, 0, 135, 132, 1, 0, 0, 0, 136, 5, 1, 0, 0,
-		0, 137, 138, 5, 10, 0, 0, 138, 139, 5, 52, 0, 0, 139, 140, 3, 58, 29, 0,
+		0, 137, 138, 5, 10, 0, 0, 138, 139, 5, 52, 0, 0, 139, 140, 3, 68, 34, 0,
 		140, 142, 5, 53, 0, 0, 141, 143, 5, 60, 0, 0, 142, 141, 1, 0, 0, 0, 142,
 		143, 1, 0, 0, 0, 143, 144, 1, 0, 0, 0, 144, 145, 6, 3, -1, 0, 145, 7, 1,
 		0, 0, 0, 146, 147, 5, 6, 0, 0, 147, 148, 5, 34, 0, 0, 148, 149, 5, 56,
@@ -1700,11 +1700,11 @@ type IPrintstmtContext interface {
 	// Set_PRINT sets the _PRINT token.
 	Set_PRINT(antlr.Token)
 
-	// Get_expr returns the _expr rule contexts.
-	Get_expr() IExprContext
+	// Get_listParams returns the _listParams rule contexts.
+	Get_listParams() IListParamsContext
 
-	// Set_expr sets the _expr rule contexts.
-	Set_expr(IExprContext)
+	// Set_listParams sets the _listParams rule contexts.
+	Set_listParams(IListParamsContext)
 
 	// GetPrnt returns the prnt attribute.
 	GetPrnt() interfaces.Instruction
@@ -1715,7 +1715,7 @@ type IPrintstmtContext interface {
 	// Getter signatures
 	PRINT() antlr.TerminalNode
 	PARIZQ() antlr.TerminalNode
-	Expr() IExprContext
+	ListParams() IListParamsContext
 	PARDER() antlr.TerminalNode
 	PTCOMA() antlr.TerminalNode
 
@@ -1725,10 +1725,10 @@ type IPrintstmtContext interface {
 
 type PrintstmtContext struct {
 	antlr.BaseParserRuleContext
-	parser antlr.Parser
-	prnt   interfaces.Instruction
-	_PRINT antlr.Token
-	_expr  IExprContext
+	parser      antlr.Parser
+	prnt        interfaces.Instruction
+	_PRINT      antlr.Token
+	_listParams IListParamsContext
 }
 
 func NewEmptyPrintstmtContext() *PrintstmtContext {
@@ -1762,9 +1762,9 @@ func (s *PrintstmtContext) Get_PRINT() antlr.Token { return s._PRINT }
 
 func (s *PrintstmtContext) Set_PRINT(v antlr.Token) { s._PRINT = v }
 
-func (s *PrintstmtContext) Get_expr() IExprContext { return s._expr }
+func (s *PrintstmtContext) Get_listParams() IListParamsContext { return s._listParams }
 
-func (s *PrintstmtContext) Set_expr(v IExprContext) { s._expr = v }
+func (s *PrintstmtContext) Set_listParams(v IListParamsContext) { s._listParams = v }
 
 func (s *PrintstmtContext) GetPrnt() interfaces.Instruction { return s.prnt }
 
@@ -1778,10 +1778,10 @@ func (s *PrintstmtContext) PARIZQ() antlr.TerminalNode {
 	return s.GetToken(GrammarParserPARIZQ, 0)
 }
 
-func (s *PrintstmtContext) Expr() IExprContext {
+func (s *PrintstmtContext) ListParams() IListParamsContext {
 	var t antlr.RuleContext
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExprContext); ok {
+		if _, ok := ctx.(IListParamsContext); ok {
 			t = ctx.(antlr.RuleContext)
 			break
 		}
@@ -1791,7 +1791,7 @@ func (s *PrintstmtContext) Expr() IExprContext {
 		return nil
 	}
 
-	return t.(IExprContext)
+	return t.(IListParamsContext)
 }
 
 func (s *PrintstmtContext) PARDER() antlr.TerminalNode {
@@ -1850,9 +1850,9 @@ func (p *GrammarParser) Printstmt() (localctx IPrintstmtContext) {
 	{
 		p.SetState(139)
 
-		var _x = p.expr(0)
+		var _x = p.listParams(0)
 
-		localctx.(*PrintstmtContext)._expr = _x
+		localctx.(*PrintstmtContext)._listParams = _x
 	}
 	{
 		p.SetState(140)
@@ -1892,7 +1892,7 @@ func (p *GrammarParser) Printstmt() (localctx IPrintstmtContext) {
 		} else {
 			return localctx.(*PrintstmtContext).Get_PRINT().GetColumn()
 		}
-	}()), localctx.(*PrintstmtContext).Get_expr().GetE())
+	}()), localctx.(*PrintstmtContext).Get_listParams().GetL())
 
 errorExit:
 	if p.HasError() {

@@ -42,7 +42,7 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 						return symbolret
 					}else if(symbolret.Transfer==environment.BREAK){
 						fmt.Println("b")
-						break
+						return environment.Symbol{Transfer: environment.BREAK}
 						
 					}else if(symbolret.Transfer==environment.CONTINUE){
 						fmt.Println("c")
@@ -69,7 +69,7 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 					return symbolret
 				}else if(symbolret.Transfer==environment.BREAK){
 					fmt.Println("b")
-					return nil
+					return environment.Symbol{Transfer: environment.BREAK}
 				}else if(symbolret.Transfer==environment.CONTINUE){
 					fmt.Println("c")
 					break

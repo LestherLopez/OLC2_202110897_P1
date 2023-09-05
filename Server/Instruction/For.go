@@ -32,22 +32,19 @@ func (p For) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		var expresion1, expresion2 environment.Symbol
 		expresion1 = p.first_exp.Ejecutar(ast, env)
 		expresion2 = p.second_exp.Ejecutar(ast, env)
-		fmt.Println("entra 1")
+		
 		if(expresion1.Tipo==environment.INTEGER && expresion2.Tipo==environment.INTEGER){
-			fmt.Println("entra 2")
+			
 			if(expresion2.Valor.(int)>=expresion1.Valor.(int)){
 				//guardar variable que inicia el rango
-				forEnv := environment.NewEnvironment(env, "For environment")
 				id := NewTodeclare(p.Lin, p.Col, p.id_var, environment.INTEGER, p.first_exp, false)
-				id.Ejecutar(ast, forEnv)
-				
-				
-
+				id.Ejecutar(ast, env)
 				valint1 := expresion1.Valor.(int)
 				valint2 := expresion2.Valor.(int)
 				//bucle que se ejecuta mientras el valor 1 y valor dos sean diferentes
 				for valint1 != (valint2+1) {
 					//ejecutar bloque
+					forEnv := environment.NewEnvironment(env, "For environment"+fmt.Sprintf("%v", valint1))
 					for _, inst := range p.sentences {
 						fmt.Println("bloque")
 						element := inst.(interfaces.Instruction).Ejecutar(ast, forEnv)
