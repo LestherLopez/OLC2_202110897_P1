@@ -51,13 +51,13 @@ func (p For) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 						if(element!= nil){
 							symbolret := element.(environment.Symbol)
 							if(symbolret.Transfer == environment.RETURN){
-								fmt.Println("a")
+								
 								return symbolret
 							}else if(symbolret.Transfer==environment.BREAK){
-								fmt.Println("b")
+							
 								return nil
 							}else if(symbolret.Transfer==environment.CONTINUE){
-								fmt.Println("c")
+							
 								break
 							}
 							

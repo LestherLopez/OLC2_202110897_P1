@@ -28,8 +28,12 @@ func (p AccessFunction) Ejecutar(ast *environment.AST, env interface{}) environm
 			for i := 0; i < len(funcion.Bloque_parametros); i++ {
 				parametro:=funcion.Bloque_parametros[i].(interfaces.Expression).Ejecutar(ast, env)
 				valor:=p.parameter[i].(interfaces.Expression).Ejecutar(ast, env)
-				FunctionEnv.KeepVariable(parametro.Id, environment.Symbol{Valor: valor.Valor, Lin: parametro.Lin, Col: parametro.Col, Id: parametro.Id, Tipo: parametro.Tipo, Mutable: true})
-
+				if(valor.Tipo==parametro.Tipo){
+					FunctionEnv.KeepVariable(parametro.Id, environment.Symbol{Valor: valor.Valor, Lin: parametro.Lin, Col: parametro.Col, Id: parametro.Id, Tipo: parametro.Tipo, Mutable: true})
+				}else{
+					ast.SetError("ERROR: El tipo del parametro ingresado es incorrecto")
+					fmt.Print("ERROR: El tipo del parametro ingresado es incorrecto")
+				}
 			
 			}
 
@@ -38,9 +42,12 @@ func (p AccessFunction) Ejecutar(ast *environment.AST, env interface{}) environm
 				element:=inst.(interfaces.Instruction).Ejecutar(ast, FunctionEnv)
 				if(element!=nil){
 					symboltransfer := element.(environment.Symbol)
-					if(symboltransfer.Transfer== environment.RETURN){
+					if(symboltransfer.Transfer== environment.RETURN && symboltransfer.Tipo==funcion.TipoReturn){
 						return symboltransfer
 						//	return environment.Symbol{Valor: "Holaaa", Col: p.Col, Lin: p.Lin}
+					}else{
+						ast.SetError("ERROR: No fue posible hacer el retorno de la variable")
+						fmt.Print("ERROR: No fue posible hacer el retorno de la variable")
 					}
 				}
 

@@ -34,8 +34,7 @@ func (p While) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 			if(element!= nil){
 				symbolret := element.(environment.Symbol)
 				if(symbolret.Transfer == environment.RETURN){
-					fmt.Println(symbolret)
-					
+					return symbolret
 				}else if(symbolret.Transfer==environment.BREAK){
 					fmt.Print("VIENE BREAAAK")
 					return nil
