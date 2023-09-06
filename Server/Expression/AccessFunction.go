@@ -1,19 +1,64 @@
 package expressions
 
-import environment "Server/Environment"
+import (
+	environment "Server/Environment"
+	interfaces "Server/Interfaces"
+	"fmt"
+)
 
 type AccessFunction struct {
 	Lin   int
 	Col   int
 	id 	  string
+	parameter []interface{}
+	numero int
 }
 
-func NewAccessFunction(lin int, col int, id string, ) AccessFunction {
-	exp := AccessFunction{lin, col, id}
+func NewAccessFunction(lin int, col int, id string, parameter []interface{}, numero int) AccessFunction {
+	exp := AccessFunction{lin, col, id, parameter,numero}
 	return exp
 }
 
 func (p AccessFunction) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
-	result := env.(environment.Environment).GetFunction(p.id)
-	return result.Return
+	funcion := env.(environment.Environment).GetFunction(p.id)
+	FunctionEnv := environment.NewEnvironment(env, "Function "+p.id+" environment")
+	switch p.numero{
+	case 1: //funcion con parametros normales
+		if(len(p.parameter) == len(funcion.Bloque_parametros)){
+			for i := 0; i < len(funcion.Bloque_parametros); i++ {
+				parametro:=funcion.Bloque_parametros[i].(interfaces.Expression).Ejecutar(ast, env)
+				valor:=p.parameter[i].(interfaces.Expression).Ejecutar(ast, env)
+				FunctionEnv.KeepVariable(parametro.Id, environment.Symbol{Valor: valor.Valor, Lin: parametro.Lin, Col: parametro.Col, Id: parametro.Id, Tipo: parametro.Tipo, Mutable: true})
+
+			
+			}
+
+			//ejecutar sentencias
+			for _, inst := range funcion.Bloque_sentencias {
+				element:=inst.(interfaces.Instruction).Ejecutar(ast, FunctionEnv)
+				if(element!=nil){
+					symboltransfer := element.(environment.Symbol)
+					if(symboltransfer.Transfer== environment.RETURN){
+						return symboltransfer
+						//	return environment.Symbol{Valor: "Holaaa", Col: p.Col, Lin: p.Lin}
+					}
+				}
+
+			}
+
+			return environment.Symbol{Valor: "Holaaa", Col: p.Col, Lin: p.Lin}
+		}
+	case 2:
+		fmt.Print("VAMOS A IMPRIMIR ENVIRONMENT ID")
+		fmt.Print(FunctionEnv.NameEnv)
+		for _, inst := range funcion.Bloque_sentencias {
+			inst.(interfaces.Instruction).Ejecutar(ast, FunctionEnv)
+
+		}
+	}
+	
+	
+
+	
+	return environment.Symbol{}
 }

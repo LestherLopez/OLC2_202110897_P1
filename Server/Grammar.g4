@@ -198,7 +198,7 @@ declarematrixstmt returns [interfaces.Instruction decmatrix]
 
 //-------------------------FUNCIONES-----------------------
 declarefuncstmt returns [interfaces.Instruction decfunc]
-: FUNC ID PARIZQ listParams PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParams.l, $type.t, $block.blk, 1)}
+: FUNC ID PARIZQ listParamsFunc PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParamsFunc.lf, $type.t, $block.blk, 1)}
 | FUNC ID PARIZQ listParams PARDER LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParams.l, environment.NULL, $block.blk, 2)}
 | FUNC ID PARIZQ PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, nil, $type.t, $block.blk, 3)}
 | FUNC ID PARIZQ PARDER LLAVEIZQ block LLAVEDER {
@@ -209,19 +209,21 @@ declarefuncstmt returns [interfaces.Instruction decfunc]
 ;
  
 listParamsFunc returns[[]interface{} lf]
-: listf=listParamsFunc COMA  {
+: listf=listParamsFunc COMA parameterfuncstmt  {
+                    
                                 var arrf []interface{}
                                 arrf = append($listf.lf, $parameterfuncstmt.parameterfunc)
                                 $lf = arrf
                             }   
 | parameterfuncstmt {
+    
             $lf = []interface{}{}
             $lf = append($lf, $parameterfuncstmt.parameterfunc)
         }
 ;
 parameterfuncstmt returns[interfaces.Expression parameterfunc]
 : ID DOUBLEPTS INOUT? type 
-| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? type 
+| exte=(ID|GUION_BAJO) ID DOUBLEPTS  type {$parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text)}
 ;
 
 //----------------------------EXPRESIONES---------------------
@@ -267,6 +269,12 @@ expr returns [interfaces.Expression e]
 | intfunctionstmt {$e = $intfunctionstmt.intfunc}
 | floatfunctionstmt {$e = $floatfunctionstmt.floatfunc}
 | stringfunctionstmt {$e = $stringfunctionstmt.stringfunc}
+| accessfuncstmt     {$e = $accessfuncstmt.funcexp}
+;
+
+accessfuncstmt returns [interfaces.Expression funcexp]
+: ID PARIZQ listParams PARDER {$funcexp = expressions.NewAccessFunction($ID.line, $ID.pos, $ID.text, $listParams.l, 1)}
+| ID PARIZQ AND_SIMPLE PARDER
 ;
 
 intfunctionstmt returns [interfaces.Expression intfunc]
@@ -281,10 +289,7 @@ stringfunctionstmt returns [interfaces.Expression stringfunc]
 : STRINGS PARIZQ expr PARDER {$stringfunc = expressions.NewFunctionString($STRINGS.line, $STRINGS.pos, $expr.e)}
 ;
 
-accessfuncstmt returns [interfaces.Expression access]
-: ID PARIZQ AND_SIMPLE PARDER
-| ID PARIZQ listParams PARDER
-;
+
 
 accessstmt returns [interfaces.Expression access]
 : op=ID {$access = expressions.NewAccess($op.line, $op.pos, $op.text)}

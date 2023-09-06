@@ -97,6 +97,9 @@ type GrammarListener interface {
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
 
+	// EnterAccessfuncstmt is called when entering the accessfuncstmt production.
+	EnterAccessfuncstmt(c *AccessfuncstmtContext)
+
 	// EnterIntfunctionstmt is called when entering the intfunctionstmt production.
 	EnterIntfunctionstmt(c *IntfunctionstmtContext)
 
@@ -105,9 +108,6 @@ type GrammarListener interface {
 
 	// EnterStringfunctionstmt is called when entering the stringfunctionstmt production.
 	EnterStringfunctionstmt(c *StringfunctionstmtContext)
-
-	// EnterAccessfuncstmt is called when entering the accessfuncstmt production.
-	EnterAccessfuncstmt(c *AccessfuncstmtContext)
 
 	// EnterAccessstmt is called when entering the accessstmt production.
 	EnterAccessstmt(c *AccessstmtContext)
@@ -211,6 +211,9 @@ type GrammarListener interface {
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
 
+	// ExitAccessfuncstmt is called when exiting the accessfuncstmt production.
+	ExitAccessfuncstmt(c *AccessfuncstmtContext)
+
 	// ExitIntfunctionstmt is called when exiting the intfunctionstmt production.
 	ExitIntfunctionstmt(c *IntfunctionstmtContext)
 
@@ -219,9 +222,6 @@ type GrammarListener interface {
 
 	// ExitStringfunctionstmt is called when exiting the stringfunctionstmt production.
 	ExitStringfunctionstmt(c *StringfunctionstmtContext)
-
-	// ExitAccessfuncstmt is called when exiting the accessfuncstmt production.
-	ExitAccessfuncstmt(c *AccessfuncstmtContext)
 
 	// ExitAccessstmt is called when exiting the accessstmt production.
 	ExitAccessstmt(c *AccessstmtContext)
