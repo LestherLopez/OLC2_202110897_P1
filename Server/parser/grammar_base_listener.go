@@ -194,11 +194,29 @@ func (s *BaseGrammarListener) EnterParameterfuncstmt(ctx *ParameterfuncstmtConte
 // ExitParameterfuncstmt is called when production parameterfuncstmt is exited.
 func (s *BaseGrammarListener) ExitParameterfuncstmt(ctx *ParameterfuncstmtContext) {}
 
+// EnterDeclarestructstmt is called when production declarestructstmt is entered.
+func (s *BaseGrammarListener) EnterDeclarestructstmt(ctx *DeclarestructstmtContext) {}
+
+// ExitDeclarestructstmt is called when production declarestructstmt is exited.
+func (s *BaseGrammarListener) ExitDeclarestructstmt(ctx *DeclarestructstmtContext) {}
+
+// EnterListStruct is called when production listStruct is entered.
+func (s *BaseGrammarListener) EnterListStruct(ctx *ListStructContext) {}
+
+// ExitListStruct is called when production listStruct is exited.
+func (s *BaseGrammarListener) ExitListStruct(ctx *ListStructContext) {}
+
 // EnterExpr is called when production expr is entered.
 func (s *BaseGrammarListener) EnterExpr(ctx *ExprContext) {}
 
 // ExitExpr is called when production expr is exited.
 func (s *BaseGrammarListener) ExitExpr(ctx *ExprContext) {}
+
+// EnterAccessstructstmt is called when production accessstructstmt is entered.
+func (s *BaseGrammarListener) EnterAccessstructstmt(ctx *AccessstructstmtContext) {}
+
+// ExitAccessstructstmt is called when production accessstructstmt is exited.
+func (s *BaseGrammarListener) ExitAccessstructstmt(ctx *AccessstructstmtContext) {}
 
 // EnterAccessfuncstmt is called when production accessfuncstmt is entered.
 func (s *BaseGrammarListener) EnterAccessfuncstmt(ctx *AccessfuncstmtContext) {}
@@ -247,3 +265,9 @@ func (s *BaseGrammarListener) EnterListParams(ctx *ListParamsContext) {}
 
 // ExitListParams is called when production listParams is exited.
 func (s *BaseGrammarListener) ExitListParams(ctx *ListParamsContext) {}
+
+// EnterListStructExp is called when production listStructExp is entered.
+func (s *BaseGrammarListener) EnterListStructExp(ctx *ListStructExpContext) {}
+
+// ExitListStructExp is called when production listStructExp is exited.
+func (s *BaseGrammarListener) ExitListStructExp(ctx *ListStructExpContext) {}

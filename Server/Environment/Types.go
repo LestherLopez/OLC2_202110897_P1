@@ -12,4 +12,5 @@ const (
 	RETURN                         //6
 	BREAK                          //7
 	CONTINUE                       //8
+	STRUCT                         //9
 )

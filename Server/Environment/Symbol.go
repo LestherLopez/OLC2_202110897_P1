@@ -8,4 +8,5 @@ type Symbol struct {
 	Valor    interface{}
 	Mutable  bool
 	Transfer TipoExpresion
+	IsList   bool
 }

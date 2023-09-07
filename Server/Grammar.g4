@@ -52,6 +52,7 @@ instruction returns [interfaces.Instruction inst]
 | assignationvecstmt {$inst = $assignationvecstmt.assignvec}
 | declarefuncstmt {$inst = $declarefuncstmt.decfunc}
 | accessfuncinstruction {$inst = $accessfuncinstruction.accessfuncin}
+| declarestructstmt     {$inst = $declarestructstmt.decstruct }
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -158,7 +159,7 @@ declarevectorstmt returns [interfaces.Instruction decvec]
 ;
 
 accessfuncinstruction returns [interfaces.Instruction accessfuncin]
-: ID PARIZQ PARDER {$accessfuncin = instructions.NewCallFunction($ID.line, $ID.pos, $ID.text)}
+: ID PARIZQ listParams PARDER PTCOMA {$accessfuncin = instructions.NewCallFunction($ID.line, $ID.pos, $ID.text, $listParams.l, 1)}
 ;
 
 //vec1.append(100)
@@ -185,6 +186,7 @@ countvecstmt returns [interfaces.Expression count]
  
 accessvecstmt returns [interfaces.Expression accessvec]
 : ID CORCHETEIZQ expr CORCHETEDER {$accessvec = expressions.NewAccessVector($ID.line, $ID.pos, $ID.text, $expr.e)}
+
 ;
 
 assignationvecstmt returns [interfaces.Instruction assignvec]
@@ -199,7 +201,9 @@ declarematrixstmt returns [interfaces.Instruction decmatrix]
 //-------------------------FUNCIONES-----------------------
 declarefuncstmt returns [interfaces.Instruction decfunc]
 : FUNC ID PARIZQ listParamsFunc PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParamsFunc.lf, $type.t, $block.blk, 1)}
-| FUNC ID PARIZQ listParams PARDER LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParams.l, environment.NULL, $block.blk, 2)}
+| FUNC ID PARIZQ listParamsFunc PARDER LLAVEIZQ block LLAVEDER {
+    
+    $decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, $listParamsFunc.lf, environment.NULL, $block.blk, 2);}
 | FUNC ID PARIZQ PARDER SUB MAYOR type LLAVEIZQ block LLAVEDER {$decfunc = instructions.NewToDeclareFunction($ID.line, $ID.pos, $ID.text, nil, $type.t, $block.blk, 3)}
 | FUNC ID PARIZQ PARDER LLAVEIZQ block LLAVEDER {
     if($block.blk!=nil){ 
@@ -207,7 +211,6 @@ declarefuncstmt returns [interfaces.Instruction decfunc]
     }
 }
 ;
- 
 listParamsFunc returns[[]interface{} lf]
 : listf=listParamsFunc COMA parameterfuncstmt  {
                     
@@ -222,9 +225,36 @@ listParamsFunc returns[[]interface{} lf]
         }
 ;
 parameterfuncstmt returns[interfaces.Expression parameterfunc]
-: ID DOUBLEPTS INOUT? type 
-| exte=(ID|GUION_BAJO) ID DOUBLEPTS  type {$parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text)}
+
+: exte=(ID|GUION_BAJO) ID DOUBLEPTS type {$parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text, 1)}
+| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? CORCHETEIZQ type CORCHETEDER {
+   
+    $parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text,2);}
 ;
+//---------------------------------STRUCTS-------------------------
+declarestructstmt returns [interfaces.Instruction decstruct]
+: STRUCT ID LLAVEIZQ listStruct LLAVEDER { $decstruct = instructions.NewToDeclareStruct($STRUCT.line, $STRUCT.pos, $ID.text, $listStruct.l) }
+;
+
+listStruct returns [[]interface{} l]
+: list =  listStruct COMA VAR ID DOUBLEPTS type {
+                            var arr []interface{}
+                            newParams := environment.NewStructType($ID.text, $type.t)
+                            arr = append($list.l, newParams)
+                            $l = arr
+
+}
+| VAR ID DOUBLEPTS type {
+                        var arr []interface{}
+                        newParams := environment.NewStructType($ID.text, $type.t)
+                        arr = append(arr, newParams)
+                        $l = arr
+}
+| { $l = []interface{}{} }
+;
+
+
+
 
 //----------------------------EXPRESIONES---------------------
 expr returns [interfaces.Expression e]
@@ -270,11 +300,18 @@ expr returns [interfaces.Expression e]
 | floatfunctionstmt {$e = $floatfunctionstmt.floatfunc}
 | stringfunctionstmt {$e = $stringfunctionstmt.stringfunc}
 | accessfuncstmt     {$e = $accessfuncstmt.funcexp}
+| ID LLAVEIZQ listStructExp LLAVEDER { $e = expressions.NewStructExp($ID.line, $ID.pos, $ID.text, $listStructExp.l ) }
+| accessstructstmt {$e = $accessstructstmt.accessstruct}
 ;
+
+accessstructstmt returns [interfaces.Expression accessstruct]
+:list=ID POINT ID { $accessstruct = expressions.NewAccessStruct($list.line, $list.pos, $list.text, $ID.text)  }
+;
+
 
 accessfuncstmt returns [interfaces.Expression funcexp]
 : ID PARIZQ listParams PARDER {$funcexp = expressions.NewAccessFunction($ID.line, $ID.pos, $ID.text, $listParams.l, 1)}
-| ID PARIZQ AND_SIMPLE PARDER
+| ID PARIZQ PARDER 
 ;
 
 intfunctionstmt returns [interfaces.Expression intfunc]
@@ -293,6 +330,7 @@ stringfunctionstmt returns [interfaces.Expression stringfunc]
 
 accessstmt returns [interfaces.Expression access]
 : op=ID {$access = expressions.NewAccess($op.line, $op.pos, $op.text)}
+
 ;
 
 increaseanddecreasestmt returns [interfaces.Instruction increasedecrease]
@@ -309,13 +347,30 @@ type returns [environment.TipoExpresion t]
   | CHARACTERS    {$t = environment.CHARACTER}  
 ;
 listParams returns[[]interface{} l]
-: list=listParams COMA expr {
+: list=listParams COMA AND_SIMPLE? expr {
                                 var arr []interface{}
                                 arr = append($list.l, $expr.e)
                                 $l = arr
                             }   
-| expr {
+| AND_SIMPLE? expr {
             $l = []interface{}{}
             $l = append($l, $expr.e)
         }
+;
+listStructExp returns[[]interface{} l]
+: list=listStructExp COMA ID DOUBLEPTS expr {
+                                            var arr []interface{}
+                                            StrExp := environment.NewStructContent($ID.text, $expr.e)
+                                            arr = append($list.l, StrExp)
+                                            $l = arr
+                                        }
+| ID DOUBLEPTS expr{
+                    var arr []interface{}
+                    StrExp := environment.NewStructContent($ID.text, $expr.e)
+                    arr = append(arr, StrExp)
+                    $l = arr
+                }
+|   {
+        $l = []interface{}{}
+    }
 ;

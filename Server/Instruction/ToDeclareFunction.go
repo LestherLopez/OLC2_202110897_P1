@@ -21,7 +21,7 @@ func NewToDeclareFunction(lin int, col int, id_func string, parametros []interfa
 }
 
 func (p ToDeclareFunction) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	fmt.Print("entramos a la declaracion")
+
 	switch p.number {
     case 1:
 		//funcion con return y con parametros
@@ -31,8 +31,10 @@ func (p ToDeclareFunction) Ejecutar(ast *environment.AST, env interface{}) inter
 	   env.(environment.Environment).KeepFunction(p.id_func, function)
     case 2:
         //funcion sin return y con parametros
+		
 		function := environment.SymbolFunction{Lin: p.Lin, Col: p.Col, Id: p.id_func, TipoReturn: environment.NULL,  Bloque_parametros: p.parametros, Bloque_sentencias: p.sentences, Isreturn: false}
 	   	env.(environment.Environment).KeepFunction(p.id_func, function)
+		fmt.Print(function.Id)
     case 3:
         //funcion con return y sin parametros
 		function := environment.SymbolFunction{Lin: p.Lin, Col: p.Col, Id: p.id_func, TipoReturn: p.type_var,  Bloque_parametros: nil, Bloque_sentencias: p.sentences, Isreturn: true}

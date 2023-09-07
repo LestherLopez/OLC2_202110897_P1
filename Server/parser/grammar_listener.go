@@ -94,8 +94,17 @@ type GrammarListener interface {
 	// EnterParameterfuncstmt is called when entering the parameterfuncstmt production.
 	EnterParameterfuncstmt(c *ParameterfuncstmtContext)
 
+	// EnterDeclarestructstmt is called when entering the declarestructstmt production.
+	EnterDeclarestructstmt(c *DeclarestructstmtContext)
+
+	// EnterListStruct is called when entering the listStruct production.
+	EnterListStruct(c *ListStructContext)
+
 	// EnterExpr is called when entering the expr production.
 	EnterExpr(c *ExprContext)
+
+	// EnterAccessstructstmt is called when entering the accessstructstmt production.
+	EnterAccessstructstmt(c *AccessstructstmtContext)
 
 	// EnterAccessfuncstmt is called when entering the accessfuncstmt production.
 	EnterAccessfuncstmt(c *AccessfuncstmtContext)
@@ -120,6 +129,9 @@ type GrammarListener interface {
 
 	// EnterListParams is called when entering the listParams production.
 	EnterListParams(c *ListParamsContext)
+
+	// EnterListStructExp is called when entering the listStructExp production.
+	EnterListStructExp(c *ListStructExpContext)
 
 	// ExitS is called when exiting the s production.
 	ExitS(c *SContext)
@@ -208,8 +220,17 @@ type GrammarListener interface {
 	// ExitParameterfuncstmt is called when exiting the parameterfuncstmt production.
 	ExitParameterfuncstmt(c *ParameterfuncstmtContext)
 
+	// ExitDeclarestructstmt is called when exiting the declarestructstmt production.
+	ExitDeclarestructstmt(c *DeclarestructstmtContext)
+
+	// ExitListStruct is called when exiting the listStruct production.
+	ExitListStruct(c *ListStructContext)
+
 	// ExitExpr is called when exiting the expr production.
 	ExitExpr(c *ExprContext)
+
+	// ExitAccessstructstmt is called when exiting the accessstructstmt production.
+	ExitAccessstructstmt(c *AccessstructstmtContext)
 
 	// ExitAccessfuncstmt is called when exiting the accessfuncstmt production.
 	ExitAccessfuncstmt(c *AccessfuncstmtContext)
@@ -234,4 +255,7 @@ type GrammarListener interface {
 
 	// ExitListParams is called when exiting the listParams production.
 	ExitListParams(c *ListParamsContext)
+
+	// ExitListStructExp is called when exiting the listStructExp production.
+	ExitListStructExp(c *ListStructExpContext)
 }

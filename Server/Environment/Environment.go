@@ -10,6 +10,7 @@ type Environment struct {
 	Anterior  interface{}
 	Variables map[string]Symbol
 	SwitchVar Symbol
+	Structs   map[string]Symbol
 	NameEnv   string
 	Vectors   map[string]SymbolVector
 	Functions map[string]SymbolFunction
@@ -23,6 +24,7 @@ func NewEnvironment(ant interface{}, ide string) Environment {
 		Vectors: make(map[string]SymbolVector),
 		Functions: make(map[string]SymbolFunction),
 		NameEnv:   ide,
+		Structs:   make(map[string]Symbol),
 	}
 }
 
@@ -180,3 +182,30 @@ func (env Environment) VerifyFunc() bool {
 }
 
 
+func (env Environment) SaveStruct(id string, list []interface{}) {
+	if _, ok := env.Structs[id]; ok {
+		fmt.Println("El struct " + id + " ya existe")
+		return
+	}
+	env.Structs[id] = Symbol{Lin: 0, Col: 0, Tipo: STRUCT, Valor: list}
+}
+
+func (env Environment) GetStruct(id string) Symbol {
+
+	var tmpEnv Environment
+	tmpEnv = env
+
+	for {
+		if tmpStruct, ok := tmpEnv.Structs[id]; ok {
+			return tmpStruct
+		}
+		if tmpEnv.Anterior == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.Anterior.(Environment)
+		}
+	}
+
+	fmt.Println("El struct ", id, " no existe")
+	return Symbol{Lin: 0, Col: 0, Tipo: NULL, Valor: 0}
+}
