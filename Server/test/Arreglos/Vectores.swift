@@ -1,4 +1,6 @@
 // Función para intercambiar dos elementos en un arreglo
+
+
 func intercambiar(_ a: inout [Int], _ i: Int, _ j: Int) {
     let aux = a[i]
     a[i] = a[j]
@@ -9,10 +11,10 @@ func intercambiar(_ a: inout [Int], _ i: Int, _ j: Int) {
 func ordIntercambio(_ arr: inout [Int]) {
     var i = 0
     var j = 0
-    
     while i < (arr.count - 1) {
         j = i + 1
         while j < arr.count {
+            
             if arr[i] > arr[j] {
                 intercambiar(&arr, i, j);
             }
@@ -57,6 +59,7 @@ func printArray(_ msg: String, _ arr: [Int]) {
         }
     }
     out += "]"
+   
     print(msg + out)
 }
 
@@ -70,6 +73,7 @@ ordIntercambio(&arr1);
 printArray("salida: ", arr1);
 print("SELECCIÓN:")
 var arr2: [Int] = [40, 21, 1, 3, 14, 4]
+
 printArray("entrada: ", arr2);
 ordSeleccion(&arr2);
 printArray("salida: ", arr2);

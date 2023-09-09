@@ -24,7 +24,7 @@ func (p Case) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		var value environment.Symbol
 		value  = p.exp.(interfaces.Expression).Ejecutar(ast, env)
 		conditional := env.(environment.Environment).GetVariableSwitch("switch")
-		fmt.Println(conditional.Valor)
+		//fmt.Println(conditional.Valor)
 		if(conditional.Tipo != value.Tipo){
 			fmt.Println("El tipo de variable es incorrecto para comparar")
 			return nil

@@ -28,11 +28,9 @@ func (p Remove) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		
 			vector.Valor = append(vector.Valor[:valor.Valor.(int)], vector.Valor[valor.Valor.(int)+1:]... )
 			env.(environment.Environment).SetVector(p.id_vector, vector)
-			vectorn := env.(environment.Environment).GetVector(p.id_vector)
-			fmt.Print("vector nuevo")
-			for _, inst := range vectorn.Valor {
-				fmt.Print(inst)
-			}
+			 env.(environment.Environment).GetVector(p.id_vector)
+			//fmt.Print("vector nuevo")
+			
 		}else{
 			ast.SetError("ERROR: El indice esta fuera del rango del vector")
 			fmt.Print("ERROR: El indice esta fuera del rango del vector")

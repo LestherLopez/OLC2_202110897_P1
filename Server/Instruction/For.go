@@ -46,7 +46,7 @@ func (p For) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 					//ejecutar bloque
 					forEnv := environment.NewEnvironment(env, "For environment"+fmt.Sprintf("%v", valint1))
 					for _, inst := range p.sentences {
-						fmt.Println("bloque")
+						//fmt.Println("bloque")
 						element := inst.(interfaces.Instruction).Ejecutar(ast, forEnv)
 						if(element!= nil){
 							symbolret := element.(environment.Symbol)
@@ -83,7 +83,7 @@ func (p For) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 	}
 
 	
-	print("For")
+	//print("For")
 	//ast.SetPrint(consoleOut + "\n")
 	return nil
 }

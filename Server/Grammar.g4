@@ -53,6 +53,7 @@ instruction returns [interfaces.Instruction inst]
 | declarefuncstmt {$inst = $declarefuncstmt.decfunc}
 | accessfuncinstruction {$inst = $accessfuncinstruction.accessfuncin}
 | declarestructstmt     {$inst = $declarestructstmt.decstruct }
+| assignationstructstmt {$inst = $assignationstructstmt.assignstruct}
 ;
 
 printstmt returns [interfaces.Instruction prnt]
@@ -106,7 +107,7 @@ switchstmt returns [interfaces.Instruction switch]
 ;
 casestmt returns [interfaces.Instruction cas]
 : CASE expr DOUBLEPTS block blockcases { $cas = instructions.NewCase($CASE.line,$CASE.pos, $expr.e,$block.blk, $blockcases.blkcase)
-                                fmt.Println("entro")}
+                                }
 | CASE expr DOUBLEPTS sen=block DEFAULT DOUBLEPTS def=block  { $cas = instructions.NewCase($CASE.line,$CASE.pos, $expr.e,$sen.blk, $def.blk)}
 ;
 blockcases returns [[]interface{} blkcase]
@@ -126,7 +127,11 @@ blockcases returns [[]interface{} blkcase]
 
 
 assignationstmt returns [interfaces.Instruction assign]
-: ID IG expr PTCOMA? {$assign = instructions.NewAssignation($IG.line, $IG.pos,  $ID.text, $expr.e)}
+: ID IG expr PTCOMA? {$assign = instructions.NewAssignation($ID.line, $ID.pos,  $ID.text, $expr.e)}
+;
+
+assignationstructstmt returns [interfaces.Instruction assignstruct]
+: ID POINT second=ID IG expr PTCOMA? {$assignstruct = instructions.NewAssignationStruct($ID.line, $ID.pos, $ID.text, $second.text, $expr.e)}
 ;
 
 whilestmt returns [interfaces.Instruction while]
@@ -227,9 +232,8 @@ listParamsFunc returns[[]interface{} lf]
 parameterfuncstmt returns[interfaces.Expression parameterfunc]
 
 : exte=(ID|GUION_BAJO) ID DOUBLEPTS type {$parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text, 1)}
-| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? CORCHETEIZQ type CORCHETEDER {
-   
-    $parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text,2);}
+| exte=(ID|GUION_BAJO) ID DOUBLEPTS INOUT? CORCHETEIZQ type CORCHETEDER {$parameterfunc = expressions.NewParameters($exte.line, $exte.pos, $type.t, $exte.text,  $ID.text,2);}
+| ID DOUBLEPTS type  {$parameterfunc = expressions.NewParameters($ID.line, $ID.pos, $type.t, "_",  $ID.text, 1)}
 ;
 //---------------------------------STRUCTS-------------------------
 declarestructstmt returns [interfaces.Instruction decstruct]
@@ -237,7 +241,7 @@ declarestructstmt returns [interfaces.Instruction decstruct]
 ;
 
 listStruct returns [[]interface{} l]
-: list =  listStruct COMA VAR ID DOUBLEPTS type {
+: list =  listStruct  VAR ID DOUBLEPTS type {
                             var arr []interface{}
                             newParams := environment.NewStructType($ID.text, $type.t)
                             arr = append($list.l, newParams)
@@ -300,12 +304,13 @@ expr returns [interfaces.Expression e]
 | floatfunctionstmt {$e = $floatfunctionstmt.floatfunc}
 | stringfunctionstmt {$e = $stringfunctionstmt.stringfunc}
 | accessfuncstmt     {$e = $accessfuncstmt.funcexp}
-| ID LLAVEIZQ listStructExp LLAVEDER { $e = expressions.NewStructExp($ID.line, $ID.pos, $ID.text, $listStructExp.l ) }
+| ID (LLAVEIZQ|PARIZQ) listStructExp (LLAVEDER|PARDER) { $e = expressions.NewStructExp($ID.line, $ID.pos, $ID.text, $listStructExp.l ) }
 | accessstructstmt {$e = $accessstructstmt.accessstruct}
 ;
 
 accessstructstmt returns [interfaces.Expression accessstruct]
-:list=ID POINT ID { $accessstruct = expressions.NewAccessStruct($list.line, $list.pos, $list.text, $ID.text)  }
+:list=ID POINT ID { $accessstruct = expressions.NewAccessStruct($list.line, $list.pos, $list.text, $ID.text, "nil")  }
+| list=ID POINT ID POINT sec=ID  { $accessstruct = expressions.NewAccessStruct($list.line, $list.pos, $list.text, $ID.text, $sec.text)  }
 ;
 
 
@@ -345,20 +350,21 @@ type returns [environment.TipoExpresion t]
   | FLOATS {$t = environment.FLOAT}  
   | BOOLS       {$t = environment.BOOLEAN }  
   | CHARACTERS    {$t = environment.CHARACTER}  
+  | ID { $t = environment.STRUCT  }
 ;
 listParams returns[[]interface{} l]
-: list=listParams COMA AND_SIMPLE? expr {
+: list=listParams COMA (AND_SIMPLE| ID DOUBLEPTS)? expr {
                                 var arr []interface{}
                                 arr = append($list.l, $expr.e)
                                 $l = arr
                             }   
-| AND_SIMPLE? expr {
+| (AND_SIMPLE| ID DOUBLEPTS)? expr {
             $l = []interface{}{}
             $l = append($l, $expr.e)
         }
 ;
 listStructExp returns[[]interface{} l]
-: list=listStructExp COMA ID DOUBLEPTS expr {
+: list=listStructExp COMA?  ID DOUBLEPTS expr {
                                             var arr []interface{}
                                             StrExp := environment.NewStructContent($ID.text, $expr.e)
                                             arr = append($list.l, StrExp)

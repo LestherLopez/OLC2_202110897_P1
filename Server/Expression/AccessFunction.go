@@ -42,9 +42,13 @@ func (p AccessFunction) Ejecutar(ast *environment.AST, env interface{}) environm
 				element:=inst.(interfaces.Instruction).Ejecutar(ast, FunctionEnv)
 				if(element!=nil){
 					symboltransfer := element.(environment.Symbol)
+					
 					if(symboltransfer.Transfer== environment.RETURN && symboltransfer.Tipo==funcion.TipoReturn){
 						return symboltransfer
 						//	return environment.Symbol{Valor: "Holaaa", Col: p.Col, Lin: p.Lin}
+					}else if(symboltransfer.Transfer==environment.RETURN){
+						fmt.Print(symboltransfer)
+						return symboltransfer
 					}else{
 						ast.SetError("ERROR: No fue posible hacer el retorno de la variable")
 						fmt.Print("ERROR: No fue posible hacer el retorno de la variable")

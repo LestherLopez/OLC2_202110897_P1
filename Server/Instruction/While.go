@@ -36,7 +36,7 @@ func (p While) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 				if(symbolret.Transfer == environment.RETURN){
 					return symbolret
 				}else if(symbolret.Transfer==environment.BREAK){
-					fmt.Print("VIENE BREAAAK")
+				//fmt.Print("VIENE BREAAAK")
 					return nil
 				}else if(symbolret.Transfer==environment.CONTINUE){
 					
@@ -48,7 +48,7 @@ func (p While) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		}
 		conditional =p.exp_conditional.(interfaces.Expression).Ejecutar(ast, whileEnv)
 	}
-	print("while")
+	//print("while")
 	//ast.SetPrint(consoleOut + "\n")
 	return nil
 }

@@ -209,3 +209,23 @@ func (env Environment) GetStruct(id string) Symbol {
 	fmt.Println("El struct ", id, " no existe")
 	return Symbol{Lin: 0, Col: 0, Tipo: NULL, Valor: 0}
 }
+
+func (env Environment) GetGlobal() Environment{
+	var tmpEnv Environment
+	tmpEnv = env
+	//longitud := len("Funcion")
+	for {
+		
+		if 1==len(tmpEnv.Vectors){
+
+			return tmpEnv
+		} 
+		if tmpEnv.Anterior == nil {
+			break
+		} else {
+			tmpEnv = tmpEnv.Anterior.(Environment)
+		}
+	}
+
+	return Environment{}
+}

@@ -19,7 +19,7 @@ func NewIf(lin int, col int, expc interfaces.Expression, senten []interface{}, s
 }
 
 func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
-	fmt.Println("entre a if")
+	//fmt.Println("entre a if")
 	var conditional environment.Symbol
 	conditional = p.exp_conditional.(interfaces.Expression).Ejecutar(ast, env)
 	
@@ -38,14 +38,14 @@ func (p If) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 				if(element!= nil){
 					symbolret := element.(environment.Symbol)
 					if(symbolret.Transfer == environment.RETURN){
-						fmt.Println("a")
+					//	fmt.Println("a")
 						return symbolret
 					}else if(symbolret.Transfer==environment.BREAK){
-						fmt.Println("b")
+					//	fmt.Println("b")
 						return environment.Symbol{Transfer: environment.BREAK}
 						
 					}else if(symbolret.Transfer==environment.CONTINUE){
-						fmt.Println("c")
+					//	fmt.Println("c")
 						break
 					}
 					

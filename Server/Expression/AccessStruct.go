@@ -9,10 +9,11 @@ type AccessStruct struct {
 	Col    int
 	Struct string
 	Id     string
+	SecondId string
 }
 
-func NewAccessStruct(lin int, col int, str string, id string) AccessStruct {
-	exp := AccessStruct{lin, col, str, id}
+func NewAccessStruct(lin int, col int, str string, id string, secondid string) AccessStruct {
+	exp := AccessStruct{lin, col, str, id, secondid}
 	return exp
 }
 
@@ -25,7 +26,18 @@ func (p AccessStruct) Ejecutar(ast *environment.AST, env interface{}) environmen
 	if tempStruct.Tipo == environment.STRUCT {
 
 		if variable, ok := tempStruct.Valor.(map[string]environment.Symbol)[p.Id]; ok {
-			return variable
+		//	fmt.Print("encontramos struct")
+			if p.SecondId=="nil"{
+				return variable
+			}else{
+				
+				
+				if variable.Tipo==environment.STRUCT{
+					if variable2, ok := variable.Valor.(map[string]environment.Symbol)[p.SecondId]; ok {
+						return variable2
+					}
+				}
+			}
 		}
 		ast.SetError("No existe el elemento " + p.Id)
 		return result

@@ -2,7 +2,6 @@ package expressions
 
 import (
 	environment "Server/Environment"
-	"fmt"
 )
 
 type Parameters struct {
@@ -21,12 +20,12 @@ func NewParameters(lin int, col int, tipo environment.TipoExpresion, first_id st
 }
 
 func (p Parameters) Ejecutar(ast *environment.AST, env interface{}) environment.Symbol {
-	fmt.Print(p.firs_Id)
+	//fmt.Print(p.firs_Id)
 	switch p.number{
 	case 1:
 		if(p.firs_Id=="_"){
 
-			fmt.Print("parametro guardado con exito")
+		//	fmt.Print("parametro guardado con exito")
 			return environment.Symbol{
 				Lin:   p.Lin,
 				Col:   p.Col,
@@ -39,7 +38,7 @@ func (p Parameters) Ejecutar(ast *environment.AST, env interface{}) environment.
 			}
 	
 		}else{
-			fmt.Print("parametro con referencia externa")
+		//	fmt.Print("parametro con referencia externa")
 			return environment.Symbol{
 				Lin:   p.Lin,
 				Col:   p.Col,
@@ -52,7 +51,7 @@ func (p Parameters) Ejecutar(ast *environment.AST, env interface{}) environment.
 	case 2:
 		if(p.firs_Id=="_"){
 
-			fmt.Print("parametro guardado con exito list")
+			//fmt.Print("parametro guardado con exito list")
 			return environment.Symbol{
 				Lin:   p.Lin,
 				Col:   p.Col,
@@ -64,7 +63,7 @@ func (p Parameters) Ejecutar(ast *environment.AST, env interface{}) environment.
 			}
 	
 		}else{
-			fmt.Print("parametro con referencia externa")
+		//	fmt.Print("parametro con referencia externa")
 			return environment.Symbol{
 				Lin:   p.Lin,
 				Col:   p.Col,

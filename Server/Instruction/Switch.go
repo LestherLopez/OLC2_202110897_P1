@@ -27,7 +27,7 @@ func (p Switch) Ejecutar(ast *environment.AST, env interface{}) interface{} {
 		env.(environment.Environment).KeepVariableSwitch("switch", conditional)
 		conditional1 := env.(environment.Environment).GetVariableSwitch("switch")
 		fmt.Println(conditional1.Valor)
-		fmt.Println("entro al guardado de expresion")
+	//	fmt.Println("entro al guardado de expresion")
 		if(p.sentence!=nil){
 			var SwitchEnv environment.Environment
 			SwitchEnv = environment.NewEnvironment(env, "Switch case environment")

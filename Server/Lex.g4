@@ -31,7 +31,7 @@ APPEND: 'append';
 REMOVELAST: 'removeLast';
 REMOVE: 'remove';
 AT:     'at';
-ISEMPTY: 'IsEmpty';
+ISEMPTY: 'isEmpty';
 COUNT:  'count';
 FUNC:   'func';
 INOUT : 'inout';
